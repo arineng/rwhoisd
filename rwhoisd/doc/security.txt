@@ -1,0 +1,108 @@
+                       rwhoisd Security Considerations
+
+                                Version 1.5.0
+
+                                  1-Feb-98
+
+  ------------------------------------------------------------------------
+
+rwhoisd is in no way guaranteed to be secure. With that said, it also does
+not do many of the things that make other Internet services insecure, say,
+for instance, allowing users to download files onto a machine (like ftp) or
+allowing users to specify in data something that gets executed. Nonetheless,
+Network Solutions (NSI) strongly recommends that the user follows sound
+security practices. rwhoisd provides a number of built-in ways to be more
+secure.
+
+Run the Server as an Unprivileged User
+
+There is no need to run the rwhoisd process as root. The Internet Assigned
+Numbers Authority (IANA) assigned port, 4321, is not in the restricted
+range, and rwhoisd needs no access to typically restricted files. If you run
+rwhoisd as root (say, from startup), it will attempt to setuid(2) and
+setgid(2) to the user specified in the 'userid' parameter in the main
+configuration file. It sets the group id to the group set for the user in
+/etc/passwd. It does all of this before creating the socket (and accepting
+input from the outside world).
+
+Use TCP Wrappers
+
+rwhoisd contains built-in calls to Weitse Venema's TCP Wrappers code. You
+can specify which files to use for the allow and deny files in the main
+configuration file (they default to the standard /etc/hosts.allow and
+/etc/hosts.deny files). You can wrap the server itself using the 'rwhoisd'
+tag, and you can protect individual directives by using the directive name.
+See the operations guide and the TCP Wrappers for more details.
+
+Use chroot(2)
+
+The chroot system call resets the file system root directory to another
+(non-root) directory. The operating system then protects the rest of the
+filesystem from the process that was chrooted. This limits what a possible
+intruder can do. An intruder may be able to trash your rwhoisd installation,
+but they will not be able to steal any other data and will not be able to
+damage any other part of your filesystem.
+
+The use of chroot(2) is recommended. rwhoisd can be configured to do this by
+setting up the chrooted environment and by setting the main configuration
+variable 'chrooted' to TRUE or running rwhoisd with a '-s' option.
+
+Since each operating system--and even each installation--can vary so widely,
+there is no universal method for setting up a chroot environment. Instead,
+these are considered general guidelines on setting up the environment. The
+specifics given here will undoubtedly need to be modified to fit your
+specific case. Also, a good reference for setting up chroot environments can
+often be found in the ftpd manpage of your system, which is also often
+chrooted.
+
+  ------------------------------------------------------------------------
+
+  1. Make sure that there are dev, etc, tmp, and usr/lib directories off of
+     the prefix directory ('root-dir') in the main configuration file.
+  2. Make sure the necessary binaries exist in their expected location.
+     rwhoisd uses the following extra binaries: sh, sort, pgp (possibly),
+     plus any binaries used for extended directives (/bin/date for example).
+     sh and sort, and the extended directive binaries should be placed in
+     <root-dir/bin or whatever the rwhoisd.conf file sets as the 'bin-path'.
+     sh should be where the exec(2) system call needs it (on Sun Solaris
+     this is usr/bin). sort should be put somewhere in your PATH (usually
+     bin or usr/bin).
+  3. Make sure any shared libraries needed by the executables are accessible
+     in <root-dir/usr/lib or <root-dir/usr/local/lib. On Sun operating
+     systems (both SunOS 4 and Solaris 2.x), you can determine which shared
+     libraries an executable uses with the 'ldd' command. On the Sun
+     operating systems there is also a /usr/lib/ld.so file that must be
+     present for shared libraries to work at all. In addition, on Solaris,
+     there is a host of other .so files that must be copied into the chroot
+     area to allow the socket library to work (nss_nis.so, nss_nisplus.so,
+     nss_dns.so, nss_files.so, and straddr.so are all in /usr/lib, according
+     to the ftpd manpage).
+  4. If you use /etc/resolv.conf to resolve hostnames, copy /etc/resolv.conf
+     to <root-dir/etc. Note that, while in setting up chroot environments in
+     general it is usually necessary to include the passwd file (and
+     associated shadow passwd files as well), in this case, it is not
+     necessary. rwhoisd performs all of its passwd file lookups before
+     actually chrooting.
+  5. Create <root-dir/dev/zero. First you must discover the major and minor
+     device numbers of /dev/zero on your system. On SunOS,
+
+     % ls -l /dev/zero
+     crw-rw-rw- 1 root 3, 12 Aug 11 1995 /dev/zero
+
+     which indicates that the major number is three and the minor number is
+     twelve. Then use the 'mknod' command to create the device file. You
+     must be root to do this; /usr/rwhois.root is <root-dir in this example.
+
+     % cd /usr/rwhois.root/dev
+     % mknod zero c 3 12
+
+  6. It may be necessary to create other devices. On Solaris, also
+     (re)create /dev/tcp, /dev/udp, and /dev/ticotsord using a similar
+     technique.
+
+You should be able to test this chroot environment by (as root) using the
+chroot command and running the shell and by attempting to run sort and the
+other extended directive executables.
+
+% chroot /usr/local/rwhois /usr/bin/sh
+% /etc/rwhoisd -s

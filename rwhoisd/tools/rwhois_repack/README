@@ -1,0 +1,24 @@
+This is the source for a MKDB index repacker.  This tool is only
+useful if you frequently add objects to rwhoisd via the "-register"
+directive.
+
+In order to guarantee a constant time of execution, -register, when
+adding an object, creates a new datafile and (more importantly) a new,
+separate index file for that object, which it then sorts.
+Unfortunately, as objects get added to the database, this causes
+search times to migrate from O(log(n)) to O(nlog(n)), as the search
+process moves from binary searching one index file (per class, per authority
+area) to binary searching a progressively longer list of very short
+index files.
+
+This tool addresses the problem by coalescing all of the existing
+index files into a single new index file.  It can do this while the
+server and database are online.
+
+This is not a complete solution to the problem, as data files,
+ultimately, also should be coalesced.  However, this is a less urgent
+problem normally, since many different datafiles does not adversely
+affect search times until there are so many files in that particular
+directory that you run into filesystem performance issues with large
+directories.
+

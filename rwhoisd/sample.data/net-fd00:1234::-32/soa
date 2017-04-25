@@ -1,0 +1,7 @@
+Serial-Number:20040120102851
+Refresh-Interval:3600
+Increment-Interval:1800
+Retry-Interval:60
+Time-To-Live:86400
+Primary-Server:rwhois.a.com:4321
+Hostmaster:hostmaster@a.com

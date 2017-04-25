@@ -1,0 +1,36 @@
+Things yet to do:
+
+* redesign schema configuration files from rwhoisd.auth_area down.
+  New design to facilitate schema sharing, non-redundant path specification.
+
+* document register's external parse support.
+
+* Add "mimimal" record write ability (records that take up minimal
+  disk space).
+
+* Additional verifications during register (like checking that
+  referral records are correct, local links exist?).
+
+* Add additional dump-like display formats (i.e., only generalizable
+  display formats will be implemented; we are letting go of the
+  whois-style per-class formatting)
+
+* Add more options to the indexer.
+
+* Add support for MIME, at least for MIME attributes.
+
+* Reintegrate experimental UDP server implemenation.
+
+* Convert to POSIX extended regular expressions (use rx, or native)
+
+* create a 1.0 -> 1.5 data migration tool
+
+* try adding a hashtable mechanism to speed up configuration processing.
+
+* enable notify directive functionality
+
+* generalize backend database API
+
+** create a specific schema SQL backend, probably using mysql or mSQL
+
+** create a generic schema SQL backend

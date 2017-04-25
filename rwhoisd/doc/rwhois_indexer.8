@@ -1,0 +1,53 @@
+.TH RWHOIS_INDEXER 8 "18 Nov 1996"
+
+.SH NAME
+rwhois_indexer  \- Indexer for RWhoisd using the MKDB format
+
+.SH SYNOPSIS
+.B rwhois_indexer 
+[-c config_file] -C class_name -A auth_area_name [-i] [-v] files...
+
+.B rwhois_indexer
+[-c config_file] [-C class_name] [-A auth_area_name] [-i] [-v] -s suffix
+
+.SH DESCRIPTION
+.I rwhois_indexer
+takes the raw text files and creates indexes based on the attribute
+definitions of the particular class defined within the rwhois
+dataset. It creates two files with the first being a list
+of text files that have been indexed. The second is a sorted list
+of all the attributes and their record offsets within their
+respective files. This sorting is accomplished by using sort(1).
+.SH OPTIONS
+.TP
+.B \-c
+The full path of the rwhois config file. Default is 'rwhois.conf'.
+.TP
+.B \-C
+The class or schema name of the objects to be indexed.  This is
+required for indexing by file.  It acts as a resctrictor if indexing
+by suffix.
+.TP
+.B \-A 
+The authority area of the objects to be index.  This is required for
+indexing by file. It acts as a restrictor if indexing by suffix.
+.TP
+.B \-v
+"verbose mode". Turns more verbose logging on
+.TP
+.B \-q
+"quiet mode". Turns logging down.
+.TP
+.B \-i
+Initialize.  This option will remove all current index files first.
+.TP
+.B \-s
+Suffix mode. Indexes all files in all data directories (unless
+restricted by a -C or a -A option) ending in "suffix"
+
+
+.SH "SEE ALSO"
+rwhoisd(8)
+
+.SH BUGS
+Please send any bugs to rwhois-bugs@rwhois.net.

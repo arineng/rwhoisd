@@ -1,0 +1,7 @@
+Serial-Number: 19961008000000000
+Refresh-Interval: 3600
+Increment-Interval: 1800
+Retry-Interval: 60
+Time-To-Live: 86400
+Primary-Server: rs.internic.net:4321
+Hostmaster: hostmaster@internic.net

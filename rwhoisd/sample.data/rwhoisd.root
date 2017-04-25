@@ -1,0 +1,9 @@
+#
+# RWhois Punt (or Root) Referral File
+#
+# note that currently rwhoisd doesn't do any interpretation of this.
+# It just prints the value out after a %referral token.
+
+# this is the new style -- note the ':4321' is optional
+rwhois://root.rwhois.net:4321/auth-area=.
+

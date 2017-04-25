@@ -1,0 +1,12 @@
+#
+# RWhois Main Schema Config File
+#
+name:network
+attributedef:net-10.0.0.0-8/attribute_defs/network.tmpl
+dbdir:net-10.0.0.0-8/data/network
+Schema-Version: 19961101000000000
+---
+name:referral 
+attributedef:net-10.0.0.0-8/attribute_defs/referral.tmpl  
+dbdir:net-10.0.0.0-8/data/referral
+Schema-Version: 19961101000000000

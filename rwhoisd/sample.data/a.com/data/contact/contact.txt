@@ -1,0 +1,28 @@
+ID:222.a.com
+Auth-Area:a.com
+Name:Public, John Q.
+Email:johnq@a.com
+Type:I
+First-Name:John
+Last-Name:Public
+Phone:(847)-391-7926
+Fax:(847)-338-0340
+Organization:777.a.com
+See-Also:http://www.a.com/~johnq
+Created:11961022
+Updated:11961023
+Updated-By:hostmaster@a.com
+---
+ID:223.a.com
+Auth-Area:a.com
+Name:Doe, Jane
+Email:janed@a.com
+Type:I
+First-Name:Jane
+Last-Name:Doe
+Phone:(847)-391-7943
+Fax:(847)-338-0340
+Organization:777.a.com
+Created:11961025
+Updated:11961025
+Updated-By:hostmaster@a.com

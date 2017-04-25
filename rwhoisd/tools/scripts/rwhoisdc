@@ -1,0 +1,92 @@
+#!/bin/sh
+#
+
+# rwhoisd control script
+# usage: $0 (start|stop|reload|check)
+
+# user configurable variables
+
+RWHOIS_ROOT=/home/databases/rwhois
+rwhois_bin=${RWHOIS_ROOT}/bin
+rwhois_etc=${RWHOIS_ROOT}/etc
+PATH=/usr/bin:/bin:/usr/ucb/bin:/home/databases/rwhois/etc:$rwhois_bin:\
+$rwhois_etc
+export PATH
+
+pidfile=${RWHOIS_ROOT}/rwhoisd.pid
+conf_file=${RWHOIS_ROOT}/rwhois.conf
+rwhoisd=${rwhois_etc}/rwhoisd
+
+# end user config variables
+
+getpid()
+{
+  if [ -r $pidfile ]; then
+	pid=`cat $pidfile`
+	if [ -n $pid ] && kill -0 $pid; then
+	  return 0
+	else
+	  unset pid; rm -f $pidfile; return 1
+	fi
+  else
+	return 1
+  fi
+}
+
+start ()
+{
+  if [ -r $conf_file ] && [ -x $rwhoisd ]; then
+	if getpid; then
+	  echo "not starting rwhoid; already running"
+	  echo "(see $pidfile)"
+	  return 1
+	else
+	  echo "starting rwhoisd"
+	  # here is the actual start code
+	  $rwhoisd -c $conf_file
+	fi
+  else
+	echo "unable to start rwhoisd (conf file or executable missing)"
+  fi
+}
+
+stop ()
+{
+  if getpid; then
+	echo "stopping rwhoisd"
+	kill -TERM $pid
+	sleep 1;
+	if [ -r $pidfile ]; then rm -f $pidfile; fi
+  else
+	echo "rwhoisd already not running"
+  fi
+}
+
+reload ()
+{
+  if getpid; then
+        echo "reloading rwhoisd"
+        kill -HUP $pid;
+  else
+        echo "rwhoisd not running"
+  fi
+}
+
+restart ()
+{
+  stop
+  start
+}
+
+
+case "$1" in
+  'start') start ;;
+  'stop') stop ;;
+  'reload') reload ;;
+  'restart') restart ;;
+  *)
+         echo "Usage: $0 { start|stop|restart|reload }"
+        ;;
+esac
+
+

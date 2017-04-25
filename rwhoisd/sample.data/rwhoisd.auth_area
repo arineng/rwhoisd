@@ -1,0 +1,39 @@
+#
+# RWhois authority area file
+#
+# takes entries with:
+#
+# type: either master (primary) or slave (secondary)
+# name: the name of the authority area; a domain name or CIDR block,
+#       typically.
+# data-dir: the directory containing the data files
+# schema-file: the schema configuration file for this authority area
+# soa-file: the SOA configuration file for this authority area
+# master: the host:port pair describing the primary server for this
+#         slave
+#
+type: master
+name: a.com
+data-dir: a.com/data
+schema-file: a.com/schema
+soa-file: a.com/soa
+---
+type:master
+name:10.0.0.0/8
+data-dir: net-10.0.0.0-8/data
+schema-file: net-10.0.0.0-8/schema
+soa-file: net-10.0.0.0-8/soa
+---
+type: master
+name: fd00:1234::/32
+data-dir: net-fd00:1234::-32/data
+schema-file: net-fd00:1234::-32/schema
+soa-file: net-fd00:1234::-32/soa
+#---
+# A sample secondary entry
+#type:slave
+#name:b.com
+#data-dir: b.com/data
+#schema-file: b.com/schema
+#soa-file: b.com/soa
+#master: rwhois.internic.net 4322

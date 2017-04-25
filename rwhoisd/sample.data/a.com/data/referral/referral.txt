@@ -1,0 +1,9 @@
+ID:888.a.com
+Auth-Area: a.com
+Guardian:444.a.com
+Referral:rwhois://rwhois.second.a.com:4321/Auth-Area=fddi.a.com
+Organization:777.a.com
+Referred-Auth-Area:fddi.a.com
+Created:19961022
+Updated:19961023
+Updated-By:hostmaster@a.com

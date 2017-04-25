@@ -1,0 +1,56 @@
+.TH RWHOISD 8 "18 March 1997"
+
+.SH NAME
+rwhoisd  \- Server for the RWhois Protocol
+
+.SH SYNOPSIS
+.B rwhoisd 
+[-c ConfFile] [-rsdiVvq]
+
+.SH DESCRIPTION
+.I RWhoisd
+serves data using the RWhois protocol. The rwhoisd server will serve
+formatted records based on a query, send referral and see-also
+information, and change the server environment based on directives.
+The server is typically run as a standalone server, although it can be
+run from inetd(1).
+
+.SH OPTIONS
+Options given on the command line override equivalent options given in
+the rwhoisd configuration files.
+.TP
+.B \-c
+The full path of the main rwhoisd configuration file. Default is
+"rwhoisd.conf" in the current working directory.
+.TP
+.B \-r
+Become a root rwhois server. No referrals to a higher level of the
+tree are given if the server cannot find an answer to the query.
+.TP
+.B \-s
+Attempt a chroot(2) upon startup.
+.TP
+.B \-d
+Start up in "daemon mode".
+.TP
+.B \-i
+Start up in "inetd mode".
+.TP
+.B \-v
+Verbose.  Logging will occur at the "info" level.  See syslog.conf(4)
+for descriptions of the logging levels
+.TP
+.B \-V
+Very Verbose.  Logging will occur at the "debug" level.
+.TP
+.B \-q
+Quiet Mode.  Disable most logging.  Logging will occur at the "alert"
+level.
+
+.SH CONFIGURATION FILES
+
+.SH "SEE ALSO"
+rwhois_indexer(8)
+
+.SH BUGS
+Please send any bugs to rwhois-bugs@rwhois.net.

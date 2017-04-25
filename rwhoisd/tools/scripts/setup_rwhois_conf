@@ -1,0 +1,19 @@
+#!/bin/sh 
+
+ROOT_DIR=$1
+CONF_FILE=$2
+
+echo
+echo "changing root-dir:* ==> root-dir: $ROOT_DIR"
+echo "in $CONF_FILE"
+echo
+
+mv $CONF_FILE ${CONF_FILE}.bak
+
+# deals with old configuration file name as well as the new one
+sed  -e "s|default-dir:.*|default-dir: $ROOT_DIR|" \
+     -e "s|root-dir:.*|root-dir: $ROOT_DIR|" \
+     < ${CONF_FILE}.bak > $CONF_FILE
+rm -f ${CONF_FILE}.bak
+
+exit 0

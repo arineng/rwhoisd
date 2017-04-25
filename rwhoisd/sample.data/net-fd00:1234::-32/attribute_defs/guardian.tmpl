@@ -1,0 +1,46 @@
+attribute:       Guard-Scheme
+attribute-alias: GS
+format:	         re:\(CRYPT-PW\|PGP\)
+description:     Authorization scheme
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Guard-Info
+attribute-alias: GI
+description:     Authorization information
+is-primary-key:  FALSE
+is-required:     TRUE
+is-private:    	 TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+is-private:	 TRUE
+index:           NONE
+type:            TEXT
+---
+attribute:       Created
+attribute-alias: CR
+description:     Create date
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Updated-By
+attribute-alias: UB
+description:     Updated by
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT

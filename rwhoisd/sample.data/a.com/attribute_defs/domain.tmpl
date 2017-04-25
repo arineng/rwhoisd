@@ -1,0 +1,98 @@
+attribute:       Domain-Name
+attribute-alias: DN
+description:     Domain name
+is-primary-key:  TRUE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: TRUE
+index:           EXACT
+type:            TEXT
+---
+attribute:       Primary-Server
+attribute-alias: PS
+description:     Master Name server
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Secondary-Server
+attribute-alias: SS
+description:     Slave Name server
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   TRUE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Organization
+attribute-alias: ORG
+description:     Organization
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Admin-Contact
+attribute-alias: AC
+description:     Administrative contact
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Tech-Contact
+attribute-alias: TC
+description:     Technical contact
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Billing-Contact
+attribute-alias: BC
+description:     Billing contact
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Created
+attribute-alias: CR
+description:     Create date
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Updated-By
+attribute-alias: UB
+description:     Updated by
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT

@@ -1,0 +1,16 @@
+ID:888.10.0.0.0/8
+Auth-Area:10.0.0.0/8
+Referral:rwhois://rwhois.third.a.com:4321/auth-area=10.1.0.0/16
+Referral:rwhois://rwhois.fourth.a.com:4321/auth-area=10.1.0.0/16
+Referred-Auth-Area:10.1.0.0/16
+Created:19961022
+Updated:19961023
+Updated-By:hostmaster@a.com
+---
+ID:889.10.0.0.0/8
+Auth-Area:10.0.0.0/8
+Referral:rwhois://rwhois.b.com:4321/auth-area=10.2.0.0/16
+Referred-Auth-Area:10.2.0.0.16
+Created:19961022
+Updated:19961023
+Updated-By:hostmaster@a.com

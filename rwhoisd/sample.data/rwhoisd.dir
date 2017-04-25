@@ -1,0 +1,18 @@
+# rwhois directives 
+#
+# directive     enabled
+
+class:          yes
+display:        yes
+directive:      yes
+forward:        yes
+holdconnect:    yes
+limit:          yes 
+notify:         yes
+quit:           yes 
+register:       yes
+schema:         yes
+security:       yes
+soa:            yes
+status:         yes
+xfer:           yes

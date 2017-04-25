@@ -1,0 +1,5 @@
+This is a quick little program that can be used to delete records from 
+the MKDB database on the command line.  I've included it here, without 
+serious support or documentation in the hopes that it will be useful.
+
+davidb@netsol.com

@@ -1,0 +1,97 @@
+rwhoisd 1.5.0
+02/01/98
+
+README
+
+This is a release of the Referral Whois (RWhois) server developed 
+by the Network Solutions, Incorporated, Directory Services group.  The 
+documentation for RWhois will continue to be updated to reflect 
+enhancements to RWhois.  Additional documentation will be available 
+throughout the evolution of RWhois and as RWhois is deployed on a 
+larger scale.
+
+This server is a reference implementation of the server side of the 
+RWhois protocol, first described in RFC 1714.  This server attempts to 
+implement concepts and practices in accordance with version 1.5 of the 
+protocol, described in doc/rfc2167.txt. This server should work 
+on most versions of UNIX.
+
+The primary difference between this server and previous versions is 
+the treatment of authority areas.  The server now supports multiple 
+authority areas and is more strict in its management of those 
+authority areas.  The inclusion of multiple authority areas has forced 
+a marked change upon the location and usage of the rwhoisd 
+configuration files.  Please see the operations guide
+(doc/operations-guide.txt) for further information.  See the
+doc/UPGRADE file for notes on upgrading from the 1.0 server.
+
+Please read the installation instructions (INSTALL) and the operations 
+guide (doc/operations-guide.txt).  You may also wish to read the 
+protocol spec itself (doc/rwhois-1.5-spec.txt).
+
+----------
+
+The following list highlights the primary differences between
+rwhoisd-1.5.0 and rwhoisd-1.0B9.
+
+* It conforms to Version 1.5 of the RWhois protocol.
+
+* The code has been largely rewritten.
+
+* It supports multiple authority areas per server.
+
+* Indexing is improved (index files should be about half of their
+  previous size) and the indexer is easier to use.
+
+* The indexer will now perform a number of syntax checks on the 
+  data as it indexes.
+
+* The indexer and the search engine can now handle intelligent IP
+  address matching (CIDR index and searching).
+
+* rwhoisd in daemon mode (the default) will now automatically put
+  itself in the background and disassocate itself from the 
+  controlling terminal (daemonize).
+
+* It includes syslog (or fake-syslog to files) support.
+
+* It has a more consistent and complete query language parser.
+
+* The search engine handles moderately complex queries more efficiently.
+
+* The Whois-compatible display code has been removed and replaced with a 
+  more general, parsable output format (dump).
+
+* The register directive now works reliably, conforming to the 1.5 
+  register methodology.
+
+* It contains support for the Guardian authentication model.
+
+-------------
+
+Other files and directories in this distribution include the following.
+
+INSTALL:                  the primary installation instructions
+INSTALL.gen:              the generic autoconf instructurions
+Makefile.in:              the top-level makefile
+README:                   this file
+LICENSE:                  the use conditions and warranty (or lack thereof)
+common:                   common routines used by rwhoisd and other utils.
+config.h.in:              an autoconf-generated header file
+configure:                the autoconf-generated configuration script
+configure.in:             the source to configure
+doc:                      the rest of the server documentation
+doc/operations-guide.txt: the main server documentation
+doc/UPGRAGE:              some notes on upgrading from 1.0 to 1.5
+mkdb:                     the MKDB database code
+regexp:                   the regular expression package used by rwhoisd
+sample.data:              a sample installation
+server:                   the main part of the server source code
+tools:                    utilities, etc.
+tools/rwhois_indexer:     the source for the command line indexer
+tools/rwhois_deleter:     the source for a command line record deleter
+tools/rwhois_repack:      the source for a command line mkdb index repacker
+tools/scripts:            some shell and perl scripts that might be useful
+tools/install:            some scripts used during installation
+tools/tcpd_wrapper:       tcpd_wrapper 7.6_ipv6.3 by Weitse Venema
+

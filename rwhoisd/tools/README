@@ -1,0 +1,15 @@
+This is the rwhoisd tools directory.  It contains various programs
+that add functionality to rwhoisd.
+
+install:	various scripts used during the install process
+
+rwhois_indexer: the command line indexer for MKDB
+
+rwhois_deleter: a command line object deletion tools. Experimental.
+
+scripts:	various scripts for controlling/maintaining rwhoisd
+
+tcpd_wrapper:	TCP Wrappers by Weitse Venema, version 7.4
+
+Xpgp:		a extended directive program for gatewaying PGP keyring
+		operations through rwhois.

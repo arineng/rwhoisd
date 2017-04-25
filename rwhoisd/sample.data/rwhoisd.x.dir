@@ -1,0 +1,29 @@
+#
+# Rwhois Extended Directive Configuration File
+#
+
+# all entries consists of records of the form:
+# command: <command-name>
+# command-len: <len>
+# description: <description>
+# program: <program path>
+
+# entries are separated with "---"
+
+# command: the name of the directive.  In rwhoisd, it will become
+# -X-<command>.  For instance, here we define -X-date.
+command: date
+
+# command-len: how many characters of the command are significant.
+command-len: 4
+
+# description: printed out as part of the -directive response.
+description: an example of an extended directive
+
+# program: what program to run to execute the directive.
+program: /usr/bin/date
+---
+command:pgp
+command-len:3
+description:The PGP key server gateway
+program:Xpgp

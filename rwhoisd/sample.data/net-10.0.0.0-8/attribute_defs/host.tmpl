@@ -1,0 +1,76 @@
+attribute:       Host-Name
+attribute-alias: HN
+description:     Host name
+is-primary-key:  TRUE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: TRUE
+index:           EXACT
+type:            TEXT
+---
+attribute:       IP-Address
+attribute-alias: IPA
+description:     IP address
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   TRUE
+is-multi-line:   FALSE
+is-hierarchical: TRUE
+index:           CIDR
+type:            TEXT
+---
+attribute:       Canonical-Name
+attribute-alias: CNAME
+description:     Canonical name
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   TRUE
+is-multi-line:   FALSE
+is-hierarchical: TRUE
+index:           EXACT
+type:            TEXT
+---
+attribute:       Organization
+attribute-alias: ORG
+description:     Organization
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Tech-Contact
+attribute-alias: TC
+description:     Technical contact
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Created
+attribute-alias: CR
+description:     Create date
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Updated-By
+attribute-alias: UB
+description:     Updated by
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT

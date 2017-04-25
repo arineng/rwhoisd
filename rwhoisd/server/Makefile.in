@@ -1,0 +1,111 @@
+
+# programs
+CC      = @CC@
+INSTALL = @INSTALL@
+SHELL	= /bin/sh
+RM	= rm
+
+# main directories
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+sbindir     = @sbindir@
+
+srcdir      = @srcdir@
+VPATH       = @srcdir@
+
+# local libs/includes 
+COMMON_INC    = -I$(srcdir)/../common
+COMMON_LIBS   = -L../common -lrwcommon
+
+WRAP_INC      = @WRAP_INCLUDE@
+WRAP_LIBS     = @WRAP_LIBS@
+
+MKDB_INC      = -I$(srcdir)/../mkdb
+MKDB_LIBS     = -L../mkdb -lmkdb
+
+REGEXP_INC    = -I$(srcdir)/../regexp
+REGEXP_LIBS   = -L../regexp -lregexp
+
+LOCAL_INC     = -I. -I.. -I$(srcdir) $(COMMON_INC) $(WRAP_INC) $(MKDB_INC) $(REGEXP_INC)
+LOCAL_LIBS    = $(WRAP_LIBS) $(MKDB_LIBS) $(COMMON_LIBS) $(REGEXP_LIBS)
+
+# use tcp_wrappers to control access to directives 
+USE_TCP_WRAP = -DUSE_TCP_WRAPPERS
+
+CFLAGS  = @CFLAGS@ $(USE_TCP_WRAP)
+ALL_CFLAGS = $(CFLAGS) $(LOCAL_INC) @DEFS@ @IPV6INCLUDES@
+
+LDFLAGS = @LDFLAGS@
+
+LIBS = $(LOCAL_LIBS) @LIBS@
+
+OBJS = \
+       class_directive.o \
+       daemon.o \
+       deadman.o \
+       directive.o \
+       display.o \
+       dump.o \
+       exit.o \
+       forward.o \
+       guardian.o \
+       holdconnect.o \
+       limit.o \
+       main.o \
+       notify.o \
+       referral.o \
+       register.o \
+       reg_ext.o \
+       reg_utils.o \
+       register_directive.o \
+       rwhois_directive.o \
+       schema_directive.o \
+       security.o \
+       security_directive.o \
+       session.o \
+       soa.o \
+       sresponse.o \
+       sschema.o \
+       sslave.o \
+       ssoa.o \
+       sstate.o \
+       state.o \
+       status.o \
+       sxfer.o \
+       xfer.o 
+
+
+#
+# rwhois files
+#
+
+all: rwhoisd
+
+rwhoisd: $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) @IPV6LIBS@
+
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+.c.o:
+	$(CC) $(ALL_CFLAGS) $(LOCAL_INC) -c $<
+
+#
+# Procedural
+#
+
+install:
+	if [ ! -d $(DESTDIR)$(exec_prefix) ]; then mkdir -p $(DESTDIR)$(exec_prefix); fi
+	if [ ! -d $(DESTDIR)$(sbindir) ]; then mkdir -p $(DESTDIR)$(sbindir); fi
+	$(INSTALL) rwhoisd $(DESTDIR)$(sbindir)
+
+uninstall:
+	$(RM) $(DESTDIR)$(sbindir)/rwhoisd
+
+clean:
+	rm -f *.[oa]
+	rm -f rwhoisd
+
+distclean: clean
+	rm -f Makefile

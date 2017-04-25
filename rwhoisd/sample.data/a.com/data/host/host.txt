@@ -1,0 +1,15 @@
+ID: 5551.a.com
+Auth-Area: a.com
+Host-Name: ns1.a.com
+IP-Address: 10.0.0.1
+Created: 19961022
+Updated: 19961023
+Updated-By: hostmaster@a.com
+---
+ID: 5552.a.com
+Auth-Area: a.com
+Host-Name: ns2.a.com
+IP-Address: 10.0.0.2
+Created: 19961022
+Updated: 19961023
+Updated-By: hostmaster@a.com

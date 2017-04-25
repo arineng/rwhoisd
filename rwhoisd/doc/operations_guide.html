@@ -1,0 +1,899 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>RWhois Server Operations Guide </TITLE>
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<H1 ALIGN="CENTER"><A NAME="_Toc383862393"></A>RWhois Server Operations Guide</H1>
+<H3 ALIGN="CENTER">Release 1.5.0</H3>
+<H3 ALIGN="CENTER"><A NAME="_Toc383932691"></A>1-Feb-98</H3>
+<P><HR></P>
+<H2>Introduction</H2>
+<P>This document provides an overview of the basic descriptions and operations necessary to run an RWhois server installation.<A NAME="_Toc383932692"></A> The RWhois server package consists of the server process itself (<TT>rwhoisd</TT>), tools to enable and manage the native database (<TT>rwhois_indexer, repack</TT>), and a number of configuration files (<TT>rwhoisd.conf and&nbsp;</TT> <TT>rwhoisd.dir</TT>, for example). </P>
+<H2>The Programs</H2>
+<P>The following offers a brief description of the programs and utilities found in the RWhois server release. </P>
+<H2>rwhoisd</H2>
+<TT><P>rwhoisd</TT> is the RWhois protocol server. </P>
+<PRE>Summary: rwhoisd [-c config file] [-r] [-s] [-Vvq] [-di]</PRE>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=586>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-c&nbsp;</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Config File</I>: Specifies the main configuration file to use (defaults to 'rwhoisd' in the current working directory).</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-r</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Root</I>: Specifies that the server will run as a root server and not generate any 'punt' referrals.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-s</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Security</I>: Turns chrooting ON.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-V</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Very Verbose</I>: Logging verbosity is set to 7 (debug).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-v</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Verbose</I>: Logging verbosity is set to 6 (info).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-q</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Quiet</I>: Logging verbosity is set to 2 (alert).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-d</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Daemon mode</I>: Server will put itself into the background and run in a stand-alone mode.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-i</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Inetd mode</I>: Server will run itself as a single shot and accept input and output from stdin and stdout.&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P><A NAME="_Toc383932693"></A>Except for the '-c' option, all of the command line options are also accessible in the main configuration file itself. The command line options override the configuration file settings. </P>
+<B><FONT FACE="Arial"><P>rwhois_indexer</B></FONT> </P>
+<PRE>Summary: rwhois_indexer [-c config file] [-C class] [-A auth area] [-ivqn] [-s suffix|file list …]</PRE>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=586>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-c&nbsp;</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Config File</I>: Specifies the main configuration file to use (defaults to 'rwhoisd' in the current working directory).</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-C</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Class</I>: Specifies which class of objects to index. Defaults to all classes</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-A</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Auth Area</I>: Specifies which authority area to index. Defaults to all authority areas</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-I</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Initialize</I>: Remove the old (registered) index files first.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-v</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Verbose</I>: Logging verbosity is set to 6 (info).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-q</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Quiet</I>: Logging verbosity is set to 2 (alert).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-n</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>No Syntax Checks</I>: The indexer will not check for schema compliance during indexing.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>-s</TD>
+<TD WIDTH="93%" VALIGN="TOP">
+<I><P>Suffix mode</I>:&nbsp;</TD>
+</TR>
+</TABLE>
+
+<H2>Configuration Files</H2>
+<P>At start up, the RWhois server reads various configuration files. They are categorized into the general (server) configuration files and authority area (database) configuration files. </P>
+<P><A NAME="_Toc383932694"></A></P>
+<H3>General Configuration Files</H3>
+<P>General configuration files consist of the main configuration file, directive configuration file, extended directive configuration file, directive security files, and the RWhois parent file. In these configuration files, extra white space is ignored and lines beginning with the '#' character are treated as comments. </P>
+<P><A NAME="_Toc383932695"></A></P>
+<H4>1. Main Configuration File (rwhois.conf)</H4>
+<P>The main configuration file is a "&lt;tag: &lt;value" delimited file with the following tags. <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=582>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>auth-area-file</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The configuration file that contains the description of the authority areas found on this server. This file is required and defaults to 'rwhoisd.auth_area' (in the root-dir).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>bin-path</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The directory in which rwhoisd looks for extra binaries.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>chrooted</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>Flag determining whether or not the server should try to chroot. It defaults to NO.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>deadman-time</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The number of seconds of idle time before the server automatically disconnects. This is normally 200 seconds.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>default-dir</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>An alias for 'root-dir', this parameter is deprecated.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>directive-file</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The file containing the options for all of the built-in directives. This file is required and defaults to 'rwhoisd.dir'.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>local-host</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The fully qualified domain name (FQDN) of the host on which this server resides. This is primarily for the welcome banner. If this file is omitted, rwhoisd will attempt derive the value.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>local-port</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The advertised port to which rwhoisd listens. The Internet Assigned Naming Authority (IANA)-assigned port for RWhois is 4321.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>max-hits-ceiling</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The maximum value to which a server can set the hit ceiling. The "-limit" cannot be higher than this.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>max-hits-default</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The default setting for the number of hits on a query; it can be changed with the "-limit" directive.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>punt-file</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The file containing the punt (or root) referral information.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>register-spool</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The directory containing the files of all pending registration requests and temporary files for the "-register" directive. It should be writable by the rwhoisd process.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>root-dir</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The base directory from which rwhoisd will run. All relative paths will be relative to this directory. If chrooting is not turned off, this is the directory to which rwhoisd will chroot(). If it is not set, it will default to the current working directory.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>security-allow</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The file that allows hosts/networks by directive using tcp wrappers; it is optional. See hosts_access(5) for details.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>security-deny</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The file that disallows hosts/networks by directive using tcp wrappers; it is optional. See hosts_access(5) for details.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>server-contact</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The email address of the server contact.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>server-type</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The switch between running rwhoisd as a daemon or as a single-session process under inetd.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>userid</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>If the server is run as root, this file will setuid and setgid to the values indicated by this user.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>x-directive-file</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The file containing the definitions of any extended ("X-") directives. This file is optional.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>pid-file</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>When running in daemon mode, rwhoisd will record its process id in this file. It attempts to unlink this file when it quits.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>use-syslog</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The file that determines whether or not logging should use the syslog mechanism; the default is YES.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>syslog-facility</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The numerical syslog facility to use, if using syslog. It defaults to 3 (daemon).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>default-log-file</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>If not logging to syslog, this describes the default file to which to log.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>&lt;level&gt;-log-file</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>If logging to file, each log level can be directed to a different file using this file.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>Verbosity</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The level at which logging occurs; higher numbers mean more logging. The levels correspond numerically to the syslog levels (0 is emergency, 7 is debug).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>pgp-uid</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The user id string of the server itself, this is the key into a pgp keyring.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>pgp-pwfile</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The path to a file containing the password to the rwhois server's private key.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>pgp-bin-path</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The path to the pgp binary itself, this should be an absolute path for security reasons.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>pgp-keyring-path</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>The is the path to the server's pgp keyring directory.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>query-allow-wildcard</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>A flag indicating whether the '*' wildcard will be allowed at all; defaults to TRUE.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>query-allow-substr</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>A flag indicating whether the leading wildcard construct will be allowed, thus allowing substring searches to occur; defaults to FALSE&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>max-children</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>An integer repesenting the maximum number of children (sessions) allowed at one time.  Attempts to connect after the limit has be reached will exit with an rwhois error.  A value of zero (the default) indicates no maximum.</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>cidr-search-direction</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>A value (either UP or DOWN) indicating which direction CIDR searches will traverse.  DOWN, the default, means that a search on a network will return that network and/or any sub-networks.</TD>
+</TR>
+<TR><TD WIDTH="23%" VALIGN="TOP">
+<P>skip-referral-search</TD>
+<TD WIDTH="77%" VALIGN="TOP">
+<P>Do not search for down (more specific) referrals.  The default is OFF.  It is not recommended that this be turned on.</TD>
+</TR>
+</TABLE>
+
+<P>Example: </P>
+<PRE>root-dir:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /home/databases/rwhois/sample.data
+bin-path:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bin
+auth-area-file:&nbsp;&nbsp; rwhoisd.auth_area
+directive-file:&nbsp;&nbsp; rwhoisd.dir
+x-directive-file: rwhoisd.x.dir
+max-hits-default: 20
+max-hits-ceiling: 2000
+register-spool:&nbsp;&nbsp; register_spool
+punt-file:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rwhoisd.root
+local-host:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host.domain.com
+local-port:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4321
+security-allow:&nbsp;&nbsp; rwhoisd.allow
+security-deny:&nbsp;&nbsp;&nbsp; rwhoisd.deny
+deadman-time:&nbsp;&nbsp;&nbsp;&nbsp; 200
+server-type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; daemon
+userid:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; guest
+chrooted:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes
+server-contact:&nbsp;&nbsp; contact@host.domain.com
+use-syslog:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; no
+default-log-file: rwhoisd.log</PRE>
+<P><A NAME="_Toc383932696"></A></P>
+<H4>2. Directive Configuration File (rwhois.dir)</H4>
+<P>The directive configuration file contains entries to enable or disable the RWhois directives. </P>
+<P>Example: </P>
+<PRE>Soa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes
+Register&nbsp;&nbsp; no</PRE>
+<P><A NAME="_Toc383932697"></A></P>
+<H4>3. Extended Directive Configuration File (rwhois.x.dir)</H4>
+<P>The extended directive configuration file is a "&lt;tag: &lt;value" delimited file with the following tags. <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0>
+<TR><TD WIDTH=489 VALIGN="TOP" COLSPAN=2></TD>
+<TD></TD>
+</TR>
+<TR><TD WIDTH=100 VALIGN="TOP">
+<P>commandcommand-len</TD>
+<TD WIDTH=879 VALIGN="TOP" COLSPAN=2>
+<P>The minimum length that will activate the command.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH=100 VALIGN="TOP">
+<P>program</TD>
+<TD WIDTH=879 VALIGN="TOP" COLSPAN=2>
+<P>The binary/script that will be executed.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH=100 VALIGN="TOP">
+<P>description</TD>
+<TD WIDTH=879 VALIGN="TOP" COLSPAN=2>
+<P>The natural language description of the directive; it shows up when using&nbsp; <BR>
+-directive.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH=100 VALIGN="TOP">
+<P>---</TD>
+<TD WIDTH=879 VALIGN="TOP" COLSPAN=2>
+<P>The record separator.&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>Example: </P>
+<PRE>Command:&nbsp;&nbsp;&nbsp;&nbsp; date
+Command-len: 4
+Program:&nbsp;&nbsp;&nbsp;&nbsp; /usr/bin/date
+---
+command:&nbsp;&nbsp;&nbsp;&nbsp; pgp
+command-len: 3
+description: The PGP keyring gateway directive
+program:&nbsp;&nbsp;&nbsp;&nbsp; Xpgp</PRE>
+<P><A NAME="_Toc383932698"></A></P>
+<H4>4. Directive Security Files (rwhois.allow/rwhois.deny)</H4>
+<P>The directive security files are (or may be) localized versions of Weitze Venema's TCP Wrapper configuration files. In general, entries in this file take the form of </P>
+<PRE>&lt;directive: &lt;security_pattern</PRE>
+<P>where &lt;directive is a particular directive name without the leading '-'. (i.e. 'xfer', 'register', 'X-pgp'), and the security pattern is a space delimited list of IP addresses or domain names. See hosts_access(5) located in the tcp_wrappers distribution. </P>
+<P>Example (rwhois.allow): </P>
+<PRE>xfer:&nbsp;&nbsp;&nbsp;&nbsp; 198.41.0
+x-date:&nbsp;&nbsp; all</PRE>
+<P>Example (rwhois.deny): </P>
+<PRE>register: all
+xfer:&nbsp;&nbsp;&nbsp;&nbsp; all</PRE>
+<H4><A NAME="_Toc383932699"></A>5. RWhois Punt File (rwhois.root)</H4>
+<P>The RWhois punt (or parent) file contains a list of RWhois Universal Resource Locators (URLs) that are referrals to a higher point in the RWhois information tree. At this point, the server does not arbitrate between the different punt referrals listed in this file, so all listed destinations should be equivalent. </P>
+<P>Example: </P>
+<PRE>rwhois://root.rwhois.net:4321/auth-area=.</PRE>
+<P><A NAME="_Toc383932700"></A></P>
+<H3>B. Authority Area Configuration Files</H3>
+<P>An authority area is an identifier for an RWhois database containing data and its schema. It has a hierarchical structure that helps identify the position of the database in the global RWhois data information tree. An authority area has the structure of either a domain name or an IP address in quad-octet prefix/prefix length format. </P>
+<P>The authority area configuration files consist of the authority area file, the Start of Authority (SOA) file, the schema file, and the attribute definition files. </P>
+<P><A NAME="_Toc383932701"></A></P>
+<H4>1. Authority Area File (rwhois.auth-area)</H4>
+<P>The authority area file is a "&lt;tag:&lt;value" delimited file containing information about the authority areas for which the RWhois server is primary or secondary. </P>
+<P>A primary (or master) RWhois server is where data is registered for an authority area; it answers authoritatively to queries for data in that authority area. There must be one and only one primary server for a particular authority area. An RWhois server may be primary for multiple authority areas. The authority area model is explained in more detail below. </P>
+<P>A secondary (or slave) RWhois server is where data is replicated from a primary server for an authority area. It, like its primary server, answers authoritatively to queries for data in that authority area. There can be multiple secondary servers for a particular authority area, and an RWhois server may be secondary for multiple authority areas. </P>
+<P>The authority area file contains the following tags. <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=590>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>type</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>Flag that states whether the server is master or slave for the authority area. It is either 'master' or 'slave'.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>name</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The name of the authority area.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>data-dir</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The directory where data is stored for the authority area. Note that the data directory for an authority area in quad-octet prefix/prefix length format should be named "net-&lt;quad-octet prefix-&lt;prefix length".&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>schema-file</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The schema file for the authority area.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>soa-file</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The SOA file for the authority area.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>slave</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>If the server is master for a particular authority area, this specifies the slave server(s) in "&lt;host &lt;port" format for that authority area.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>master</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>If the server is slave for a particular authority area, this specifies the master server in "&lt;host &lt;port" format for that authority area.&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>Example: </P>
+<PRE>Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; master
+Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.com
+Data-Dir:&nbsp;&nbsp;&nbsp;&nbsp; a.com/data
+Schema-File:&nbsp; a.com/schema
+Soa-File:&nbsp;&nbsp;&nbsp;&nbsp; a.com/soa
+Slave:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rwhois.internic.net 4321
+Slave:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dmeister.rwhois.net 4321
+---
+Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; master
+Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10.0.0.0/8
+Data-Dir:&nbsp;&nbsp;&nbsp;&nbsp; net-10.0.0.0-8/data
+Schema-File:&nbsp; net-1.0.0.0-8/schema
+Soa-File:&nbsp;&nbsp;&nbsp;&nbsp; net-1.0.0.0-8/soa
+Slave:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rwhois.internic.net 4321
+Slave:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dmeister.rwhois.net 4321
+---
+Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; slave
+Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b.com
+Data-Dir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b.com/data
+Schema-File:&nbsp; b.com/schema
+Soa-File:&nbsp;&nbsp;&nbsp;&nbsp; b.com/soa
+Master:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rwhois.b.com 4321</PRE>
+<P><A NAME="_Toc383932702"></A></P>
+<H4>2. SOA File</H4>
+<P>The SOA file is a "&lt;tag: &lt;value" delimited file with the following tags. <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=590>
+<TR><TD WIDTH="20%" VALIGN="MIDDLE">
+<P>serial-number</TD>
+<TD WIDTH="80%" VALIGN="MIDDLE">
+<P>The serial number of the authority area is stated in the "yyyymmddhhmmss" format. The serial number must be changed whenever the data in the authority area changes; the server does this automatically.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="MIDDLE">
+<P>refresh-interval</TD>
+<TD WIDTH="80%" VALIGN="MIDDLE">
+<P>The time interval between data transfers from the primary server.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="MIDDLE">
+<P>increment-interval</TD>
+<TD WIDTH="80%" VALIGN="MIDDLE">
+<P>The time interval between partial transfers of data from the primary server since a particular serial number.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="MIDDLE">
+<P>retry-interval</TD>
+<TD WIDTH="80%" VALIGN="MIDDLE">
+<P>The time interval before retrying to connect to a server that appears to be out-of-service.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="MIDDLE">
+<P>time-to-live</TD>
+<TD WIDTH="80%" VALIGN="MIDDLE">
+<P>The length of time the data remains in the authority area before it becomes stale.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="MIDDLE">
+<P>primary-server</TD>
+<TD WIDTH="80%" VALIGN="MIDDLE">
+<P>The primary server for the authority area.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="MIDDLE">
+<P>hostmaster</TD>
+<TD WIDTH="80%" VALIGN="MIDDLE">
+<P>The email address to the hostmaster for the authority area.&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>Example: </P>
+<PRE>Serial-Number:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 19961008101010
+Refresh-Interval:&nbsp;&nbsp; 3600
+Increment-Interval: 1800
+Retry-Interval:&nbsp;&nbsp;&nbsp;&nbsp; 60
+Time-To-Live:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 86400
+Primary-Server:&nbsp;&nbsp;&nbsp;&nbsp; rwhois.internic.net:4321
+Hostmaster:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hostmaster@internic.net</PRE>
+<P><A NAME="_Toc383932703"></A></P>
+<H4>3. Schema File</H4>
+<P>The schema file is a "&lt;tag: &lt;value" delimited file with the following tags. <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=589>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>name</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The name of the class.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>alias</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>An alternate name for the class; this may be repeated.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>attributedef</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The file that describes the attributes of the class.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>dbdir</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The directory containing the data records for the class.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>description</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The text description of the class.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="14%" VALIGN="MIDDLE">
+<P>---</TD>
+<TD WIDTH="86%" VALIGN="MIDDLE">
+<P>The record separator.</TD>
+</TR>
+</TABLE>
+
+<P>Example: </P>
+<PRE>name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; contact
+alias:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; user
+attributedef: a.com/attribute_defs/contact.tmpl
+dbdir:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.com/contact
+description:&nbsp; user class</PRE>
+<P><A NAME="_Toc383932704"></A></P>
+<H4>4. Attribute Definition File</H4>
+<P>The attribute definition file is a "&lt;tag: &lt;value" delimited file that describes the attributes of a particular class. It has the following tags. <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=590>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>attribute</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>The name of the attribute. This name is used as the official name of the attribute.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>attribute-alias</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Another, usually shorter, name for the attribute. This may be repeated.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>format</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>The acceptance format for the attribute. The value should be&nbsp; <BR>
+&lt;syntax id:&lt;pattern. Currently, the only accepted syntax is "re" for regular expressions.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>description</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>The textual description of the attribute.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>is-primary-key</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Flag stating whether or not the attribute is a primary key (TRUE or FALSE). This implies 'is-required' is also TRUE.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>is-required</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Flag stating whether or not the attribute is required (TRUE or FALSE).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>is-repeatable</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Flag stating whether or not the attribute is repeatable (TRUE or FALSE). This is mutually exclusive with 'is-multi-line'.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>is-multi-line</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Flag stating whether or not the attribute is multi-line (TRUE or FALSE). This is mutually exclusive with 'is-repeatable'.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>is-hierarchical</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Flag stating whether or not the attribute is hierarchical (TRUE or FALSE).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>is-private</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Flag stating whether or not a client has to be authenticated to see this attribute (TRUE or FALSE).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>index</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Flag that determines the indexing method.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>type</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>Flag that determines the type of attribute (primary used in the displaying of the data).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="MIDDLE">
+<P>---:</TD>
+<TD WIDTH="83%" VALIGN="MIDDLE">
+<P>The record separator.&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>The valid attribute types are <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=589>
+<TR><TD WIDTH="16%" VALIGN="MIDDLE">
+<P>TEXT</TD>
+<TD WIDTH="84%" VALIGN="MIDDLE">
+<P>A text string, this is the normal attribute type.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="MIDDLE">
+<P>ID</TD>
+<TD WIDTH="84%" VALIGN="MIDDLE">
+<P>A reference to another RWhois object for normalization purposes.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="MIDDLE">
+<P>SEE-ALSO</TD>
+<TD WIDTH="84%" VALIGN="MIDDLE">
+<P>A URL to some related information.&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>Currently the valid index types are <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=590>
+<TR><TD WIDTH="16%" VALIGN="MIDDLE">
+<P>NONE</TD>
+<TD WIDTH="84%" VALIGN="MIDDLE">
+<P>This means the attribute is not indexed.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="MIDDLE">
+<P>ALL</TD>
+<TD WIDTH="84%" VALIGN="MIDDLE">
+<P>Index using all possible indexing schemes. Some indexes may not be created because they do not make sense. Soundex indexing is entirely rolled up into this option.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="MIDDLE">
+<P>EXACT</TD>
+<TD WIDTH="84%" VALIGN="MIDDLE">
+<P>Index just the literal text value.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="16%" VALIGN="MIDDLE">
+<P>CIDR</TD>
+<TD WIDTH="84%" VALIGN="MIDDLE">
+<P>The index treating the value as an IP number or IP network expressed in CIDR notation (prefix/prefix-len). This index type is used for intelligent searching on IP networks. Values must look like IP address or CIDR network blocks (i.e., 198.41.1.6, 198.41.0.0/22).&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>Example: </P>
+<PRE>attribute:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name
+attribute-alias: nm
+description:&nbsp;&nbsp;&nbsp;&nbsp; full name
+is-primary-key:&nbsp; TRUE
+is-required:&nbsp;&nbsp;&nbsp;&nbsp; TRUE
+is-repeatable:&nbsp;&nbsp; FALSE
+is-multi-line:&nbsp;&nbsp; FALSE
+is-hierarchical: FALSE
+index:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ALL
+type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TEXT
+---
+attribute:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; email
+attribute-alias: em
+format:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; re:[a-za-z0-9-._]+@[a-za-z0-9-.]
+description:&nbsp;&nbsp;&nbsp;&nbsp; rfc 822 email address
+is-primary-key:&nbsp; TRUE
+is-required:&nbsp;&nbsp;&nbsp;&nbsp; TRUE
+is-repeatable:&nbsp;&nbsp; FALSE
+is-multi-line:&nbsp;&nbsp; FALSE
+is-hierarchical: TRUE
+index:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXACT
+type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TEXT</PRE>
+<P><A NAME="_Toc383932705"></A></P>
+<H2>IV. The Native Database (MKDB)</H2>
+<P><A NAME="_Toc383932706"></A></P>
+<H3>A. Overview</H3>
+<P>The RWhois server uses its own database, named MKDB (Mark Kosters' Database). It is a fairly simple database whose purpose is to scale up well to larger databases; currently there are 1.9 million records in the RWhois root. The database is designed to be simple to understand and can be manipulated by hand. </P>
+<P>MKDB's foundation is a series of sorted index files containing pointers to entries in data files. To support this, there are (currently) three different kinds of files that MKDB uses: data files, index files, and master file lists. </P>
+<P><A NAME="_Toc383932707"></A></P>
+<H3>B. The Files</H3>
+<P>For rwhoisd, data is segregated by authority area and "class" into separate data directories, where it is then indexed. Data added via the protocol (using the "-register" directive) is automatically indexed. For initial database loads, or by-hand manipulation of the data, a command-line indexer (rwhois_indexer) is provided. For each class, there is a single master file list (typically called "local.db") and any number of index and data files. </P>
+<P><A NAME="_Toc383932708"></A></P>
+<H3>C. The Master File List</H3>
+<P>The master file list is a list of all of the data and index files for a particular class. It exists primarily to define which index and data files are currently relevant to the database and to assign each file an index number. The file list also tracks a number of statistics (number of records, size in bytes) designed to help the search engine. </P>
+<P>The format of the master file list is considered to be opaque, as it may change at any time. It is manipulated entirely by the indexing process. The following is a sample of the current format, with an explanation of the different fields. The master file list consists of "&lt;tag: &lt;value" pairs separated into records by the record separator ("---"). The current tags include the following. <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=590>
+<TR><TD WIDTH="12%" VALIGN="MIDDLE">
+<P>type</TD>
+<TD WIDTH="88%" VALIGN="MIDDLE">
+<P>The type is either "DATA" or some kind of index file (EXACT or CIDR).&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="MIDDLE">
+<P>file</TD>
+<TD WIDTH="88%" VALIGN="MIDDLE">
+<P>The actual filename, given in a relative path from "root-dir" given in the main configuration file.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="MIDDLE">
+<P>file_no</TD>
+<TD WIDTH="88%" VALIGN="MIDDLE">
+<P>The file's number. The numbers are used for a space efficient way to indicate a file, typically from within a index entry. Numbers start from zero and increment sequentially.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="MIDDLE">
+<P>size</TD>
+<TD WIDTH="88%" VALIGN="MIDDLE">
+<P>This lists the size of the file in bytes.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="MIDDLE">
+<P>num_recs</TD>
+<TD WIDTH="88%" VALIGN="MIDDLE">
+<P>For data files, this is the number of actual records. For index files it is the number of lines.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="MIDDLE">
+<P>lock</TD>
+<TD WIDTH="88%" VALIGN="MIDDLE">
+<P>A flag that is either "ON" or "OFF". If a file is locked, it will be ignored by the database except for the generation of file numbers. New files are first added locked so that they can act as placeholders for the file, which is unlocked when it is ready.&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>Example (this is a.com/data/domain/local.db): </P>
+<PRE>Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATA
+File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.com/data/domain/domain.txt
+File_No:&nbsp;&nbsp; 0
+Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 581
+Num_Recs:&nbsp; 1
+Lock:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OFF
+---
+Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EXACT
+File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a.com/data/domain/index-0.ndx
+File_No:&nbsp;&nbsp; 1
+Size:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 33
+Num_Recs:&nbsp; 2
+Lock:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OFF</PRE>
+<P>Note that it is entirely possible for the index and data files to exist outside of the directory structure. The only file in MKDB that needs to be in a predictable place is the master file list itself. </P>
+<P><A NAME="_Toc383932709"></A></P>
+<H3>D. The Data Files</H3>
+<P>Data files have a similar format to all of the configuration files in the rwhois server: they are "&lt;tag:&lt;value", where "&lt;tag" is an attribute name. The different records are separated with the record separator. Lines beginning with '#' are considered comments and ignored. Case and leading and trailing whitespace is also ignored. The data should conform to the class description described in the attribute definitions file, and it should contain (at least) the required attributes contained in the base class. </P>
+<P>Example: </P>
+<PRE>ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 222.a.com
+Auth-Area:&nbsp;&nbsp;&nbsp; a.com
+Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Public, John Q.
+Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; johnq@a.com
+Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I
+First-Name:&nbsp;&nbsp; John
+Last-Name:&nbsp;&nbsp;&nbsp; Public
+Phone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (847)-391-7926
+Fax:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (847)-338-0340
+Organization: 777.a.com
+Created:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11961022
+Updated:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11961023
+Updated-By:&nbsp;&nbsp; hostmaster@a.com
+---
+ID:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 223.a.com
+Auth-Area:&nbsp;&nbsp;&nbsp; a.com
+Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Doe, Jane
+Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; janed@a.com
+Type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I
+First-Name:&nbsp;&nbsp; Jane
+Last-Name:&nbsp;&nbsp;&nbsp; Doe
+Phone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (847)-391-7943
+Fax:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (847)-338-0340
+Organization: 777.a.com
+Created:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11961025
+Updated:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11961025
+Updated-By:&nbsp;&nbsp; hostmaster@a.com</PRE>
+<P>Attributes can either be TEXT, ID, or SEE-ALSO types. Type ID attributes should contain the ID of the referenced RWhois object. Type SEE-ALSO attributes should be URLs. </P>
+<P>When data records are deleted via the "-register" directive, they are not actually removed immediately. First, they are marked for deletion by replacing the first character of every line in the record with an underscore character ('_'). The process of actually removing deleted records from a file completely is known as a "purge" and is covered below. </P>
+<P>The number of data files have no substantial impact on the performance of rwhoisd, although an extreme number of data files can slow down the "-xfer" directive. </P>
+<P><A NAME="_Toc383932710"></A></P>
+<H3>E. The Index File</H3>
+<P>The index file format is very simple. It consists of a number of sorted index records, where each record contains a pointer to a location in a data file, a "deleted" flag, the "global" id of the attribute, and the key. </P>
+<P>An index record has the following format. </P>
+<PRE>&lt;file offset:&lt;data file no:&lt;deleted flag:&lt;global attribute id:&lt;key</PRE>
+<P>Example: </P>
+<PRE>398:0:0:8:EDWARD</PRE>
+<P>This indicates that the record containing the key "EDWARD" is 398 bytes into data file "0", it is not deleted, and it corresponds to the global attribute "8" (Last-Name). The key is always stored in uppercase letters. </P>
+<P>Each index file contains the indexed keys of one or more data files, and each data file should only have one corresponding index file. While it is certainly possible to index a single data file into multiple index files using the provided indexer, this will produce "false multiples" of records. That is, a query that should result in one record being found will instead result in multiple identical records being found. </P>
+<P>There are three different types of index files: EXACT, SOUNDEX, and CIDR. They all share the common index file format. The only difference between them is how they are treated by the search engine. For instance, when searching a SOUNDEX index file, a transform (soundex) is performed on the search key first. </P>
+<P>There is no limit to the number of index files, but if there are more index files, the search will be slower. As the number of index files increases, the typical binary search will approach a linear search in performance. </P>
+<P><A NAME="_Toc383932711"></A></P>
+<H3>F. Indexing</H3>
+<P>The MKDB indexes are generated using a basic process. </P><DIR>
+
+<P>1. The first step of the process is to identify the actual data file(s) to be indexed, and the authority area and class to which those data files belong. <BR>
+2. Once this is determined, all data files are added to the master file list in the locked state to get a file number. This is to set their place in the file list so another indexing process cannot inadvertently change the file number. <BR>
+3. Then each file is read, record by record. As the records are read, they are checked for syntactic compliance with the record's schema. <BR>
+4. If the record is valid, then the value of each attribute that was marked in the schema as indexable (index was not NONE) is added to one or more temporary index files. <BR>
+5. Once all files have been indexed, the temporary index files are sorted (currently using /bin/sort) on the key portion. <BR>
+6. If everything is correct, the index files are added to the master file list and all files are unlocked. Once an index file is part of the master file list in an unlocked state, it will be read as part of the search operation.</P></DIR>
+
+<P>Indexing can occur in one of two ways: as part of the "-register" directive and "by hand" using the command line indexer. The indexing that occurs during the "-register" directive processing is handled automatically and uses a subset of the functionality available in the command line indexer. For instance, the syntax checks are skipped, because the register directive has already performed them. The "-register" directive also adds data in a fast, incremental fashion. Each "-register" action, if it succeeds, produces a data file and an index file. If "-register" is used often fairly severe fragmentation can ensue. In this case, the purge operation should be used to defragment the database; purging is discussed in the next section. </P>
+<P>The command line indexer is probably the most convenient way to index data. In the most basic operation, it is used to index data initially. The most convenient way to do this is to place all of the data files in the appropriate data directories (as indicated by the "db-dir" attribute in the schema file) and name all of the files with a common suffix. Then, index all the files in a single step. </P>
+<PRE>% rwhoisd_indexer -i -s "suffix"</PRE>
+<P>The "-i" option removes all previous index files, and the "-s" option indicates that all files ending in "suffix" should be indexed. In the sample database, all data files end in ".txt" but could end in any suffix except ".ndx", which is the suffix for the index files themselves. </P>
+<P>Please see the rwhois_indexer man page for more details. </P>
+<P><A NAME="_Toc383932712"></A></P>
+<H3>G. Purging</H3>
+<P>To date, purge operations have not been written. However, there are two levels of purging that can be performed: index purges and data purges. Index purges would simply remove index entries marked for deletion and would perhaps merge sort the index files together. This is a fairly safe and efficient operation. Data purges involve rewriting data files to remove deleted records. Once the data files are rewritten, the files must be reindexed, since the position of records within those files may have changed. </P>
+<P><A NAME="_Toc383932713"></A></P>
+<H2>V. Authority Areas</H2>
+<P><A NAME="_Toc383932714"></A></P>
+<H3>A. Overview</H3>
+<P>A more complete and accurate treatment of authority areas is given the RWhois Version 1.5 specification. This treatment is given to provide some reasoning for the RWhois behavior and configuration options. </P>
+<P>An authority area is an identifier for an RWhois database containing data and its schema. It has a hierarchical structure that helps identify the position of the database in the global RWhois data information tree. In the RWhois 1.5 protocol, an authority area has the structure of either a domain name or an IP address in quad-octet prefix/prefix length format. The hierarchical structure of an authority area helps route a query that cannot be resolved locally up or down the tree. </P>
+<P><A NAME="_Toc383932715"></A></P>
+<H3>B. Referral Model</H3>
+<P>There are two types of referrals. When a query is referred up the tree, it is called a punt referral. When a query is referred down the tree, it is called a link referral. The referral model for an RWhois server follows below. </P><DIR>
+
+<P>1. Try to parse hierarchical value from the search value in each query term. For example, parse the domain name from an email address. <BR>
+2. If the parsed hierarchical value is within one of the authority areas and it is within a referred-auth-area for that authority area, refer the query to the referred-auth-area. This is a link referral. <BR>
+3. If the parsed hierarchical value is within one of the authority areas and it is not within any of the referred-auth-areas, do not refer the query. Otherwise, it could become a referral loop. <BR>
+4. If the parsed hierarchical value is not within any of the authority areas, refer it up the tree using the referral records in the RWhois parent file (rwhois.root). This is a punt referral. <BR>
+5. If the search value in each query term is non-hierarchical, do not refer the query. In the future, it will be referred to a non-hierarchical mesh such as the Common Index Protocol (CIP) mesh.</P></DIR>
+
+<P><A NAME="_Toc383932716"></A></P>
+<H3>C. Setting Up Referrals</H3>
+<P>To set up punt referrals, the RWhois parent file (rwhois.root) must have at least one entry to an RWhois server up the tree. In the sample data, it is a referral to the root RWhois server. </P>
+<P>Example: </P>
+<PRE>rwhois://root.rwhois.net:4321/auth-area=.</PRE>
+<P>To set up link referrals, the RWhois protocol Version 1.5 defines the referral class. It has the following attributes. <BR>
+&nbsp; </P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=590>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>ID</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>This is a unique identifier of the referral record.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>Auth-Area</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>This is the authority area within which the referral record resides.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>Guardian</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>The ID of a guardian object. This is optional and repeatable&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>Referral</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>This lists the location of the referral in RWhois URL format&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>Organization</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>The ID of the organization object maintaining the referred authority area.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>Referred-Auth-Area</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>This is the referred authority area within the authority area. For example, fddi.a.com is a referred authority area within a.com authority area and 1.0.0.0/16 is a referred authority area within 1.0.0.0/8 authority area.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>Created</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>This is the time the record was created. It uses the "yyyymmddhhmmss" format.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>Updated</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>This is the time the record was last updated. It uses the "yyyymmddhhmmss" format.&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="22%" VALIGN="MIDDLE">
+<P>Updated-By</TD>
+<TD WIDTH="78%" VALIGN="MIDDLE">
+<P>This is the email address of the contact who last updated this record.&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>Example: </P>
+<PRE>ID: 888.a.com
+Auth-Area: a.com
+Guardian: 444.a.com
+Referral: rwhois://rwhois.second.a.com:4321/auth-area=fddi.a.com
+Organization: 777.a.com
+Referred-Auth-Area: fddi.a.com
+Created: 19961022101010
+Updated: 19961023101010
+Updated-By: hostmaster@a.com
+---
+ID: 888.10.0.0.0/8
+Auth-Area: 10.0.0.0/8
+Referral: rwhois://rwhois.third.a.com:4321/auth-area=10.1.0.0/16
+Referral: rwhois://rwhois.fourth.a.com:4321/auth-area=10.1.0.0/16
+Referred-Auth-Area: 10.1.0.0/16
+Created: 19961022101010
+Updated: 19961023101010
+Updated-By: hostmaster@a.com</PRE>
+<P><A NAME="_Toc383932717"></A></P>
+<H2>VI. Contacting the Authors</H2>
+<P>There is a mailing list for discussion of the RWhois protocol and software. Send a message to <I>rwhois-request@rwhois.net</I> with the word "subscribe" in the body to subscribe. There is a mailing list for RWhois developers as well: send a message to <I>rwhois-workers-request@rwhois.net</I> with "subscribe" as the body. </P>
+<P>Send bug reports and comments to <I>rwhois-bugs@rwhois.net</I>. </P></BODY>
+</HTML>

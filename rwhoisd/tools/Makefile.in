@@ -1,0 +1,55 @@
+@SET_MAKE@
+
+# set install program
+INSTALL = @INSTALL@
+SHELL	= /bin/sh
+
+# set prefix values
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+etcdir      = @sysconfdir@
+
+srcdir	    = @srcdir@
+VPATH       = @srcdir@
+
+#### end of configuration section ####
+
+SUBDIRS = rwhois_indexer rwhois_deleter rwhois_repack
+
+all:
+	@for dir in $(SUBDIRS); do \
+	  echo "making $@ in $$dir"; \
+	  (cd $$dir; $(MAKE) $(MFLAGS) $@) || exit 1; \
+	done
+
+install:
+	@for dir in $(SUBDIRS); do \
+	  echo "making $@ in $$dir"; \
+	  (cd $$dir; $(MAKE) $(MFLAGS) $@) || exit 1; \
+	done
+
+uninstall:
+	@for dir in $(SUBDIRS); do \
+	  echo "making $@ in $$dir"; \
+	  (cd $$dir; $(MAKE) $(MFLAGS) $@) || exit 1; \
+	done
+
+clean:
+	@for dir in $(SUBDIRS) tcpd_wrapper; do \
+	  echo "making $@ in $$dir"; \
+	  (cd $$dir; $(MAKE) $(MFLAGS) $@) || exit 1; \
+	done
+
+distclean: config-clean tcpwrapper-distclean
+	@for dir in $(SUBDIRS); do \
+	  echo "making $@ in $$dir"; \
+	  (cd $$dir; $(MAKE) $(MFLAGS) $@) || exit 1; \
+	done
+
+tcpwrapper-distclean:
+	(cd tcpd_wrapper; $(MAKE) $(MFLAGS) clean) || exit 1
+	(cd tcpd_wrapper; rm -f Makefile)
+
+config-clean:
+	rm -f Makefile

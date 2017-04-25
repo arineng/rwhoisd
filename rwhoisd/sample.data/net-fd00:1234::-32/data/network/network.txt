@@ -1,0 +1,107 @@
+Network-Name: A-NET-IPV6-1
+IP-Network: fd00:1234::/32
+Organization: 777.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:1776::/48
+IP-Network: fd00:1234:1776::/48
+Organization: 777.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: 1540.a.com
+---
+Network-Name: NETBLK-fd00:1234:1000::/48
+IP-Network: fd00:1234:1000::/48
+Organization: 777.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: 28550.a.com
+---
+Network-Name: NETBLK-fd00:1234:1401::/48
+IP-Network: fd00:1234:1401::/48
+Organization: 32730.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:1001::/48
+IP-Network: fd00:1234:1001::/48
+Organization: 777.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: 31069.a.com
+---
+Network-Name: NETBLK-fd00:1234:0:1::/64
+IP-Network: fd00:1234:0:1::/64
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:0:3::/64
+IP-Network: fd00:1234:0:3::/64
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:0:4::/64
+IP-Network: fd00:1234:0:4::/64
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:0:6::/64
+IP-Network: fd00:1234:0:6::/64
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:0:7::/64
+IP-Network: fd00:1234:0:7::/64
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:0:e::/64
+IP-Network: fd00:1234:0:e::/64
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:1::/48
+IP-Network: fd00:1234:1::/48
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234::/64
+IP-Network: fd00:1234::/64
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:f000::/48
+IP-Network: fd00:1234:f000::/48
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:f001::/48
+IP-Network: fd00:1234:f001::/48
+Organization: 21285.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:0:13::/64
+IP-Network: fd00:1234:0:13::/64
+Organization: 34874.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:2::/48
+IP-Network: fd00:1234:2::/48
+Organization: 34874.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com
+---
+Network-Name: NETBLK-fd00:1234:1400::/48
+IP-Network: fd00:1234:1400::/48
+Organization: 32803.a.com
+Tech-Contact: hostmaster.a.com
+Admin-Contact: hostmaster.a.com

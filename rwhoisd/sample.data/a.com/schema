@@ -1,0 +1,58 @@
+#
+# RWhois Main Schema Config File
+#
+# takes these entries:
+#
+# name: the real name of the class
+# alias: an alternate name of the class.  This can be repeated
+# attributedef: the file containing the attribute descriptions
+# dbdir: the MKDB data directory for the class
+# description: a text description of the class
+# parse-program: a executable that will act as a filter during registration.
+# schema-version: this is date or date/time that reflects the last
+#                 time the schema was changed.
+#
+name:contact
+alias:user
+alias:person
+alias:mailbox
+attributedef:a.com/attribute_defs/contact.tmpl
+dbdir: a.com/data/contact
+description:User object
+# parse-program: contact-parse
+Schema-Version: 19961101000000000
+---
+name:domain 
+attributedef:a.com/attribute_defs/domain.tmpl  
+dbdir: a.com/data/domain
+description:Domain object
+Schema-Version: 19961101000000000
+---
+name:host
+attributedef:a.com/attribute_defs/host.tmpl
+dbdir: a.com/data/host
+description:Host object
+Schema-Version: 19961101000000000
+---
+name:asn
+attributedef:a.com/attribute_defs/asn.tmpl
+dbdir: a.com/data/asn
+description:Autonomous System Number object
+Schema-Version: 19961101000000000
+---
+name:organization
+attributedef:a.com/attribute_defs/org.tmpl
+dbdir:a.com/data/org
+description:Organization object
+Schema-Version: 19961101000000000
+---
+name:guardian
+attributedef:a.com/attribute_defs/guardian.tmpl
+dbdir:a.com/data/guardian
+description:Guardian Object
+Schema-Version: 19961101000000000
+---
+name:referral 
+attributedef:a.com/attribute_defs/referral.tmpl  
+dbdir:a.com/data/referral
+Schema-Version: 19961101000000000

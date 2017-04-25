@@ -1,0 +1,8 @@
+ID: 444.a.com
+Auth-Area: a.com
+Guard-Scheme: PW
+Guard-Info: passwd
+Created: 19961022
+Updated: 19961023
+Updated-By: hostmaster@a.com
+Private:true

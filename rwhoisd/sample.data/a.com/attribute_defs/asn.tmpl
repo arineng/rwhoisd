@@ -1,0 +1,87 @@
+attribute:       AS-Name
+attribute-alias: AN
+description:     Autonomous System name
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           EXACT
+type:            TEXT
+---
+attribute:       AS-Number
+attribute-alias: ASN
+description:     Autonomous System number
+is-primary-key:  TRUE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           EXACT
+type:            TEXT
+---
+attribute:       AS-Number-Block
+attribute-alias: ASNB
+description:     Autonomous System number block
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           EXACT
+type:            TEXT
+---
+attribute:       Organization
+attribute-alias: ORG
+description:     Organization
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Admin-Contact
+attribute-alias: AC
+description:     Administrative contact
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Tech-Contact
+attribute-alias: TC
+description:     Technical contact
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Created
+attribute-alias: CR
+description:     Create date
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Updated-By
+attribute-alias: UB
+description:     Updated by
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT

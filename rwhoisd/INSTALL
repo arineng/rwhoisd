@@ -1,0 +1,320 @@
+              rwhoisd Compilation and Installation Instructions
+
+                                Release 1.5.0
+
+                                  1-Feb-98
+
+  ------------------------------------------------------------------------
+
+This description of the installation procedure assumes a working knowledge
+of UNIX systems and does not explain basic system administration in great
+detail. However, examples have been provided when appropriate.
+
+Summary
+
+The build and install process involves these steps (at minimum):
+
+./configure
+make
+make install
+
+Edit the configuration files for your site.
+
+Generate and load the directory data.
+
+Compilation
+
+Customize (optional)
+
+You may wish to edit the 'common/conf.h' header file. This file contains the
+compiled in defaults for the server (and the helper programs). All of these
+values (except CEILING_MAX_HITS) can be overridden in the various
+configuration files at run time. However, you may wish to set your own
+compiled in defaults.
+
+Run the 'configure' script
+
+This will test for various system dependencies and create the Makefile(s)
+from the Makefile.in files. Please see the 'INSTALL.gen' file for more
+detailed (and generic) instruction on how to use the configure script.
+
+The './configure --help' command will list the available command line
+options to configure. The important ones are outlined below.
+
+The default installation prefix for the RWhois server is
+'/usr/local/rwhoisd'. Thus, unless directed otherwise, the configure script
+will install the RWhois server software in /usr/local/rwhoisd/bin,
+/usr/local/rwhoisd/etc, etc. The '--prefix=<install-dir' command will cause
+the configure script to override this default install location. For example,
+
+./configure --prefix=/opt/rwhoisd
+
+will cause the RWhois server binaries to be installed in /opt/rwhoisd/etc
+and /opt/rwhoisd/bin, and configuration files will be copied to
+/opt/rwhoisd.
+
+If you wish to install the executables in one area and the configuration
+files to another, use both the --prefix and --exec-prefix options. For
+example,
+
+./configure --prefix=/etc/rwhoisd --exec-prefix=/usr/local
+
+will cause the binaries to be installed in /usr/local/etc and /usr/local/bin
+and the configuration files in /etc/rwhoisd.
+
+It is also possible to build for multiple architectures using the same
+source tree, if your make implementation supports the VPATH feature. To do
+this, run the configure script from an empty subdirectory. For example,
+
+mkdir solaris
+cd solaris
+../configure --prefix=/opt/rwhoisd
+
+will cause the software to be built in the 'solaris' subdirectory.
+
+Run 'make'
+
+This will build both the server and included tools.
+
+Run 'make install'
+
+This will install the binaries and sample configuration in the configured
+prefix location (by default /usr/local/rwhoisd). You may need to be running
+as root to successfully install the software and configuration. Also, you
+may need to modify the directory owner and permissions for the install
+directory to run the server correctly. In general, rwhoisd should run as an
+unprivileged user that can read/write/execute the 'register_spool' directory
+and can create and write to the log file, if not using syslog.
+
+Editing the Configuration
+
+Once you have installed the RWhois server software, it is necessary to edit
+the main configuration files to suit your installation. The 'make install'
+step will have copied a set of configuration files to the install prefix
+(/usr/local/rwhoisd). These files are intended as a good starting point, and
+should not require a great deal of modification.
+
+The supplied operations guide contains a more detailed description of all
+the configuration files.
+
+Main Configuration (rwhoisd.conf)
+
+The most central file to the configuration of the RWhois server is the main
+configuration file, typically named "rwhoisd.conf" (other main configuration
+files may be easily specified with the '-c' command line option on the
+server. See the manual page or the operations guide for more details).
+
+Unless you are changing the locations and/or names of the various
+configuration files, many of the configuration file parameters need not be
+changed. There are a few parameters that are critical and usually need to be
+changed before completing the configuration step.
+
+The primary fields that will most likely need to be changed are the
+following.
+
+
+ root-dir         This is the base directory for the rest of the configuration.
+                  All of the other pathnames in the configuration files
+                  (including the database configuration files) are relative to
+                  this directory. The 'make install' step will have probably set
+                  this correctly, but if you move the configuration or wish to
+                  place the rest of the configuration files elsewhere, this will
+                  need to be changed.
+
+ userid           This is the user that the RWhois server will attempt to
+                  setuid(2) to if it is started as root. Since it is highly
+                  inadvisable to run rwhoisd as root, this should be set to a
+                  valid (hopefully non-privileged user.
+
+ pid-file         The rwhoisd process records its process id in this file. This
+                  defaults to rwhoisd.pid located in the 'root-dir' directory.
+
+ server-contact   This is the email address of the person responsible for
+                  maintaining the RWhois installation. This should be set to a
+                  valid email address.
+
+ security-allow/  These are TCP Wrapper configuration files. They default to the
+ security-deny    standard TCP wrapper files, "/etc/hosts.allow" and
+                  "/etc/hosts.deny". Since rwhoisd recognizes directive names in
+                  these files, it may be desirable to specify new, separate files
+                  with these fields.
+
+Note that there are significant number of other fields that can be set in
+this file. While most of them default to sensible values, it is expected
+that each installation will probably want to customize the server to their
+own needs.
+
+RWhois Root (rwhoisd.root)
+
+This is the file that the server uses to generate 'punt' or 'up' referrals.
+Therefore, this file is expected to contain a referral (in the form of an
+RWhois URL) to the parent RWhois server. The file provided contains a
+referral to the RWhois 'root' operated at Network Solutions, Inc. This is
+generally appropriate if there are no closer servers with a wider knowledge
+of the namespaces.
+
+Directive Configuration (rwhoisd.dir/rwhoisd.x.dir)
+
+The directive configuration files fill two separate functions:
+
+   * They give the server administrator the ability to turn off (or on) the
+     various built-in RWhois directives.
+   * They allow the server administrator to extend the RWhois protocol by
+     adding extended directives.
+
+rwhoisd.dir
+
+This file is used to control the built-in directives. In the supplied
+configuration file, all of the built in directives are on. You may wish to
+turn off a few, however. The most commonly turned-off directive is
+'-register'.
+
+rwhoisd.x.dir
+
+This is the configuration file used for adding extended directives. See the
+operations guide for more details on the format of this file.
+
+Security Configuration (rwhoisd.allow/rwhoisd.deny)
+
+These files (which actually default to "/etc/hosts.allow" and
+"/etc/hosts.deny") are used to control access to the various server
+directives and to the server itself.
+
+Generating/Loading Directory Data
+
+After configuring the main server parameters, it is necessary to create (or
+convert) the directory information for use by the RWhois server.
+
+
+Running the Server
+
+If you do not change the name and relative location of the default
+configuration file, you can run the server with
+
+(cd /usr/local/rwhoisd; etc/rwhoisd)
+
+or
+
+/usr/local/rwhoisd/etc/rwhoisd -c /usr/local/etc/rwhoisd/rwhoisd.conf
+
+Please see the operations guide for more command line options. If you wish
+to install rwhoisd in inetd, although this is not particularly recommended,
+you need to add:
+
+rwhois 4321/tcp
+
+to /etc/services, and (all on one line):
+
+rwhois stream tcp nowait root /usr/local/etc/rwhoisd rwhoisd -c /home/databases/rwhois/rwhois.conf
+
+to /etc/inetd.conf, and reload inetd (see inetd(1)).
+
+Security Considerations
+
+rwhoisd is in no way guaranteed to be secure. With that said, it also does
+not do many of the things that make other Internet services insecure, say,
+for instance, allowing users to download files onto a machine (like ftp) or
+allowing users to specify in data something that gets executed. Nonetheless,
+Network Solutions strongly recommends that users follow some sound security
+practices. rwhoisd provides a number of built-in ways to be more secure.
+
+Run the Server as an Unprivileged User
+
+There is no need to run the rwhoisd process as root. The Internet Assigned
+Numbers Authority (IANA) assigned port, 4321, is not in the restricted
+range, and rwhoisd needs no access to typically restricted files. If you run
+rwhoisd as root (say, from startup), it will attempt to setuid(2) and
+setgid(2) to the user specified in the 'userid' parameter in the main
+configuration file. It sets the group id to the group set for the user in
+/etc/passwd. It does all this before creating the socket.
+
+Use TCP Wrappers
+
+rwhoisd contains built-in calls to Weitse Venema's TCP Wrapper code. You can
+specify which files to use for the allow and deny files in the main
+configuration file (they default to the standard /etc/hosts.allow and
+/etc/hosts.deny files). You can wrap the server itself using the 'rwhoisd'
+tag, and you can protect individual directives by using the directive name.
+See the operations guide for more details.
+
+Use chroot(2)
+
+The chroot system call resets the file system root directory to another
+(non-root) directory. The operating system then protects the rest of the
+filesystem from the process that was chrooted. This limits what a possible
+intruder can do. They may be able to trash your rwhoisd installation, but
+they will not be able to steal any other data and will not be able to damage
+any other part of your filesystem.
+
+The use of chroot(2) is recommended. rwhoisd can be configured to do this by
+setting up the chrooted environment and by setting the main configuration
+variable 'chrooted' or running rwhoisd with a -s option.
+
+Since each operating system, and even each installation, can vary so widely,
+there is no easily generalizable method for setting up a chroot environment.
+Instead, these are considered to be general guidelines on setting up the
+environment. The specifics given here will undoubtedly need to be modified
+to fit your specific case. Also, a good reference for setting up chroot
+environments can often be found in the ftpd manpage of your system.
+
+Make sure that there are dev, etc, tmp, and usr/lib directories off of
+RWHOIS_ROOT_DIR (the prefix directory).
+
+Make sure the necessary binaries exist in their expected location. rwhoisd
+uses the following extra binaries: sh, sort, pgp (possibly), plus any
+binaries used for extented directives (/bin/date for example). sh and sort,
+and the extended directive binaries should be placed in RWHOIS_ROOT_DIR/bin
+or whatever the rwhois.conf file sets as the 'bin-path'. sh should be where
+the exec(2) system call needs it (on solaris this is usr/bin). sort should
+be put somewhere in your PATH (usually bin or usr/bin).
+
+Make sure any shared libraries needed by any of the executables is
+accessible in RWHOIS_ROOT_DIR/usr/lib or RWHOIS_ROOT_DIR/usr/local/lib. On
+Sun operating systems (both SunOS 4 and Solaris 2.x), you can determine
+which shared libraries an executable uses with the 'ldd' command. On the Sun
+operating systems there is also a /usr/lib/ld.so file that must be present
+for shared libraries to work at all. In addition, on Solaris, there is a
+host of other .so files that must be copied into the chroot area to allow
+the socket library to work (nss_nis.so, nss_nisplus.so, nss_dns.so,
+nss_files.so, and straddr.so are all in /usr/lib, according to the ftpd
+manpage).
+
+If you use /etc/resolv.conf to resolve hostnames, copy /etc/resolv.conf to
+RWHOIS_ROOT_DIR/etc. Note that, while in setting up chroot environments in
+general it is usually necessary to include the passwd file (and associated
+shadow passwd files as well) in this case, it is not necessary. rwhoisd
+performs all of its passwd file lookups before actually chrooting.
+
+Create RWHOIS_ROOT_DIR/dev/zero. First, you must discover the major and
+minor device numbers of /dev/zero on your system. On SunOS,
+
+% ls -l /dev/zero
+crw-rw-rw- 1 root 3, 12 Aug 11 1995 /dev/zero
+
+which indicates that the major number is three and the minor number is
+twelve. Then use the 'mknod' command to create the device file. You must be
+root to do this; /usr/rwhois.root is RWHOIS_ROOT_DIR in this example.
+
+% cd /usr/rwhois.root/dev
+% mknod zero c 3 12
+
+It may be necessary to create other devices. On Solaris, also (re)create
+/dev/tcp, /dev/udp, and /dev/ticotsord using a similar technique.
+
+You should be able to test this chroot environment by (as root) using the
+chroot command and running the shell and by attempting to run sort and the
+other extended directive executables.
+
+% chroot /usr/local/rwhois /usr/bin/sh
+% /etc/rwhoisd -s
+
+  ------------------------------------------------------------------------
+
+Architecture specific notes
+
+alpha-dec-osf4.0:
+
+          You will probably need to get a later version of flex than the one
+          the comes with the operating system. lex.yy.c files generated by
+          the built-in flex lack the YY_FLUSH_BUFFER macro. Another option
+          is to use the operating system included "lex", instead of flex.

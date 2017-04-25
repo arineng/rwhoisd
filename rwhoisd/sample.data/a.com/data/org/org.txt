@@ -1,0 +1,12 @@
+ID: 777.a.com
+Auth-Area: a.com
+Org-Name: A Communications, Inc.
+Street-Address: #600 - 1380 Burrars St.
+City: Vaner
+State: CM
+Postal-Code: V6Z 2H3
+Country-Code: NL
+Phone: (401) 555-6721
+Created: 19961022
+Updated: 19961023
+Updated-By: hostmaster@a.com

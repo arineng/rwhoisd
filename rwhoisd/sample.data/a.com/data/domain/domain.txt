@@ -1,0 +1,13 @@
+ID:333.a.com
+Auth-Area:a.com
+Guardian:444.a.com
+Domain-Name: a.com
+Primary-Server:5551.a.com
+Secondary-Server:5552.a.com
+Organization:777.a.com
+Admin-Contact:222.a.com
+Tech-Contact:222.a.com
+Billing-Contact:222.a.com
+Created:19961022
+Updated:19961023
+Updated-By:hostmaster@a.com

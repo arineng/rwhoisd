@@ -1,0 +1,171 @@
+UPGRADING FROM PREVIOUS (1.0) VERSIONS OF RWHOISD
+
+In version 1.5.0(Bx) of the RWhois server (rwhoisd), no attempt at
+complete backwards compatibility with previous versions was attempted.
+This document is an attempt to outline and explain the issues involved
+with upgrading the server installation from one of those previous
+installations to this version.  This document does not intend to
+address the differences in the RWhois protocol between Version 1.5 and
+1.0.  In general, it is assumed that the previous version is 1.0B9,
+although the same arguments apply for earlier versions.
+
+A. Summary of Upgrade Procedure
+
+   1. Start with provided (1.5) main configuration files (rwhois.*)
+      and edit them to suit.
+   2. Create appropriate authority area directories by copying the
+      sample data authority areas and editing the data files to suit.
+   3. Take old data, split into separate authority areas, if
+      necessary, and rewrite into new format.
+
+B. The Main Configuration Files
+
+   The main configuration files look similar to those in previous
+   releases, however there are some fundamental differences.  It is
+   probably easier to start fresh, using the supplied sample data as a
+   starting point rather than editing the old configuration files.
+
+   1. rwhois.conf (the main config file)
+      a. 'default-dir' is now called 'root-dir'.
+      b. 'object-file' or 'schema-file' (they referred to the same
+         thing) are now gone.  The equivalent file is stored as part of
+         the authority area (see the next section).
+      c. 'display-file' is gone.
+      e. 'directive-file' refers to a different file.  This is now
+         called 'x-directive-file'.  The 'directive-file' is a file
+         indicating which of the built-in directives are enabled or
+         disabled.
+      f. 'update-prog' and 'index-prog' are now gone.  This
+         functionality is included in the server itself.
+      g. 'verbosity' is renumbered and probably more useful.  It
+         ranges from 0 (no logging) to 8 (log everything).  The numbers
+         correspond to the eight syslog log levels.
+      h. 'root-file' has been renamed to 'punt-file'.  It refers to the
+         same thing: a referral to the next level up (which is called a
+         "punt").
+      i. 'auth-area-file'.  This file controls the authority areas
+         for which the server is responsible.  It fulfills roughly the 
+         same role as BIND's "named.boot" file.  See the operations guide
+         for more details.
+      j. 'pid-file' and 'server-contact' were added.
+      k. A number of other, optional parameters were added; see the
+         operations guide for further information.
+
+   2. rwhois.allow/rwhois.deny. These have not changed.
+
+   3. rwhois.directive. This file has changed altogether.  See the
+      operations guide for details.
+
+   4. rwhois.x.dir. This is mostly the same as the old
+      'rwhois.directive' file.
+
+   5. rwhois.objects. This data as been moved into the authority area
+      data.
+
+   6. rwhois.help. No longer needed.
+
+   7. rwhois.define. No longer used.
+
+   8. rwhois.display. No longer used.
+
+   9. rwhois.root. The reference for this in the main config file has
+      changed, and the format of the data itself has changed.  See the
+      operations guide for details.
+
+C. Authority Areas
+
+   The fundamental difference between the older versions of the server
+   and this one is the concept of authority areas.  In the old server,
+   the authority area concept was only partially implemented and never
+   enforced.  In this server, authority areas have a much stonger
+   implementation.
+
+   1. Authority areas contain database schemas.
+
+      Each authority area (which currently can be a domain name or IP
+      network) has its own, separate database schema.  This is
+      primarily to facilitate using one server for many different
+      tasks, each needing its own schema.  It is also to facilitate
+      the creation of secondary servers.
+
+      To this end, the following information is now local to an
+      authority area.
+
+      a. the database schema.  The old servers 'rwhois.objects' file
+         has been moved into the authority area as the 'schema-file'
+         tag in the 'rwhois.auth_area' file.  The schema file, in turn,
+         points to a series of attribute templates, which are very
+         similar to the old attribute templates, which the deletion and
+         addition of a few tags (see the operations guide).
+
+      b. The SOA data.  This resides in its own file.
+
+      c. The data that logically belongs in a particular authority area.
+
+   2. Authority areas are a namespace.
+
+      Each authority area defines a namespace for query routing purposes.
+      These authority areas typically correspond to DNS zones.  For
+      instance, if you are responsible for the DNS zone
+      "provider.net", you would probably have an authority area named
+      "provider.net".  Also, if you were responsible for the
+      10.1.1.0/18 network, then you would probably have an authority
+      area named "10.1.1.0/18".
+
+D. The Data Files
+
+   Both the data file format, the data requirements, and the data file
+   placement changed for this release.
+
+   The data file format has change from a
+   <object-type>:<attribute-name>:<value> triplet to a simpler
+   <attribute-name>:<value> format.
+
+   The RWhois 1.5 protocol also imposes a few new data requirements in
+   that now all objects must contain certain attributes: the RWhois
+   'base class'.
+
+   1. The 'Object-Type' attribute is now 'Class-Name'
+
+   2. All objects require an 'ID' attribute, which is an authority-area-
+      unique local part suffixed with a period and the authority area
+      name.  The local part cannot contain a period.  At the root, the
+      local part consists of the NIC handle but can be anything, as
+      long as it is unique.
+
+   3. All objects require an Auth-Area attribute.
+
+   4. Objects that reference other rwhois object have attributes that
+      are of type 'ID' and should just contain the ID of the referred-to
+      object as the value.
+
+   5. See-Also type attributes should have Uniform Resouce Locators (URLs)
+      as values.
+
+   The RWhois data also needs to be split into the different authority
+   areas.  Data needs to be in the right authority area so query
+   routing works correctly.  In general, data is split by examining
+   any attribute that has a heirarchical value and finding the
+   appropriate authority area.
+
+   For example, if you are running a server with two domain authority
+   areas 'a.com' and 'b.com', you would split classes like this:
+	
+   For contact objects, examine the email address:
+
+   email:joe@a.com -> a.com
+   email:bill@b.com -> b.com
+   email:bob@ffo.a.com -> a.com
+   email:jill@roto.bbr.b.com -> b.com
+
+   For domain objects, examine the domain name:
+
+   domain: ffo.a.com -> a.com
+   domain: bbr.b.com -> b.com
+
+   For host objects, use the host name:
+
+   host-name: ns.a.com -> a.com
+   host-name: ns.b.com -> b.com
+
+

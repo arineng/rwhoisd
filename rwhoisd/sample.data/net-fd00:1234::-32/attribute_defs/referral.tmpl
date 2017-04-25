@@ -1,0 +1,43 @@
+attribute:       Referral
+attribute-alias: R
+description:     Referral to an RWhois server
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   TRUE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Referred-Auth-Area
+attribute-alias: RAA
+description:     Referred auth-area in domain name or prefix/prefix length notation
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   TRUE
+is-multi-line:   FALSE
+is-hierarchical: TRUE
+index:           ALL
+type:            TEXT
+---
+attribute:       Created
+attribute-alias: CR
+description:     Create date
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Updated-By
+attribute-alias: UB
+description:     Updated by
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT

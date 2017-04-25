@@ -1,0 +1,121 @@
+attribute:       Name
+attribute-alias: N
+description:     Full name
+is-primary-key:  TRUE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           EXACT
+type:            TEXT
+---
+attribute:       Email
+attribute-alias: EM
+description:     RFC 822 email address
+is-primary-key:  TRUE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: TRUE
+index:           EXACT
+type:            TEXT
+---
+attribute:       Type
+attribute-alias: T
+description:     Individual or role account
+format:		 re:\(I\|R\)
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       First-Name
+attribute-alias: FN
+description:     First name
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           EXACT
+type:            TEXT
+---
+attribute:       Last-Name
+attribute-alias: LN
+description:     Last name
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           EXACT
+type:            TEXT
+---
+attribute:       Middle-Name
+attribute-alias: MN
+description:     Middle name
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Phone
+attribute-alias: P
+description:     Phone number
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Fax
+attribute-alias: F
+description:     Fax number
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Organization
+attribute-alias: ORG
+description:     Organization
+is-primary-key:  FALSE
+is-required:     TRUE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            ID
+---
+attribute:       Created
+attribute-alias: CR
+description:     Create date
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
+---
+attribute:       Updated-By
+attribute-alias: UB
+description:     Updated by
+is-primary-key:  FALSE
+is-required:     FALSE
+is-repeatable:   FALSE
+is-multi-line:   FALSE
+is-hierarchical: FALSE
+index:           NONE
+type:            TEXT
