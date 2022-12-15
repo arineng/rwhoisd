@@ -23,10 +23,7 @@
 
      NOTE: currently returns true on all but tagged regular
      expressions, i.e., format string = "re: <regular expression>" */
-static int
-validate_format(format_str, value)
-  char  *format_str;
-  char  *value;
+static int validate_format (char *format_str, char *value)
 {
   regexp    *prog;
   char      tag[MAX_LINE];
@@ -54,11 +51,7 @@ validate_format(format_str, value)
 
 /* ----------------- Public Functions ----------------- */
 
-int
-encode_validate_flag(quiet_mode_flag, protocol_error_flag, find_all_flag)
-  int   quiet_mode_flag;
-  int   protocol_error_flag;
-  int   find_all_flag;
+int encode_validate_flag (int quiet_mode_flag, int protocol_error_flag, int find_all_flag)
 {
   int   result  = VALIDATE_ON;
 
@@ -80,13 +73,7 @@ encode_validate_flag(quiet_mode_flag, protocol_error_flag, find_all_flag)
   return(result);
 }
 
-void
-decode_validate_flag(validate_flag, quiet_mode_flag, protocol_error_flag,
-                     find_all_flag)
-  int   validate_flag;
-  int   *quiet_mode_flag;
-  int   *protocol_error_flag;
-  int   *find_all_flag;
+void decode_validate_flag (int validate_flag, int *quiet_mode_flag, int *protocol_error_flag, int *find_all_flag)
 {
   if (quiet_mode_flag)
   {
@@ -128,9 +115,9 @@ decode_validate_flag(validate_flag, quiet_mode_flag, protocol_error_flag,
 /* find_record_attr_by_id: given a rec, return the av_pair that
      matches local_id 'id', NULL if not found. */
 av_pair_struct *
-find_record_attr_by_id(record, id)
-  record_struct *record;
-  int           id;
+find_record_attr_by_id(
+  record_struct *record,
+  int           id)
 {
   av_pair_struct    *av;
   int               not_done;
@@ -156,9 +143,9 @@ find_record_attr_by_id(record, id)
 }
 
 int
-count_record_attr_by_id(record, id)
-  record_struct *record;
-  int           id;
+count_record_attr_by_id(
+  record_struct *record,
+  int           id)
 {
   av_pair_struct    *av;
   dl_list_type      *av_pair_list;
@@ -196,9 +183,9 @@ count_record_attr_by_id(record, id)
      'find_all_flag' controls whether the detection of an error
      short-circuits the process. */
 int
-check_required(record, validate_flag)
-  record_struct *record;
-  int           validate_flag;
+check_required(
+  record_struct *record,
+  int           validate_flag)
 {
   attribute_struct  *attr;
   av_pair_struct    *av;
@@ -263,9 +250,9 @@ check_required(record, validate_flag)
 }
 
 int
-check_repeated(record, validate_flag)
-  record_struct *record;
-  int           validate_flag;
+check_repeated(
+  record_struct *record,
+  int           validate_flag)
 {
   attribute_struct  *attr;
   dl_list_type      *attr_list;
@@ -327,9 +314,9 @@ check_repeated(record, validate_flag)
 }
 
 int
-check_formats(record, validate_flag)
-  record_struct *record;
-  int           validate_flag;
+check_formats(
+  record_struct *record,
+  int           validate_flag)
 {
   av_pair_struct    *av;
   dl_list_type      *av_pair_list;
@@ -392,9 +379,9 @@ check_formats(record, validate_flag)
 }
   
 int
-check_record(record, validate_flag)
-  record_struct *record;
-  int           validate_flag;
+check_record(
+  record_struct *record,
+  int           validate_flag)
 {   
   int           find_all_flag;
   int           found_error   = FALSE;

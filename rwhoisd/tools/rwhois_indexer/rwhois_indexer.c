@@ -31,9 +31,7 @@
 /* local prototypes */
 
 /* usage: prints the usage statement */
-static int
-usage(prog_name)
-  char *prog_name;
+static int usage (char *prog_name)
 {
   fprintf(stderr, "usage:\n");
   fprintf(stderr, " file list mode:\n");
@@ -62,9 +60,9 @@ usage(prog_name)
 }
 
 static int
-delete_index_files(class, auth_area)
-  class_struct     *class;
-  auth_area_struct *auth_area;
+delete_index_files(
+  class_struct     *class,
+  auth_area_struct *auth_area)
 {
   dl_list_type master_file_list;
   dl_list_type index_file_list;
@@ -112,16 +110,7 @@ delete_index_files(class, auth_area)
   return TRUE;
 }
 
-static int
-run_file_index(class_name, auth_area_name, validate_flag, init_flag,
-               base_dir, argc, argv)
-  char  *class_name;
-  char  *auth_area_name;
-  int   validate_flag;
-  int   init_flag;
-  char  *base_dir;
-  int   argc;
-  char  *argv[];
+static int run_file_index (char *class_name, char *auth_area_name, int validate_flag, int init_flag, char *base_dir, int argc, char *argv[])
 {
   class_struct     *class               = NULL;
   auth_area_struct *auth_area           = NULL;
@@ -165,12 +154,12 @@ run_file_index(class_name, auth_area_name, validate_flag, init_flag,
 }
 
 static int
-run_suffix_index_class(class, auth_area, validate_flag, init_flag, suffix)
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  int              validate_flag;
-  int              init_flag;
-  char             *suffix;
+run_suffix_index_class(
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  int              validate_flag,
+  int              init_flag,
+  char             *suffix)
 {
   if (init_flag)
   {
@@ -185,13 +174,12 @@ run_suffix_index_class(class, auth_area, validate_flag, init_flag, suffix)
 }
 
 static int
-run_suffix_index_auth_area(auth_area, class_name, validate_flag, init_flag,
-                           suffix)
-  auth_area_struct *auth_area;
-  char             *class_name;
-  int              validate_flag;
-  int              init_flag;
-  char             *suffix;
+run_suffix_index_auth_area(
+  auth_area_struct *auth_area,
+  char             *class_name,
+  int              validate_flag,
+  int              init_flag,
+  char             *suffix)
 {
   class_struct *class;
   dl_list_type *class_list;
@@ -231,13 +219,7 @@ run_suffix_index_auth_area(auth_area, class_name, validate_flag, init_flag,
                                 suffix));
 }
 
-static int
-run_suffix_index(class_name, auth_area_name, validate_flag, init_flag, suffix)
-  char *class_name;
-  char *auth_area_name;
-  int  validate_flag;
-  int  init_flag;
-  char *suffix;
+static int run_suffix_index (char *class_name, char *auth_area_name, int validate_flag, int init_flag, char *suffix)
 {
   auth_area_struct *auth_area = NULL;
   class_ref_struct *class_ref = NULL;
@@ -294,10 +276,7 @@ run_suffix_index(class_name, auth_area_name, validate_flag, init_flag, suffix)
   return TRUE;
 }
 
-int
-main(argc, argv)
-  int  argc;
-  char *argv[];
+int main (int argc, char *argv[])
 {
   extern char   *optarg;
 #ifndef optind

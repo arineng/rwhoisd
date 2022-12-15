@@ -1,29 +1,4 @@
- /*
-  * vfprintf() and vprintf() clones. They will produce unexpected results
-  * when excessive dynamic ("*") field widths are specified. To be used for
-  * testing purposes only.
-  * 
-  * Author: Wietse Venema, Eindhoven University of Technology, The Netherlands.
-  */
-
-#ifndef lint
-static char sccsid[] = "@(#) vfprintf.c 1.2 94/03/23 17:44:46";
-#endif
-
-#include <stdio.h>
-#include <ctype.h>
-#ifdef __STDC__
-#include <stdarg.h>
-#else
-#include <varargs.h>
-#endif
-
-/* vfprintf - print variable-length argument list to stream */
-
-int     vfprintf(fp, format, ap)
-FILE   *fp;
-char   *format;
-va_list ap;
+__END_DECLS int vfprintf (FILE *fp, char *format, va_list ap)
 {
     char    fmt[BUFSIZ];		/* format specifier */
     register char *fmtp;
@@ -117,9 +92,7 @@ va_list ap;
 
 /* vprintf - print variable-length argument list to stdout */
 
-vprintf(format, ap)
-char   *format;
-va_list ap;
+int vprintf (char *format, va_list ap)
 {
     return (vfprintf(stdout, format, ap));
 }

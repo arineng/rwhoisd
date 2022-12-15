@@ -53,9 +53,7 @@ static void tcpdmatch();
 
 /* The main program */
 
-int     main(argc, argv)
-int     argc;
-char  **argv;
+int main (int argc, char **argv)
 {
     struct hostent *hp;
     char   *myname = argv[0];
@@ -253,8 +251,7 @@ char  **argv;
 
 /* Explain how to use this program */
 
-static void usage(myname)
-char   *myname;
+static void usage (char *myname)
 {
     fprintf(stderr, "usage: %s [-d] [-i inet_conf] daemon[@host] [user@]host\n",
 	    myname);
@@ -265,10 +262,7 @@ char   *myname;
 
 /* Print interesting expansions */
 
-static void expand(text, pattern, request)
-char   *text;
-char   *pattern;
-struct request_info *request;
+static void expand (char *text, char *pattern, struct request_info *request)
 {
     char    buf[BUFSIZ];
 
@@ -278,8 +272,7 @@ struct request_info *request;
 
 /* Try out a (server,client) pair */
 
-static void tcpdmatch(request)
-struct request_info *request;
+static void tcpdmatch (struct request_info *request)
 {
     int     verdict;
 

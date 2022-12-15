@@ -38,8 +38,8 @@
 
 /* usage: prints the usage statement */
 static int
-usage(prog_name)
-  char *prog_name;
+usage(
+  char *prog_name)
 {
   fprintf(stderr, "usage:\n");
   fprintf(stderr,
@@ -59,9 +59,9 @@ usage(prog_name)
 }
 
 char *
-assemble_query_string(argc, argv)
-  int argc;
-  char **argv;
+assemble_query_string(
+  int argc,
+  char **argv)
 {
   int i;
   char buf[MAX_LINE];
@@ -97,10 +97,10 @@ assemble_query_string(argc, argv)
 }
 
 static dl_list_type *
-query_for_records(query_string, limit, total)
-  char *query_string;
-  int  limit;
-  int  *total;
+query_for_records(
+  char *query_string,
+  int  limit,
+  int  *total)
 {
   query_struct query;
   int   num_recs;
@@ -132,9 +132,9 @@ query_for_records(query_string, limit, total)
   return record_list;
 }
 
-void show_result_list(record_list, total)
-  dl_list_type *record_list;
-  int total;
+void show_result_list(
+  dl_list_type *record_list,
+  int total)
 {
   int not_done;
   record_struct *rec;
@@ -170,9 +170,9 @@ void show_result_list(record_list, total)
 }
 
 int
-main(argc, argv)
-  int  argc;
-  char *argv[];
+main(
+  int  argc,
+  char *argv[])
 {
   extern char   *optarg;
 #ifndef optind
@@ -256,7 +256,7 @@ main(argc, argv)
 
   if (!quiet || fake)
   {
-    show_result_list(record_list);
+    show_result_list(record_list, 10);
   }
 
   if (!fake && !quiet && total > 0)

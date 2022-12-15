@@ -24,6 +24,9 @@ int destroy_query_term PROTO((query_term_struct *qt));
 
 int destroy_query PROTO((query_struct *q));
 
+int yyerror PROTO((char *s));
+int yylex (void);
+
 /* these are really defined in parse.l */
 int set_lexstring PROTO((char *s));
 

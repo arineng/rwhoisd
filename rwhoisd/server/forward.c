@@ -26,9 +26,7 @@ static char original_query_buf[MAX_LINE];
   sets the cache value
    toggles it for now
 **************************************************************************/
-int
-forward_directive( str )
-  char *str;
+int forward_directive (char *str)
 {
   if ( !set_forward(str) )
   {
@@ -45,11 +43,7 @@ forward_directive( str )
 /**************************************************************************
   forwards the request
 **************************************************************************/
-int
-forward_request(host, query, auth_area)
-  char *host;
-  char *query;
-  char *auth_area;
+int forward_request (char *host, char *query, char *auth_area)
 
 {
   char param_str[MAX_LINE];
@@ -63,9 +57,7 @@ forward_request(host, query, auth_area)
 /**************************************************************************
   saves the query
 **************************************************************************/
-int
-save_original_query (query_str)
-  char *query_str;
+int save_original_query (char *query_str)
 
 {
   strcpy(original_query_buf, query_str);
@@ -76,8 +68,7 @@ save_original_query (query_str)
 /**************************************************************************
   retrieves the query
 **************************************************************************/
-char *
-original_query()
+char *original_query (void)
 {
   return(original_query_buf);
 }

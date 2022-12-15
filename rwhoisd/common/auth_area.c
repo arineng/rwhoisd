@@ -22,6 +22,7 @@
 #include "misc.h"
 #include "schema.h"
 #include "strutil.h"
+#include "../regexp/regexp.h"
 
 /* local definations */
 #define DEFAULT_ATTRIB_DIR         "attribute_defs"
@@ -81,8 +82,7 @@ static dl_list_type *auth_area_list = NULL;
 /* check_soa: given an auth-area record, check for null or illegal
    values.  If found, log errors and return FALSE */
 static int
-check_soa(aa)
-  auth_area_struct *aa;
+check_soa(auth_area_struct *aa)
 {
   char hostname[MAX_LINE];
   char port[MAX_LINE];
@@ -169,9 +169,9 @@ check_soa(aa)
 
 /* compare the two auth-areas: just compare the name and the type */
 static int
-same_auth_area(aa,  bb)
-  auth_area_struct *aa;
-  auth_area_struct *bb;
+same_auth_area(
+  auth_area_struct *aa,
+  auth_area_struct *bb)
 {
 
   if (!aa || !bb) return FALSE;
@@ -189,11 +189,11 @@ same_auth_area(aa,  bb)
    a new temporary soa file name. If file was created on disk,
    add the file name to the paths_list. */
 static int
-write_new_soa_file(file, suffix, aa, paths_list)
-  char *file;
-  char *suffix;
-  auth_area_struct  *aa;
-  dl_list_type *paths_list;
+write_new_soa_file(
+  char *file,
+  char *suffix,
+  auth_area_struct  *aa,
+  dl_list_type *paths_list)
 {
   FILE *fp = NULL;
   char new_file[MAX_FILE];
@@ -230,10 +230,10 @@ write_new_soa_file(file, suffix, aa, paths_list)
 /* writes master/slave server entries to rwhois auth-area file if the list
    is not empty. */
 static int
-write_server_list(fp, type, serv_list)
-  FILE         *fp;
-  char         *type;
-  dl_list_type *serv_list;
+write_server_list(
+  FILE         *fp,
+  char         *type,
+  dl_list_type *serv_list)
 {
   int           not_done;
   server_struct *serv;
@@ -262,9 +262,9 @@ write_server_list(fp, type, serv_list)
 /* write guardian entries to the rwhois auth-area file, if the
    list is not empty */
 static int
-write_guardian_list(fp, guard_list)
-  FILE         *fp;
-  dl_list_type *guard_list;
+write_guardian_list(
+  FILE         *fp,
+  dl_list_type *guard_list)
 {
   int  not_done;
   char *guard_item;
@@ -291,10 +291,10 @@ write_guardian_list(fp, guard_list)
 /* creates authority area directory, its data and attribute-defs directories,
    and calls to write the auhority area schema, and soa file. */
 static int
-write_auth_area(suffix, aa, paths_list)
-  char             *suffix;
-  auth_area_struct *aa;
-  dl_list_type     *paths_list;
+write_auth_area(
+  char             *suffix,
+  auth_area_struct *aa,
+  dl_list_type     *paths_list)
 {
   char aa_dir[MAX_FILE];
   char attr_dir[MAX_FILE];
@@ -375,8 +375,7 @@ write_auth_area(suffix, aa, paths_list)
    function returns whichever(hostname/ip-addr) is defined for the
    server. */
 static char *
-get_server_hostaddr(serv)
-  server_struct *serv;
+get_server_hostaddr(server_struct *serv)
 {
   if (STR_EXISTS(serv->name)) return( serv->name );
 
@@ -386,9 +385,9 @@ get_server_hostaddr(serv)
 /* count the number of times a given server occurs in the server
    list. */
 static int
-count_server_entries(servlst, serv)
-  dl_list_type  *servlst;
-  server_struct *serv;
+count_server_entries(
+  dl_list_type  *servlst,
+  server_struct *serv)
 {
   int           not_done;
   int           n_serv;
@@ -427,9 +426,9 @@ count_server_entries(servlst, serv)
 
 /* verifies the contents of master/slave server info structure. */
 static int
-verify_server_data(server, aa_name)
-  server_struct *server;
-  char          *aa_name;
+verify_server_data(
+  server_struct *server,
+  char          *aa_name)
 {
   int ret;
 
@@ -458,9 +457,9 @@ verify_server_data(server, aa_name)
    area does not have master list empty, and make sure a primary does
    does not have any master servers defined. */
 static int
-verify_server_list(aa, list_type)
-  auth_area_struct *aa;
-  char             *list_type;
+verify_server_list(
+  auth_area_struct *aa,
+  char             *list_type)
 {
   int           n;
   int           not_done;
@@ -536,9 +535,9 @@ verify_server_list(aa, list_type)
 /* count the number of times a guardian string occurs in the guardian
    list of the authority area. */
 static int
-count_guardian_entries(guard_list, guard_str)
-  dl_list_type *guard_list;
-  char         *guard_str;
+count_guardian_entries(
+  dl_list_type *guard_list,
+  char         *guard_str)
 {
   int          not_done;
   int          n;
@@ -573,8 +572,7 @@ count_guardian_entries(guard_list, guard_str)
 /* verify the contents of guardian list of an authority area. Check
    for any duplicates. */
 static int
-verify_guardian_list(aa)
-  auth_area_struct *aa;
+verify_guardian_list(auth_area_struct *aa)
 {
   int  not_done;
   int  ret;
@@ -617,8 +615,7 @@ verify_guardian_list(aa)
    schema, server and guardian lists etc.. Take into consideration
    the authority area type (primary/secondary). */
 static int
-verify_auth_area(aa)
-  auth_area_struct *aa;
+verify_auth_area(auth_area_struct *aa)
 {
   int  ret;
   char directory[MAX_FILE];
@@ -758,9 +755,9 @@ verify_auth_area(aa)
 /* ------------------ Public Functions ----------------- */
 
 int
-add_auth_area_guardian(aa, id_str)
-  auth_area_struct *aa;
-  char             *id_str;
+add_auth_area_guardian(
+  auth_area_struct *aa,
+  char             *id_str)
 {
   if (!aa || !STR_EXISTS(id_str))
   {
@@ -781,8 +778,7 @@ add_auth_area_guardian(aa, id_str)
 /* translate_auth_area_type: given a string, translate it into one of
    the auth_area_type values */
 auth_area_type
-translate_auth_area_type(val)
-  char  *val;
+translate_auth_area_type(char  *val)
 {
   if (!val) return AUTH_AREA_PRIMARY;
 
@@ -795,8 +791,7 @@ translate_auth_area_type(val)
 }
 
 char *
-translate_auth_area_type_str(val)
-  auth_area_type    val;
+translate_auth_area_type_str(auth_area_type    val)
 {
   if (val == AUTH_AREA_PRIMARY)
   {
@@ -811,9 +806,7 @@ translate_auth_area_type_str(val)
  * return TRUE if it is valid (don't care its reachability)
  * else return FALSE;
  */
-int
-is_valid_hostname ( name)
-  char   *name;
+int is_valid_hostname (char *name)
 {
   char           *p;
   char           *op_str;
@@ -895,9 +888,7 @@ is_valid_hostname ( name)
 
 /* is_valid_port: check the port number. Return TRUE if a valid port
    number, else return FALSE */
-int
-is_valid_port(port)
-  char  *port;
+int is_valid_port (char *port)
 {
   char  *p;
 
@@ -919,9 +910,9 @@ is_valid_port(port)
 
 /* check to see if  aa is already in aa_list */
 int
-is_duplicate_aa(aa, aa_list)
-  auth_area_struct *aa;
-  dl_list_type     *aa_list;
+is_duplicate_aa(
+  auth_area_struct *aa,
+  dl_list_type     *aa_list)
 {
   int not_done;
 
@@ -950,9 +941,7 @@ is_duplicate_aa(aa, aa_list)
 /* read_auth_areas: given an auth-area conf file name, read the
    configuration file (and associated configuration files.  Return
    FALSE if a fatal error was detected */
-int
-read_auth_areas(file)
-  char *file;
+int read_auth_areas (char *file)
 {
   char              line[BUFSIZ];
   char              tag[MAX_TEMPLATE_DESC];
@@ -1153,8 +1142,7 @@ read_auth_areas(file)
      Checks for illegal variable conditions first, and refuse to add
      structures that fail.  Returns TRUE on success, otherwise FALSE */
 int
-add_auth_area(aa)
-  auth_area_struct  *aa;
+add_auth_area(auth_area_struct  *aa)
 {
   char               directory[MAX_FILE];
   log_context_struct local_context;
@@ -1255,10 +1243,7 @@ add_auth_area(aa)
 
 /* check_aa_syntax(): check auth_area syntax, also create auth_area directory.
    Return TRUE if valid auth-area else FALSE */
-int
-check_aa_syntax (aa_name, directory)
-  char *aa_name;
-  char *directory;
+int check_aa_syntax (char *aa_name, char *directory)
 {
   char      *p;
   char      *op_str;
@@ -1356,8 +1341,7 @@ check_aa_syntax (aa_name, directory)
    contained within, and fill out the record.  Returns FALSE if it
    discovered something wrong. */
 int
-read_soa_file(aa)
-  auth_area_struct  *aa;
+read_soa_file(auth_area_struct  *aa)
 {
   char              line[MAX_LINE + 1];
   char              tag[MAX_TEMPLATE_DESC];
@@ -1452,8 +1436,7 @@ read_soa_file(aa)
    contained within, and fill out the record.  Returns FALSE if it
    discovered something wrong. */
 int
-write_soa_file(aa)
-  auth_area_struct  *aa;
+write_soa_file(auth_area_struct  *aa)
 {
   FILE *fp = NULL;
   int   lock_fd;
@@ -1494,8 +1477,7 @@ write_soa_file(aa)
 
 /* destroy_soa_in_auth_area: destroy the soa related data in an auth_area */
 int
-destroy_soa_in_auth_area(aa)
-  auth_area_struct *aa;
+destroy_soa_in_auth_area(auth_area_struct *aa)
 {
   if (!aa) return TRUE;
 
@@ -1523,9 +1505,9 @@ destroy_soa_in_auth_area(aa)
 
 
 int
-add_server(srv_list_ptr, val)
-  dl_list_type      **srv_list_ptr;
-  char              *val;
+add_server(
+  dl_list_type      **srv_list_ptr,
+  char              *val)
 {
   dl_list_type    *list         = *srv_list_ptr;
   char            name[BUFSIZ];
@@ -1645,8 +1627,7 @@ add_server(srv_list_ptr, val)
 }
 
 void
-display_auth_area(aa)
-  auth_area_struct  *aa;
+display_auth_area(auth_area_struct  *aa)
 {
   if (!aa)
   {
@@ -1670,8 +1651,7 @@ display_auth_area(aa)
   display_schema(aa->schema);
 }
 
-void
-display_all_auth_areas()
+void display_all_auth_areas (void)
 {
   int   not_done;
 
@@ -1695,8 +1675,7 @@ display_all_auth_areas()
 
 
 int
-destroy_server_data(server)
-  server_struct *server;
+destroy_server_data(server_struct *server)
 {
   if (!server) return TRUE;
 
@@ -1715,16 +1694,14 @@ destroy_server_data(server)
   return TRUE;
 }
 
-void
-destroy_auth_area_list()
+void destroy_auth_area_list (void)
 {
   dl_list_destroy(auth_area_list);
   auth_area_list = NULL;
 }
 
 int
-destroy_auth_area_data(aa)
-  auth_area_struct  *aa;
+destroy_auth_area_data(auth_area_struct  *aa)
 {
   if (!aa) return TRUE;
 
@@ -1790,8 +1767,7 @@ get_auth_area_list()
 
 
 auth_area_struct *
-find_auth_area_by_name(name)
-  char *name;
+find_auth_area_by_name(char *name)
 {
   auth_area_struct  *auth_area;
   int               not_done;
@@ -1817,8 +1793,7 @@ find_auth_area_by_name(name)
 
 
 attribute_ref_struct *
-find_truly_global_attr_by_name(name)
-  char *name;
+find_truly_global_attr_by_name(char *name)
 {
   dl_list_type         *auth_area_list;
   dl_list_type         *attr_ref_list;
@@ -1862,9 +1837,7 @@ find_truly_global_attr_by_name(name)
  * format: <hostname>:<port>:<protocol>
  * return TRUE if not error, else return FALSE
  */
-int
-check_root_referral(file)
-  char *file;
+int check_root_referral (char *file)
 {
   FILE         *fp                = NULL;
   char         *pound             = NULL;
@@ -1968,17 +1941,14 @@ check_root_referral(file)
 }
 
 /* check to see if it is a country-code */
-int
-is_country_code(p)
-  char  *p;
+int is_country_code (char *p)
 {
   /* FIXME: need the country-code database */
   return TRUE;
 }
 
 char *
-get_default_aa_directory(aa)
-  auth_area_struct *aa;
+get_default_aa_directory(auth_area_struct *aa)
 {
   struct netinfo prefix;
   char           buf[MAX_LINE];
@@ -1994,8 +1964,7 @@ get_default_aa_directory(aa)
 }
 
 char *
-get_aa_schema_directory(aa)
-  auth_area_struct *aa;
+get_aa_schema_directory(auth_area_struct *aa)
 {
   char  dir[MAX_FILE];
   char  file[MAX_FILE];
@@ -2022,10 +1991,10 @@ get_aa_schema_directory(aa)
    authority area file while going through the auth-area list. Saves
    any directory and file names created into paths_list structure. */
 int
-write_all_auth_areas(file, suffix, paths_list)
-  char         *file;
-  char         *suffix;
-  dl_list_type *paths_list;
+write_all_auth_areas(
+  char         *file,
+  char         *suffix,
+  dl_list_type *paths_list)
 {
   int              not_done;
   auth_area_struct *aa;
@@ -2108,8 +2077,7 @@ write_all_auth_areas(file, suffix, paths_list)
    defined by the user. And finally appends the created authority area
    to the list. */
 int
-create_auth_area(aa)
-  auth_area_struct *aa;
+create_auth_area(auth_area_struct *aa)
 {
   char             aa_dir[MAX_FILE];
   char             buffer[MAX_FILE];
@@ -2269,9 +2237,7 @@ create_auth_area(aa)
 }
 
 /* deletes an authority area (by name) from the configuration */
-int
-delete_auth_area(name)
-  char *name;
+int delete_auth_area (char *name)
 {
   if (!find_auth_area_by_name(name))
   {
@@ -2291,9 +2257,7 @@ delete_auth_area(name)
 /* examine the format of email address string. Currently excuses the
    hostname to have an non-dns hostname. Returns non-zero value if
    some error was found. */
-int
-examin_email_address(addr)
-  char *addr;
+int examin_email_address (char *addr)
 {
   static regexp  *email_exp = NULL;
 
@@ -2316,18 +2280,14 @@ examin_email_address(addr)
 
 /* examine the format of x-fer arguments. Returns non-zero value on
    failure. */
-int
-examin_aa_xfer_arg(path)
-  char *path;
+int examin_aa_xfer_arg (char *path)
 {
   return ( 0 );
 }
 
 /* examine the validity of authority area directory. Returns non-zero
    value on failure. */
-int
-examin_aa_data_dir(path)
-  char *path;
+int examin_aa_data_dir (char *path)
 {
   int ret;
 
@@ -2340,9 +2300,7 @@ examin_aa_data_dir(path)
 
 /* examine the validity of authority area schema file name. Returns
    non-zero value on failure. */
-int
-examin_aa_schema_file(path)
-  char *path;
+int examin_aa_schema_file (char *path)
 {
   int ret;
 
@@ -2355,9 +2313,7 @@ examin_aa_schema_file(path)
 
 /* examine the validity of authority area soa file name. Returns non-zero
    value on failure. */
-int
-examin_aa_soa_file(path)
-  char *path;
+int examin_aa_soa_file (char *path)
 {
   int ret;
 
@@ -2370,9 +2326,7 @@ examin_aa_soa_file(path)
 
 /* examine the validity of authority area hostmaster e-mail address.
    Returns non-zero value on failure. */
-int
-examin_aa_hostmaster_str(contact)
-  char *contact;
+int examin_aa_hostmaster_str (char *contact)
 {
   int ret;
 
@@ -2384,9 +2338,7 @@ examin_aa_hostmaster_str(contact)
 
 /* examine the vailidity of authority area serial number. Makes sure
    it is a number string. Returns non-zero value on failure. */
-int
-examin_serial_num(num)
-  char *num;
+int examin_serial_num (char *num)
 {
   int ret;
 
@@ -2397,9 +2349,7 @@ examin_serial_num(num)
 
 /* examine the validity of guardian item string. Returns non-zero value
    on failure. */
-int
-examin_guardian_item(guard_str)
-  char *guard_str;
+int examin_guardian_item (char *guard_str)
 {
   if (NOT_STR_EXISTS(guard_str)) return ERW_EMTYSTR;
 
@@ -2410,9 +2360,7 @@ examin_guardian_item(guard_str)
 /* examins the validity of a host name. It logs a warning if the hostname
    is not a complete dns host name. Returns non-zero value on
    error. */
-int
-examin_hostname(name)
-  char *name;
+int examin_hostname (char *name)
 {
   if (NOT_STR_EXISTS(name)) return ERW_EMTYSTR;
 
@@ -2431,9 +2379,7 @@ examin_hostname(name)
 
 /* examins the validity of a port number string. Returns non-zero
    value on error. */
-int
-examin_port_str(portstr)
-  char *portstr;
+int examin_port_str (char *portstr)
 {
   if (NOT_STR_EXISTS(portstr)) return ERW_EMTYSTR;
   if (!is_number_str(portstr)) return ERW_NUMSTR;
@@ -2444,9 +2390,7 @@ examin_port_str(portstr)
 
 /* examine the validity of authority area primary server string. Returns
    non-zero value if failed. */
-int
-examin_primary_server_str(server)
-  char *server;
+int examin_primary_server_str (char *server)
 {
   char hostname[BUFSIZ];
   char port[BUFSIZ];
@@ -2482,9 +2426,7 @@ examin_primary_server_str(server)
 /* examine the validity of master or slave server string. Returns
    a non-zero value if failed. Calls functions to examine hostname and
    port number string separately. */
-int
-examin_server_str(server)
-  char *server;
+int examin_server_str (char *server)
 {
   int             ret;
   char            name[BUFSIZ];
@@ -2508,8 +2450,7 @@ examin_server_str(server)
 
 
 /* verify all authority area definitions in the server configuration. */
-int
-verify_all_auth_areas()
+int verify_all_auth_areas (void)
 {
   int              not_done;
   auth_area_struct *aa;
@@ -2534,8 +2475,7 @@ verify_all_auth_areas()
    already in the list. Logs an error if a path name is already used in
    the configuration. */
 int
-verify_all_auth_area_paths(paths_list)
-  dl_list_type *paths_list;
+verify_all_auth_area_paths(dl_list_type *paths_list)
 {
   int              ret = 0;
   char             buffer[MAX_LINE];
@@ -2580,8 +2520,7 @@ verify_all_auth_area_paths(paths_list)
    classes are used as configuration path names (contents of
    paths_list). */
 int
-verify_aa_parse_progs(paths_list)
-  dl_list_type *paths_list;
+verify_aa_parse_progs(dl_list_type *paths_list)
 {
   int              ret = 0;
   auth_area_struct *aa;

@@ -15,10 +15,10 @@ static int processline PROTO((char         *line,
 
 /* processline: This function processes a response line */
 static int
-processline(line, delimiter, response)
-  char         *line;
-  char         *delimiter;
-  dl_list_type *response;
+processline(
+  char         *line,
+  char         *delimiter,
+  dl_list_type *response)
 {
   char *p;
 
@@ -56,11 +56,7 @@ processline(line, delimiter, response)
 
 /* connect_server: This function sets up a TCP connection to
    an RWhois server running at addr:port */
-void
-connect_server(addr, port, sockfd)
-  char *addr;
-  int  port;
-  int  *sockfd;
+void connect_server (char *addr, int port, int *sockfd)
 {
 #ifdef HAVE_IPV6
   struct addrinfo hints, *gai_result, *server_aip;
@@ -147,10 +143,7 @@ connect_server(addr, port, sockfd)
 
 /* send_directive: This function sends directive to
    an RWhois server */
-void
-send_directive(sockfd, directive)
-  int  sockfd;
-  char *directive;
+void send_directive (int sockfd, char *directive)
 {
   /* Write directive */
   if (write(sockfd, directive, strlen(directive)) < 0)
@@ -165,10 +158,10 @@ send_directive(sockfd, directive)
 /* recv_response: This functions receives response from
    an RWhois server */
 void
-recv_response(fp, delimiter, response)
-  FILE         *fp;
-  char         *delimiter;
-  dl_list_type *response;
+recv_response(
+  FILE         *fp,
+  char         *delimiter,
+  dl_list_type *response)
 {
   char line[MAX_LINE];
   int  not_done        = TRUE;
@@ -194,9 +187,7 @@ recv_response(fp, delimiter, response)
 
 
 /* destroy_response_data: This function frees a character string */
-int
-destroy_response_data(str)
-  char *str;
+int destroy_response_data (char *str)
 {
   if (!str)
   {

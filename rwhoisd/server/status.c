@@ -23,8 +23,7 @@
 /****************************************************************************
   return number of records
 ****************************************************************************/
-static long
-get_rec_num()
+static long get_rec_num (void)
 {
   dl_list_type     *aa_list;
   auth_area_struct *auth_area;
@@ -62,9 +61,7 @@ get_rec_num()
  *      %status Cached:  <cacheed number>
  *      %status Display:  <mode>: <type>
  */     
-int
-status_directive ( str )
-  char  *str;
+int status_directive (char *str)
 {
    
   /* -status don't have any argument */

@@ -35,9 +35,7 @@
  */
 
 
-int
-notify_directive(str)
-  char *str;
+int notify_directive (char *str)
 {
   char  word[MAX_LINE];
   char  *cp;

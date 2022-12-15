@@ -27,9 +27,7 @@
  *  -OR-
  *      %error if non-RWhois client.
  */
-int
-display_directive( str)
-  char  *str;
+int display_directive (char *str)
 {
   int   argc;
   char  **argv;

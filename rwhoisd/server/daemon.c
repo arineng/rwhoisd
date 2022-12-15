@@ -25,8 +25,7 @@ static int num_children = 0;
 /* -------------------- Local Functions ----------------- */
 
 /* logpid: put the pid in a specified file */
-static void
-logpid ()
+static void logpid (void)
 {
   FILE *fp;
 
@@ -37,8 +36,7 @@ logpid ()
   }
 }
 
-static void
-delpid()
+static void delpid (void)
 {
   char  *pid_file = get_pid_file();
 
@@ -49,8 +47,7 @@ delpid()
 }
 
 /* daemonize: turn the process into a daemon a la Stevens */
-static void
-daemonize()
+static void daemonize (void)
 {
   /* ignore TTY signals, if necessary */
 
@@ -92,8 +89,8 @@ daemonize()
 
 /* the sigchld signal handler */
 static RETSIGTYPE
-sigchld_handler(arg)
-  int   arg;
+sigchld_handler(
+  int   arg)
 {
   int       status;
   pid_t     pid;
@@ -107,42 +104,42 @@ sigchld_handler(arg)
 
   /* reset the signal handler -- some older systems remove the signal
      handler upon use.  POSIX systems should not do this */
-  signal(SIGCHLD, sigchld_handler);
+  signal(SIGCHLD, (__sighandler_t)sigchld_handler);
+  return 0;
 }
 
 static RETSIGTYPE
-sighup_handler(arg)
-  int   arg;
+sighup_handler(
+  int   arg)
 {
   hup_recvd = TRUE;
-  signal(SIGHUP, sighup_handler);
+  signal(SIGHUP, (__sighandler_t)sighup_handler);
+  return 0;
 }
 
 static RETSIGTYPE
-exit_handler(arg)
-  int   arg;
+exit_handler(
+  int   arg)
 {
   log(L_LOG_NOTICE, UNKNOWN, "Exiting");
   delpid();
   exit(0);
+  return 0;
 }
 
-static void
-set_sighup()
+static void set_sighup (void)
 {
-  signal(SIGHUP, sighup_handler);
+  signal(SIGHUP, (__sighandler_t)sighup_handler);
 }
 
 /* this actually handles all the normal quitting signals */
-static void
-set_exithandler()
+static void set_exithandler (void)
 {
-  signal(SIGINT, exit_handler);
-  signal(SIGTERM, exit_handler);
+  signal(SIGINT, (__sighandler_t)exit_handler);
+  signal(SIGTERM, (__sighandler_t)exit_handler);
 }
 
-static void
-reinit()
+static void reinit (void)
 {
   log(L_LOG_NOTICE, CONFIG, "Hangup received -- reinitializing");
 
@@ -165,16 +162,14 @@ reinit()
 
 /* -------------------- Public Functions ---------------- */
 
-void
-no_zombies()
+void no_zombies (void)
 {
   /* we need the sigchld handler to limit the number of concurrent
      processes */
-  signal(SIGCHLD, sigchld_handler);
+  signal(SIGCHLD, (__sighandler_t)sigchld_handler);
 }
 
-int
-run_daemon()
+int run_daemon (void)
 {
 #ifdef HAVE_IPV6
   struct sockaddr_storage client_addr;

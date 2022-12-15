@@ -14,9 +14,10 @@ static int          childstatus;
 static int
 destroy_slave_state_data PROTO((slave_state_struct *slave_state));
 
-static void sigalrm_handler();
+static void sigalrm_handler (int signo);
 
-static void sigchld_handler();
+
+static void sigchld_handler (int signo);
 
 
 /* ------------------- LOCAL FUNCTIONS -------------------- */
@@ -25,8 +26,8 @@ static void sigchld_handler();
 /* destroy_slave_state_data: This function frees a slave state
    structure */
 static int
-destroy_slave_state_data(slave_state)
-  slave_state_struct *slave_state;
+destroy_slave_state_data(
+  slave_state_struct *slave_state)
 {
   if (!slave_state)
   {
@@ -45,18 +46,14 @@ destroy_slave_state_data(slave_state)
 
 
 /* sigalrm_handler: This function handles SIGALRM signal */
-static void
-sigalrm_handler(signo)
-  int signo;
+static void sigalrm_handler (int signo)
 {
   return;
 }
 
 
 /* sigchld_handler: This function handles SIGCHLD signal */
-static void
-sigchld_handler(signo)
-  int signo;
+static void sigchld_handler (int signo)
 {
   childpid = wait(&childstatus);
 
@@ -68,12 +65,7 @@ sigchld_handler(signo)
 
 
 /* set_slave_state: This function sets slave authority area state */
-int
-set_slave_state(name, pid, action, status)
-  char *name;
-  int  pid;
-  int  action;
-  int  status;
+int set_slave_state (char *name, int pid, int action, int status)
 {
   slave_state_struct *slave_state;
   int                not_done;
@@ -100,8 +92,8 @@ set_slave_state(name, pid, action, status)
 
 /* get_slave_state: This function gets slave authority area state */
 slave_state_struct *
-get_slave_state(name)
-  char *name;
+get_slave_state(
+  char *name)
 {
   slave_state_struct *slave_state;
   int                not_done;
@@ -126,8 +118,8 @@ get_slave_state(name)
 /* init_slave_state_list: This function initializes slave
    authority area state list */
 void
-init_slave_state_list(slave_aa_list)
-  dl_list_type *slave_aa_list;
+init_slave_state_list(
+  dl_list_type *slave_aa_list)
 {
   auth_area_struct   *aa;
   slave_state_struct *slave_state;
@@ -156,11 +148,7 @@ init_slave_state_list(slave_aa_list)
 
 /* wait_for_child_processes: This function waits for child processes for
    slave authority areas */
-void
-wait_for_child_processes(count, seconds, action)
-  int count;
-  int seconds;
-  int action;
+void wait_for_child_processes (int count, int seconds, int action)
 {
   slave_state_struct *slave_state;
   int                not_done;

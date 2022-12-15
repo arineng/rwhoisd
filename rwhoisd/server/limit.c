@@ -23,9 +23,7 @@
  *      -OR- 
  *       error messages.
  */
-int 
-limit_directive(str)
-  char  *str;
+int limit_directive (char *str)
 {
   int hits;
   int ceiling;

@@ -3,9 +3,7 @@
 
 #define NETWORK_REGEXP "^[0-9]+([.][0-9]+)*(/[0-9]+)?$"
 
-int
-is_network(value)
-  char *value;
+int is_network (char *value)
 {
   static regexp *net_prog = NULL;
 
@@ -24,9 +22,7 @@ is_network(value)
   }
 }
 
-void main(argc, argv)
-  int argc;
-  char **argv;
+void main (int argc, char **argv)
 {
   printf("checking: %s\n", argv[1]);
   

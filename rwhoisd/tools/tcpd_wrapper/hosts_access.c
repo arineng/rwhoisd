@@ -23,6 +23,7 @@ static char sccsid[] = "@(#) hosts_access.c 1.21 97/02/12 02:13:22";
 
 /* System libraries. */
 
+#define _XOPEN_SOURCE 500
 #include <sys/types.h>
 #include <sys/param.h>
 #include <netinet/in.h>
@@ -33,12 +34,13 @@ static char sccsid[] = "@(#) hosts_access.c 1.21 97/02/12 02:13:22";
 #include <errno.h>
 #include <setjmp.h>
 #include <string.h>
+#include <stdlib.h>
 
 #ifndef HAVE_UCHAR_T
 typedef unsigned char uchar_t;
 #endif
 
-extern char *fgets();
+extern char *fgets (char *__restrict __s, int __n, FILE *__restrict __stream);
 extern int errno;
 
 #ifndef	INADDR_NONE
@@ -79,15 +81,15 @@ int     resident = (-1);		/* -1, 0: unknown; +1: yes */
 
 /* Forward declarations. */
 
-static int table_match();
-static int list_match();
-static int server_match();
-static int client_match();
-static int host_match();
-static int string_match();
-static int masked_match();
+static int table_match (char *table, struct request_info *request);
+static int list_match (char *list, struct request_info *request, int (*match_fn)(char *tok, struct request_info *req));
+static int server_match (char *tok, struct request_info *request);
+static int client_match (char *tok, struct request_info *request);
+static int host_match (char *tok, struct host_info *host);
+static int string_match (char *tok, char *string);
+static int masked_match (char *net_tok, char *mask_tok, char *string);
 #ifdef HAVE_IPV6
-static void ipv6_mask();
+static void ipv6_mask (struct in6_addr *in6p, int maskbits);
 #endif
 
 /* Size of logical line buffer. */
@@ -96,8 +98,7 @@ static void ipv6_mask();
 
 /* hosts_access - host access control facility */
 
-int     hosts_access(request)
-struct request_info *request;
+int hosts_access (struct request_info *request)
 {
     int     verdict;
 
@@ -130,9 +131,7 @@ struct request_info *request;
 
 /* table_match - match table entries with (daemon, client) pair */
 
-static int table_match(table, request)
-char   *table;
-struct request_info *request;
+static int table_match (char *table, struct request_info *request)
 {
     FILE   *fp;
     char    sv_list[BUFLEN];		/* becomes list of daemons */
@@ -189,10 +188,7 @@ struct request_info *request;
 
 /* list_match - match a request against a list of patterns with exceptions */
 
-static int list_match(list, request, match_fn)
-char   *list;
-struct request_info *request;
-int   (*match_fn) ();
+static int list_match (char *list, struct request_info *request, int (*match_fn)(char *tok, struct request_info *req))
 {
     char   *tok;
 
@@ -217,9 +213,7 @@ int   (*match_fn) ();
 
 /* server_match - match server information */
 
-static int server_match(tok, request)
-char   *tok;
-struct request_info *request;
+static int server_match (char *tok, struct request_info *request)
 {
     char   *host;
 
@@ -233,9 +227,7 @@ struct request_info *request;
 
 /* client_match - match client information */
 
-static int client_match(tok, request)
-char   *tok;
-struct request_info *request;
+static int client_match (char *tok, struct request_info *request)
 {
     char   *host;
 
@@ -249,9 +241,7 @@ struct request_info *request;
 
 /* host_match - match host name and/or address against pattern */
 
-static int host_match(tok, host)
-char   *tok;
-struct host_info *host;
+static int host_match (char *tok, struct host_info *host)
 {
     char   *mask;
 
@@ -352,9 +342,7 @@ struct host_info *host;
 
 /* string_match - match string against pattern */
 
-static int string_match(tok, string)
-char   *tok;
-char   *string;
+static int string_match (char *tok, char *string)
 {
     int     n;
 
@@ -374,10 +362,7 @@ char   *string;
 
 /* masked_match - match address against netnumber/netmask */
 
-static int masked_match(net_tok, mask_tok, string)
-char   *net_tok;
-char   *mask_tok;
-char   *string;
+static int masked_match (char *net_tok, char *mask_tok, char *string)
 {
     unsigned long net;
     unsigned long mask;
@@ -405,9 +390,7 @@ char   *string;
  * This function can be made generic by specifying an address length as
  * extra parameter. (So Wietse can implement 1.2.3.4/16)
  */
-static void ipv6_mask(in6p, maskbits)
-struct in6_addr *in6p;
-int maskbits;
+static void ipv6_mask (struct in6_addr *in6p, int maskbits)
 {
     uchar_t *p = (uchar_t*) in6p;
 

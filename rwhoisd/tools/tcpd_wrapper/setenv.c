@@ -10,25 +10,26 @@
   * Author: Wietse Venema, Eindhoven University of Technology, The Netherlands.
   */
 
+#include <stdio.h>
+#include <string.h>
 #ifndef lint
 static char sccsid[] = "@(#) setenv.c 1.1 93/03/07 22:47:58";
 #endif
 
+#include <stdlib.h>
+
 /* setenv - update or insert environment (name,value) pair */
 
-int     setenv(name, value, clobber)
-char   *name;
-char   *value;
-int     clobber;
+int setenv (const char *__name, const char *__value, int __replace)
 {
-    char   *malloc();
-    char   *getenv();
+    void   *malloc(size_t size);
+    char   *getenv(const char *name);
     char   *cp;
 
-    if (clobber == 0 && getenv(name) != 0)
+    if (__replace == 0 && getenv(__name) != 0)
 	return (0);
-    if ((cp = malloc(strlen(name) + strlen(value) + 2)) == 0)
+    if ((cp = malloc(strlen(__name) + strlen(__value) + 2)) == 0)
 	return (1);
-    sprintf(cp, "%s=%s", name, value);
+    sprintf(cp, "%s=%s", __name, __value);
     return (putenv(cp));
 }

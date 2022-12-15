@@ -29,8 +29,8 @@
 /*--------------------- LOCAL FUNCTIONS ---------------------------*/
 
 static int
-looks_like_id(id)
-  char *id;
+looks_like_id(
+  char *id)
 {
   char *p = NULL;
 
@@ -50,9 +50,9 @@ looks_like_id(id)
 }
 
 static int
-build_guardian_query(query, id)
-  query_struct *query;
-  char         *id;
+build_guardian_query(
+  query_struct *query,
+  char         *id)
 {
   char         query_str[MAX_LINE];
 
@@ -83,8 +83,8 @@ build_guardian_query(query, id)
 
 /* A debug function which prints the details of a query_struct */
 void
-print_query_details(query)
-  query_struct *query;
+print_query_details(
+  query_struct *query)
 {
 
   if (query->auth_area_name)
@@ -109,9 +109,9 @@ print_query_details(query)
    guardian information.  Returns FALSE if this guardian doesn't
    match, TRUE if it does. */
 static int
-check_credentials(guard, request)
-  record_struct *guard;
-  auth_struct   *request;
+check_credentials(
+  record_struct *guard,
+  auth_struct   *request)
 {
   av_pair_struct    *av_pair;
   char              *guard_info;
@@ -196,8 +196,8 @@ check_credentials(guard, request)
 }
 
 static record_struct *
-lookup_guardian_record(guard_id)
-  char *guard_id;
+lookup_guardian_record(
+  char *guard_id)
 {
   query_struct      *query;
   dl_list_type      new_rec_list;
@@ -260,8 +260,8 @@ lookup_guardian_record(guard_id)
 
 /* this function returns TRUE if the record is guarded, FALSE if not.  */
 static int
-is_record_guarded(record)
-  record_struct *record;
+is_record_guarded(
+  record_struct *record)
 {
   av_pair_struct *av_pair;
 
@@ -302,8 +302,8 @@ is_record_guarded(record)
 /* returns TRUE if the security attributes match a guardian of record,
    or record not guarded */
 int
-check_guardian(record)
-  record_struct *record;
+check_guardian(
+  record_struct *record)
 {
   av_pair_struct *av_pair;
   record_struct  *guard;
@@ -479,8 +479,8 @@ check_guardian(record)
 }
 
 int
-is_guardian_record(record)
-  record_struct *record;
+is_guardian_record(
+  record_struct *record)
 {
   if (STR_EQ(record->class->name, "Guardian"))
   {
@@ -495,8 +495,8 @@ is_guardian_record(record)
    crypt() passwords, normalize scheme names, etc. */
 
 int
-transform_guardian_record(rec)
-  record_struct *rec;
+transform_guardian_record(
+  record_struct *rec)
 {
   av_pair_struct *av;
   char           *scheme;

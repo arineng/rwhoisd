@@ -39,9 +39,7 @@ typedef struct _class_arg_struct
 
 /* ------------------- Local Functions -------------------- */
 
-static int
-destroy_class_arg_struct(cs)
-  class_arg_struct *cs;
+static int destroy_class_arg_struct (class_arg_struct *cs)
 {
   if (!cs) return TRUE;
   
@@ -55,9 +53,7 @@ destroy_class_arg_struct(cs)
 /* class_parse_args:  parses argument of -class call.  
  *  It returns a class_arg_struct on success. 
  */
-static class_arg_struct * 
-class_parse_args(str)
-  char *str;
+static class_arg_struct *class_parse_args (char *str)
 {
   class_arg_struct  *cs;
   auth_area_struct  *auth_area;
@@ -126,9 +122,9 @@ class_parse_args(str)
 
 /* display_one_class: display one class. 
  */
-static void 
-display_one_class(class)
-  class_struct *class;
+static void
+display_one_class(
+  class_struct *class)
 {
 
     print_response(RESP_CLASS, "%s:description:%s",class->name,
@@ -142,13 +138,13 @@ display_one_class(class)
 /* display_classses: display all the classes in a class-list.  
  * Only description and version info are displayed. 
  */
-static void 
-display_classes(class_list)
-  dl_list_type *class_list;
-{   
+static void
+display_classes(
+  dl_list_type *class_list)
+{
   int          not_done;
   class_struct *class;
- 
+
   not_done = dl_list_first(class_list);
   while (not_done)
   {
@@ -166,16 +162,14 @@ display_classes(class_list)
 
 /* class_directive:  process the call to -class directive.
  */
-int 
-class_directive(str)
-  char * str;
+int class_directive (char *str)
 {
   class_arg_struct *in = NULL;
 
 
   in = class_parse_args(str);
 
-  if (!in) 
+  if (!in)
   {
     return FALSE;
   }

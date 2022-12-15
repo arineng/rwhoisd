@@ -24,12 +24,12 @@
 
 
 ext_parse_response_type
-run_external_parser(parse_prog, action, reg_email, old_rec, new_rec_p)
-  char                 *parse_prog;
-  register_action_type action;
-  char                 *reg_email;
-  record_struct        *old_rec;
-  record_struct        **new_rec_p;
+run_external_parser(
+  char                 *parse_prog,
+  register_action_type action,
+  char                 *reg_email,
+  record_struct        *old_rec,
+  record_struct        **new_rec_p)
 {
   FILE                    *tmp_fp;
   char                    *action_str;

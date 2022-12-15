@@ -48,9 +48,9 @@ static char *get_aaname_from_anon_rec PROTO((anon_record_struct *anon_rec));
 /* --------------------- Local Functions ------------------- */
 
 static void
-report_rec_parse_error(function_name, status)
-  char             *function_name;
-  rec_parse_result status;
+report_rec_parse_error(
+  char             *function_name,
+  rec_parse_result status)
 {
   switch (status)
   {
@@ -76,8 +76,8 @@ report_rec_parse_error(function_name, status)
 
 /* finds the class attribute in an anonymous record, and extracts the name. */
 static char *
-get_classname_from_anon_rec(anon_rec)
-  anon_record_struct *anon_rec;
+get_classname_from_anon_rec(
+  anon_record_struct *anon_rec)
 {
   anon_av_pair_struct *av;
   
@@ -91,8 +91,8 @@ get_classname_from_anon_rec(anon_rec)
 
 /* finds the auth-area attribute in the anon record and returns the value. */
 static char *
-get_aaname_from_anon_rec(anon_rec)
-  anon_record_struct *anon_rec;
+get_aaname_from_anon_rec(
+  anon_record_struct *anon_rec)
 {
   anon_av_pair_struct *av;
 
@@ -106,8 +106,8 @@ get_aaname_from_anon_rec(anon_rec)
 /* --------------------- Public Functions ------------------- */
 
 register_action_type
-translate_action_str(action)
-  char *action;
+translate_action_str(
+  char *action)
 {
   if (STR_EQ(action, "ADD"))
   {
@@ -126,8 +126,8 @@ translate_action_str(action)
 }
 
 char *
-action_to_string(action)
-  register_action_type action;
+action_to_string(
+  register_action_type action)
 {
   switch (action)
   {
@@ -143,9 +143,7 @@ action_to_string(action)
 }
            
 /* given the authority area name, generate a random ID string. */
-char *
-generate_id(auth_area_name)
-  char *auth_area_name;
+char *generate_id (char *auth_area_name)
 {
   char      buffer[16];
   char      id_str[MAX_LINE];
@@ -163,8 +161,7 @@ generate_id(auth_area_name)
   return(xstrdup(id_str));
 }
 
-char *
-generate_updated()
+char *generate_updated (void)
 {
   return(xstrdup(make_timestamp()));
 }
@@ -174,10 +171,10 @@ generate_updated()
    register spool file.  Basically, this is just an encapsulation of
    some error checking. */
 int
-get_class_and_aa_from_anon_rec(anon_rec, class_p, auth_area_p)
-  anon_record_struct *anon_rec;
-  class_struct       **class_p;
-  auth_area_struct   **auth_area_p;
+get_class_and_aa_from_anon_rec(
+  anon_record_struct *anon_rec,
+  class_struct       **class_p,
+  auth_area_struct   **auth_area_p)
 {
   char             *class_str;
   char             *aa_str;
@@ -219,8 +216,8 @@ get_class_and_aa_from_anon_rec(anon_rec, class_p, auth_area_p)
 
 /* returns TRUE if a there is a record separator in the file. */
 int
-has_record_separator(fp)
-  FILE  *fp;
+has_record_separator(
+  FILE  *fp)
 {
   char          line[MAX_LINE];
   unsigned long orig_pos;
@@ -267,9 +264,9 @@ has_record_separator(fp)
 
 /* updates the soa record. Returns TRUE if ok, FALSE if not. */
 int
-update_soa_record(auth_area, updated_str)
-  auth_area_struct *auth_area;
-  char             *updated_str;
+update_soa_record(
+  auth_area_struct *auth_area,
+  char             *updated_str)
 {  
   free(auth_area->serial_no);
   auth_area->serial_no = xstrdup(updated_str);
@@ -280,9 +277,9 @@ update_soa_record(auth_area, updated_str)
 /* either adds or modifies the record's 'Updated' attribute, setting
    it to 'updated_str' */
 void
-set_updated_attr(record, updated_str)
-  record_struct *record;
-  char          *updated_str;
+set_updated_attr(
+  record_struct *record,
+  char          *updated_str)
 {
   av_pair_struct   *av;
 
@@ -301,10 +298,10 @@ set_updated_attr(record, updated_str)
 
 
 int
-compare_record_attr_by_name(rec1, rec2, attr_name)
-  record_struct *rec1;
-  record_struct *rec2;
-  char          *attr_name;
+compare_record_attr_by_name(
+  record_struct *rec1,
+  record_struct *rec2,
+  char          *attr_name)
 {
   av_pair_struct *av1;
   av_pair_struct *av2;
@@ -333,10 +330,10 @@ compare_record_attr_by_name(rec1, rec2, attr_name)
 }
 
 int
-get_id_and_updated_from_anon(anon_rec, id, updated)
-  anon_record_struct *anon_rec;
-  char **id;
-  char **updated;
+get_id_and_updated_from_anon(
+  anon_record_struct *anon_rec,
+  char **id,
+  char **updated)
 {
   anon_av_pair_struct *anon_av;
 
@@ -363,10 +360,10 @@ get_id_and_updated_from_anon(anon_rec, id, updated)
 
 /* builds the query struture used to get the to-be-deleted object */
 int
-build_object_query(query, id, updated)
-  query_struct *query;
-  char         *id;
-  char         *updated;
+build_object_query(
+  query_struct *query,
+  char         *id,
+  char         *updated)
 {
   char                query_str[MAX_LINE];
 
@@ -398,9 +395,9 @@ build_object_query(query, id, updated)
 /* build a query looking for other objects with the same primary keys
    as the given record */
 int
-build_primary_key_query(query, record)
-  query_struct  *query;
-  record_struct *record;
+build_primary_key_query(
+  query_struct  *query,
+  record_struct *record)
 {
   dl_list_type     *attr_list;
   attribute_struct *attr;
@@ -461,9 +458,9 @@ build_primary_key_query(query, record)
 /* reads the contents of the register spool file on an add operation
    (one fully specified record only) */
 int
-read_add_spool(spool_fp, new_record_p)
-  FILE          *spool_fp;
-  record_struct **new_record_p;
+read_add_spool(
+  FILE          *spool_fp,
+  record_struct **new_record_p)
 {
   auth_area_struct   *aa;
   class_struct       *class;
@@ -520,10 +517,10 @@ read_add_spool(spool_fp, new_record_p)
 /* read the contents of the register spool file for a mod operation
    (id & updated, _NEW_, and the replacement record) */
 int
-read_mod_spool(spool_fp, new_record_p, old_record_p)
-  FILE               *spool_fp;
-  record_struct      **new_record_p;
-  anon_record_struct **old_record_p;
+read_mod_spool(
+  FILE               *spool_fp,
+  record_struct      **new_record_p,
+  anon_record_struct **old_record_p)
 {
   auth_area_struct   *aa;
   class_struct       *class;
@@ -587,9 +584,9 @@ read_mod_spool(spool_fp, new_record_p, old_record_p)
 /* read the contents of the register spool file for a del operation
    (at least an ID and Updated, other stuff is ok but ignored) */
 int
-read_del_spool(spool_fp, old_record_p)
-  FILE *spool_fp;
-  anon_record_struct **old_record_p;
+read_del_spool(
+  FILE *spool_fp,
+  anon_record_struct **old_record_p)
 {
   anon_record_struct *old_rec;
   rec_parse_result   status;

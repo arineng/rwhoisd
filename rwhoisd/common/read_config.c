@@ -33,10 +33,7 @@ static void remove_tmp_config PROTO((char *suffix, dl_list_type *paths_list));
 /* ------------------- Public Functions -------------------- */
 
 /* read_all_config_files: get all the possible configuration */
-int
-read_all_config_files(config_file, chrooted)
-  char *config_file;
-  int  chrooted;
+int read_all_config_files (char *config_file, int chrooted)
 {
   
   /* read the main config file (rwhois.conf) to get the every location */
@@ -93,10 +90,10 @@ read_all_config_files(config_file, chrooted)
    directive allow and deny files. Does a check on the configuration after
    it is read-in. */
 int
-read_rwhois_config_files(config_file, rwconf, chrooted)
-  char                  *config_file; 
-  rwhois_configs_struct *rwconf;
-  int                   chrooted;
+read_rwhois_config_files(
+  char                  *config_file,
+  rwhois_configs_struct *rwconf,
+  int                   chrooted)
 {
   char         *punt_file;
   char         *allow_file;
@@ -166,10 +163,10 @@ read_rwhois_config_files(config_file, rwconf, chrooted)
    backup of the old configuration ofcourse. Removes temporary
    configuration if unsuccessful. */
 int
-write_all_config_files(config_file, suffix, rwconf)
-  char                  *config_file; 
-  char                  *suffix;
-  rwhois_configs_struct *rwconf;
+write_all_config_files(
+  char                  *config_file,
+  char                  *suffix,
+  rwhois_configs_struct *rwconf)
 {
   char         *dir_file;
   char         *xdir_file;
@@ -293,8 +290,7 @@ write_all_config_files(config_file, suffix, rwconf)
    complete rwhois configuration. Also calls a function to verify that
    there is no repeated usage of file names in the configuration. */
 int
-verify_all_config(rwconf)
-  rwhois_configs_struct *rwconf;
+verify_all_config(rwhois_configs_struct *rwconf)
 {
   dl_list_type *dir_allow = rwconf->dir_allow;
   dl_list_type *dir_deny  = rwconf->dir_deny;
@@ -361,8 +357,7 @@ verify_all_config(rwconf)
    destroy/free-up all rwhois configuration.
 */
 void
-destroy_all_config(rwconf)
-  rwhois_configs_struct *rwconf;
+destroy_all_config(rwhois_configs_struct *rwconf)
 {
   /* destroy directive and extended directive list list */
   destroy_directive_list();
@@ -385,8 +380,7 @@ destroy_all_config(rwconf)
 
 /* initialize the rwhois configuration with defaults */
 int
-def_init_all_config(rwconf)
-  rwhois_configs_struct *rwconf;
+def_init_all_config(rwhois_configs_struct *rwconf)
 {
   /* destroy all configuration first */
   destroy_all_config(rwconf);
@@ -432,8 +426,7 @@ def_init_all_config(rwconf)
    admin server do not overwrite files written-out by rwhois server.
    Since the log files are opened in append mode, the log file names need
    not be unique. */
-static int
-verify_all_path_names()
+static int verify_all_path_names (void)
 {
   int          ret = 0;
   dl_list_type *paths_list = NULL;
@@ -467,9 +460,9 @@ verify_all_path_names()
    use of the temporary configurations file list 'paths_list' in 
    deciding which files need to be renamed for new configuration. */
 static int 
-moveto_new_configuration(suffix, paths_list)
-  char *suffix;
-  dl_list_type *paths_list;
+moveto_new_configuration(
+  char *suffix,
+  dl_list_type *paths_list)
 {
   int not_done, idx, len;
   char *path, file[MAX_FILE], bkp_file[MAX_FILE];
@@ -562,9 +555,9 @@ moveto_new_configuration(suffix, paths_list)
 /* remove all temorary (new) configuration files/directories 
    (in the paths_list) from disk. */
 static void
-remove_tmp_config(suffix, paths_list)
-  char         *suffix;
-  dl_list_type *paths_list;
+remove_tmp_config(
+  char         *suffix,
+  dl_list_type *paths_list)
 {
   int  idx;
   int  len;

@@ -21,10 +21,10 @@
 /* ----------------------- Local Functions ---------------------- */
 
 static int
-encode_av_pair(class, av, line)
-  class_struct      *class;
-  av_pair_struct    *av;
-  char              *line;
+encode_av_pair(
+  class_struct      *class,
+  av_pair_struct    *av,
+  char              *line)
 {
   /* Right now this routine is very simple; however, I expect that it
      will become more complex as more space and flexiblity issues move
@@ -38,12 +38,12 @@ encode_av_pair(class, av, line)
 }
 
 static av_pair_struct *
-translate_anon_av_pair(anon_av, class, auth_area, validate_flag, status)
-  anon_av_pair_struct *anon_av;
-  class_struct        *class;
-  auth_area_struct    *auth_area;
-  int                 validate_flag;
-  av_parse_result     *status;
+translate_anon_av_pair(
+  anon_av_pair_struct *anon_av,
+  class_struct        *class,
+  auth_area_struct    *auth_area,
+  int                 validate_flag,
+  av_parse_result     *status)
 {
   av_pair_struct   *av;
   attribute_struct *attr;
@@ -103,11 +103,11 @@ translate_anon_av_pair(anon_av, class, auth_area, validate_flag, status)
    were stored without explict class name or authority area
    attributes. */
 record_struct *
-mkdb_translate_anon_record(anon, class, auth_area, validate_flag)
-  anon_record_struct *anon;
-  class_struct       *class;
-  auth_area_struct   *auth_area;
-  int                validate_flag;
+mkdb_translate_anon_record(
+  anon_record_struct *anon,
+  class_struct       *class,
+  auth_area_struct   *auth_area,
+  int                validate_flag)
 {
   record_struct       *rec;
   anon_av_pair_struct *anon_av;
@@ -172,13 +172,13 @@ mkdb_translate_anon_record(anon, class, auth_area, validate_flag)
 
 
 record_struct *
-mkdb_read_record(class, auth_area, data_file_no, validate_flag, status, fp)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  int               data_file_no;
-  int               validate_flag;
-  rec_parse_result  *status;
-  FILE              *fp;
+mkdb_read_record(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  int               data_file_no,
+  int               validate_flag,
+  rec_parse_result  *status,
+  FILE              *fp)
 {
   anon_record_struct *anon;
   record_struct      *rec;
@@ -234,14 +234,13 @@ mkdb_read_record(class, auth_area, data_file_no, validate_flag, status, fp)
 }
 
 record_struct *
-mkdb_read_next_record(class, auth_area, data_file_no, validate_flag,
-                      status, fp)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  int               data_file_no;
-  int               validate_flag;
-  rec_parse_result  *status;
-  FILE              *fp;
+mkdb_read_next_record(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  int               data_file_no,
+  int               validate_flag,
+  rec_parse_result  *status,
+  FILE              *fp)
 {
   record_struct *rec;
 
@@ -268,9 +267,9 @@ mkdb_read_next_record(class, auth_area, data_file_no, validate_flag,
 /* mkdb_write_record: given a record structure, write it to file
      stream 'fp', which needs to have been opened for writing. */
 int
-mkdb_write_record(record, fp)
-  record_struct *record;
-  FILE          *fp;
+mkdb_write_record(
+  record_struct *record,
+  FILE          *fp)
 {
   char          line[MAX_LINE + 1];
   dl_list_type  *av_list = &(record->av_pair_list);
@@ -291,9 +290,9 @@ mkdb_write_record(record, fp)
 }
 
 av_pair_struct *
-find_attr_in_record_by_name(record, attr_name)
-  record_struct *record;
-  char          *attr_name;
+find_attr_in_record_by_name(
+  record_struct *record,
+  char          *attr_name)
 {
   av_pair_struct *av;
   dl_list_type   *av_list;
@@ -323,9 +322,9 @@ find_attr_in_record_by_name(record, attr_name)
 }
 
 av_pair_struct *
-find_attr_in_record_by_id(record, id)
-  record_struct *record;
-  int           id;
+find_attr_in_record_by_id(
+  record_struct *record,
+  int           id)
 {
   av_pair_struct *av;
   dl_list_type   *av_list;
@@ -356,11 +355,11 @@ find_attr_in_record_by_id(record, id)
 
 
 int
-append_attribute_to_record(record, class, attrib_name, value)
-  record_struct *record;
-  class_struct  *class;
-  char          *attrib_name;
-  char          *value;
+append_attribute_to_record(
+  record_struct *record,
+  class_struct  *class,
+  char          *attrib_name,
+  char          *value)
 {
   av_pair_struct    *av;
 
@@ -378,9 +377,9 @@ append_attribute_to_record(record, class, attrib_name, value)
 }
 
 int
-delete_attribute_from_record(record, attrib_name)
-  record_struct *record;
-  char          *attrib_name;
+delete_attribute_from_record(
+  record_struct *record,
+  char          *attrib_name)
 {
   av_pair_struct *av;
   dl_list_type   *av_list;
@@ -406,8 +405,8 @@ delete_attribute_from_record(record, attrib_name)
 }
 
 av_pair_struct *
-copy_av_pair(av)
-  av_pair_struct *av;
+copy_av_pair(
+  av_pair_struct *av)
 {
   av_pair_struct *copy;
 
@@ -429,8 +428,8 @@ copy_av_pair(av)
 }
 
 record_struct *
-copy_record(rec)
-  record_struct *rec;
+copy_record(
+  record_struct *rec)
 {
   record_struct  *copy;
   av_pair_struct *av;
@@ -460,11 +459,11 @@ copy_record(rec)
   }
 
   return(copy);
-}       
+}
 
 int
-destroy_record_data(rec)
-  record_struct *rec;
+destroy_record_data(
+  record_struct *rec)
 {
   if (!rec) return TRUE;
 
@@ -479,8 +478,8 @@ destroy_record_data(rec)
 }
 
 int
-destroy_av_pair_data(av)
-  av_pair_struct    *av;
+destroy_av_pair_data(
+  av_pair_struct    *av)
 {
   if (!av) return TRUE;
 
@@ -493,4 +492,3 @@ destroy_av_pair_data(av)
 
   return TRUE;
 }
-

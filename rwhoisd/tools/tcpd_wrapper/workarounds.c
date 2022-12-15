@@ -56,8 +56,7 @@ extern int errno;
 
 #undef inet_addr
 
-long    fix_inet_addr(string)
-char   *string;
+long fix_inet_addr (char *string)
 {
     return (inet_addr(string).s_addr);
 }
@@ -77,10 +76,7 @@ char   *string;
 
 #undef fgets
 
-char   *fix_fgets(buf, len, fp)
-char   *buf;
-int     len;
-FILE   *fp;
+char *fix_fgets (char *buf, int len, FILE *fp)
 {
     char   *cp = buf;
     int     c;
@@ -120,13 +116,7 @@ FILE   *fp;
 
 #undef recvfrom
 
-int     fix_recvfrom(sock, buf, buflen, flags, from, fromlen)
-int     sock;
-char   *buf;
-int     buflen;
-int     flags;
-struct sockaddr *from;
-int    *fromlen;
+int fix_recvfrom (int sock, char *buf, int buflen, int flags, struct sockaddr *from, int *fromlen)
 {
     int     ret;
 
@@ -160,10 +150,7 @@ int    *fromlen;
 
 #undef getpeername
 
-int     fix_getpeername(sock, sa, len)
-int     sock;
-struct sockaddr *sa;
-int    *len;
+int fix_getpeername (int sock, struct sockaddr *sa, int *len)
 {
     int     ret;
     struct sockaddr_in *sin = (struct sockaddr_in *) sa;
@@ -188,8 +175,7 @@ int    *len;
 
 #ifdef USE_GETDOMAIN
 
-int     yp_get_default_domain(ptr)
-char  **ptr;
+int yp_get_default_domain (char **ptr)
 {
     static char mydomain[MAXHOSTNAMELEN];
 
@@ -217,8 +203,7 @@ char  **ptr;
 
 #undef gethostbyname
 
-struct hostent *fix_gethostbyname(name)
-char   *name;
+struct hostent *fix_gethostbyname (char *name)
 {
     struct hostent *hp;
     struct in_addr addr;
@@ -255,9 +240,7 @@ char   *name;
 
 #ifdef USE_STRSEP
 
-char   *fix_strtok(buf, sep)
-char   *buf;
-char   *sep;
+char *fix_strtok (char *buf, char *sep)
 {
     static char *state;
     char   *result;
@@ -280,9 +263,7 @@ char   *sep;
 
 #ifdef LIBC_CALLS_STRTOK
 
-char   *my_strtok(buf, sep)
-char   *buf;
-char   *sep;
+char *my_strtok (char *buf, char *sep)
 {
     static char *state;
     char   *result;

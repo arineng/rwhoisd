@@ -19,8 +19,7 @@
 /* init_slave_auth_areas: This function initially creates
    SOA file, schema file, attribute definitions directory,
    and data directory for each slave authority area */
-int
-init_slave_auth_areas()
+int init_slave_auth_areas (void)
 {
   dl_list_type       *aa_list;
   dl_list_type       slave_aa_list;
@@ -288,8 +287,7 @@ init_slave_auth_areas()
 /* update_slave_auth_areas: This function updates data for a
    slave authority area if serial number has been incremented
    at the master server */
-int
-update_slave_auth_areas()
+int update_slave_auth_areas (void)
 {
   dl_list_type       *aa_list;
   dl_list_type       slave_aa_list;

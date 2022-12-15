@@ -28,8 +28,8 @@ static int mkdb_delete_data_entry PROTO((dl_list_type  *fi_list,
                                          dl_list_type  *changed_fi_list));
 
 int
-mkdb_delete_record_list (record_list)
-  dl_list_type *record_list;
+mkdb_delete_record_list (
+  dl_list_type *record_list)
 {
   record_struct *record;
   dl_list_type  all_file_list;
@@ -72,10 +72,10 @@ mkdb_delete_record_list (record_list)
 }
 
 int
-mkdb_delete_record(file_list, hit_item, changed_fi_list)
-  dl_list_type  *file_list;
-  record_struct *hit_item;
-  dl_list_type  *changed_fi_list;
+mkdb_delete_record(
+  dl_list_type  *file_list,
+  record_struct *hit_item,
+  dl_list_type  *changed_fi_list)
 {
   int   status;
 
@@ -92,13 +92,12 @@ mkdb_delete_record(file_list, hit_item, changed_fi_list)
 }
 
 static int
-mkdb_delete_index_entry(fi_list, index_file_index, data_file_index, offset,
-                        changed_fi_list)
-  dl_list_type      *fi_list;
-  int               index_file_index;
-  int               data_file_index;
-  off_t             offset;
-  dl_list_type      *changed_fi_list;
+mkdb_delete_index_entry(
+  dl_list_type      *fi_list,
+  int               index_file_index,
+  int               data_file_index,
+  off_t             offset,
+  dl_list_type      *changed_fi_list)
 {
   file_struct       *fi             = NULL;
   index_struct      index_item;
@@ -163,10 +162,10 @@ mkdb_delete_index_entry(fi_list, index_file_index, data_file_index, offset,
 
 
 int
-mkdb_delete_data_entry(fi_list, hit_item, changed_fi_list)
-  dl_list_type      *fi_list;
-  record_struct     *hit_item;
-  dl_list_type      *changed_fi_list;
+mkdb_delete_data_entry(
+  dl_list_type      *fi_list,
+  record_struct     *hit_item,
+  dl_list_type      *changed_fi_list)
 {
   FILE        *fp;
   file_struct *fi;

@@ -83,9 +83,9 @@ static query_term_struct   *working_term;
 static int                 parse_status;
   
 static int
-set_query(class_name, auth_area_name)
-  char *class_name;
-  char *auth_area_name;
+set_query(
+  char *class_name,
+  char *auth_area_name)
 {
   if (auth_area_name && *auth_area_name)
   {
@@ -101,10 +101,10 @@ set_query(class_name, auth_area_name)
 }
 
 static query_term_struct *
-set_query_term(attribute_name, value, op)
-  char               *attribute_name;
-  char               *value;
-  mkdb_operator_type op;
+set_query_term(
+  char               *attribute_name,
+  char               *value,
+  mkdb_operator_type op)
 {
   query_term_struct *qt;
   
@@ -154,8 +154,8 @@ set_query_term(attribute_name, value, op)
 
 /* sets working term to the term, and if necessary sets the first term */
 static void
-add_term(term)
-  query_term_struct *term;
+add_term(
+  query_term_struct *term)
 {
   if (working_term)
   {
@@ -201,8 +201,8 @@ add_or_term()
 }
 
 static void
-display_query_term(term)
-  query_term_struct *term;
+display_query_term(
+  query_term_struct *term)
 {
 
   printf(" ");
@@ -249,9 +249,9 @@ display_query()
   
 
 int
-parse_query(line, result)
-  char         *line;
-  query_struct *result;
+parse_query(
+  char         *line,
+  query_struct *result)
 {
   /* reset global variables */
   parse_result = result;
@@ -270,8 +270,8 @@ parse_query(line, result)
 }
 
 int
-yyerror(s)
-  char *s;
+yyerror(
+  char *s)
 {
   print_error(INVALID_QUERY_SYNTAX, "");
   parse_status = FALSE;
@@ -279,8 +279,8 @@ yyerror(s)
 }
 
 int
-destroy_query_term(qt)
-  query_term_struct *qt;
+destroy_query_term(
+  query_term_struct *qt)
 {
   if (!qt) return TRUE;
 
@@ -300,8 +300,8 @@ destroy_query_term(qt)
 }
 
 int
-destroy_query(q)
-  query_struct  *q;
+destroy_query(
+  query_struct  *q)
 {
   query_term_struct *horiz;
   query_term_struct *vert;

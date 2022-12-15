@@ -32,9 +32,7 @@ typedef struct _client_cap_struct
 /* rwhois_parse_args:  this function parses the input argument 
    string and stores the arguments in rwhois_arg. */
 
-static client_cap_struct *
-rwhois_parse_args(str)
-  char *str;
+static client_cap_struct *rwhois_parse_args (char *str)
 {
   int               argc;
   char              **argv;
@@ -80,9 +78,7 @@ rwhois_parse_args(str)
   return(cap);
 }  /* end of rwhois_parse_args. */
 
-static void
-destroy_client_cap_struct(cap)
-  client_cap_struct *cap;
+static void destroy_client_cap_struct (client_cap_struct *cap)
 {
   if (!cap) return;
 
@@ -100,8 +96,7 @@ destroy_client_cap_struct(cap)
      -soa directive.  */
 
 
-int rwhois_directive(str)
-  char *str;
+int rwhois_directive (char *str)
 {
   client_cap_struct *cap;
 
