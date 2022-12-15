@@ -27,9 +27,9 @@ static int count_dir_security_entries PROTO((dl_list_type *wrap_list,
 /* counts the number of times a tcp wrapper occurs in the given allow or
    deny list. */
 static int
-count_dir_security_entries(wrap_list, wrapper)
-  dl_list_type *wrap_list;
-  char         *wrapper;
+count_dir_security_entries(
+  dl_list_type *wrap_list,
+  char         *wrapper)
 {
   int                 not_done;
   int                 count     = 0;
@@ -59,9 +59,9 @@ count_dir_security_entries(wrap_list, wrapper)
 
 /* verify the contents of directive security entry. */
 static int
-verify_dir_security(wrap_item, wrap_type)
-  dir_security_struct *wrap_item;
-  char                *wrap_type;
+verify_dir_security(
+  dir_security_struct *wrap_item,
+  char                *wrap_type)
 {
   int ret;
 
@@ -80,9 +80,9 @@ verify_dir_security(wrap_item, wrap_type)
 
 /* allocate/create the directive security list head */
 static int
-create_dir_security(wrap_list, wrap_type)
-  dl_list_type **wrap_list;
-  char         *wrap_type;
+create_dir_security(
+  dl_list_type **wrap_list,
+  char         *wrap_type)
 {
   *wrap_list = xcalloc(1, sizeof(**wrap_list));
 
@@ -100,9 +100,7 @@ create_dir_security(wrap_list, wrap_type)
 
 /* verifies the format of allow/deny tcp wrapper. Returns non-zero value
    on failure. */
-int
-examin_tcp_wrapper(wrapper)
-  char *wrapper;
+int examin_tcp_wrapper (char *wrapper)
 {
   if (NOT_STR_EXISTS(wrapper)) return ERW_EMTYSTR;
 
@@ -112,10 +110,10 @@ examin_tcp_wrapper(wrapper)
 /* reads allow/deny tcp wrapper file into the allow/deny wrapper
    list. */
 int
-read_dir_security_file(file, wrap_list, wrap_type)
-  char         *file;
-  dl_list_type **wrap_list;
-  char         *wrap_type;
+read_dir_security_file(
+  char         *file,
+  dl_list_type **wrap_list,
+  char         *wrap_type)
 {
   FILE *fp;
   char line[BUFSIZ];
@@ -181,12 +179,12 @@ read_dir_security_file(file, wrap_list, wrap_type)
 /* writes the allow/deny tcp wrapper file. Appends the file name to paths_list
    if this function was able to create the file on disk. */
 int
-write_dir_security_file(file, suffix, wrap_list, wrap_type, paths_list)
-  char         *file;
-  char         *suffix;
-  dl_list_type *wrap_list;
-  char         *wrap_type;
-  dl_list_type *paths_list;
+write_dir_security_file(
+  char         *file,
+  char         *suffix,
+  dl_list_type *wrap_list,
+  char         *wrap_type,
+  dl_list_type *paths_list)
 {
   FILE                *fp = NULL;
   int                 not_done;
@@ -223,9 +221,9 @@ write_dir_security_file(file, suffix, wrap_list, wrap_type, paths_list)
 /* checks the validity of the tcp wrapper list and its entries. It verifies
    that there are no duplicates in the list. */
 int
-verify_dir_security_list(wrap_list, wrap_type)
-  dl_list_type *wrap_list;
-  char         *wrap_type;
+verify_dir_security_list(
+  dl_list_type *wrap_list,
+  char         *wrap_type)
 {
   int                 not_done;
   dir_security_struct *wrap_item;
@@ -256,8 +254,7 @@ verify_dir_security_list(wrap_list, wrap_type)
 
 /* destroy the given wrapper list. */
 void
-destroy_dir_security_list(wrap_list)
-  dl_list_type **wrap_list;
+destroy_dir_security_list(dl_list_type **wrap_list)
 {
   if (!wrap_list) return;
   dl_list_destroy(*wrap_list);
@@ -266,8 +263,7 @@ destroy_dir_security_list(wrap_list)
 
 /* initialize the directive allow tcp wrapper list. */
 int
-def_dir_allow_security_list(wrap_list)
-  dl_list_type **wrap_list;
+def_dir_allow_security_list(dl_list_type **wrap_list)
 {
   if (!wrap_list) return FALSE;
 
@@ -283,8 +279,7 @@ def_dir_allow_security_list(wrap_list)
 
 /* initialize the directive deny tcp wrapper list. */
 int
-def_dir_deny_security_list(wrap_list)
-  dl_list_type **wrap_list;
+def_dir_deny_security_list(dl_list_type **wrap_list)
 {
   if (!wrap_list) return FALSE;
 
@@ -301,10 +296,10 @@ def_dir_deny_security_list(wrap_list)
 /* create and append a directive tcp wrapper to the list after checking to
    make sure it is not already in the list. */
 int
-add_dir_security(wrap_list, wrap_str, wrap_type)
-  dl_list_type **wrap_list;
-  char         *wrap_str;
-  char         *wrap_type;
+add_dir_security(
+  dl_list_type **wrap_list,
+  char         *wrap_str,
+  char         *wrap_type)
 {
   dir_security_struct *wrap_item;
 
@@ -338,9 +333,9 @@ add_dir_security(wrap_list, wrap_str, wrap_type)
 /* find the given tcp wrapper string in the wrapper list. Return NULL if
    not in the list. */
 dir_security_struct *
-find_dir_security(wrap_list, wrap_str)
-  dl_list_type *wrap_list;
-  char         *wrap_str;
+find_dir_security(
+  dl_list_type *wrap_list,
+  char         *wrap_str)
 {
   int                 not_done;
   dir_security_struct *wrap_item;
@@ -361,10 +356,10 @@ find_dir_security(wrap_list, wrap_str)
 
 /* delete the given directive security wrapper from the wrapper list. */
 int
-del_dir_security(wrap_list, wrap_str, wrap_type)
-  dl_list_type **wrap_list;
-  char         *wrap_str;
-  char         *wrap_type;
+del_dir_security(
+  dl_list_type **wrap_list,
+  char         *wrap_str,
+  char         *wrap_type)
 {
   if (!wrap_list || !wrap_str || !*wrap_str || !wrap_type) return FALSE;
 
@@ -390,8 +385,7 @@ del_dir_security(wrap_list, wrap_str, wrap_type)
 
 /* free up the memory used by directive security wrapper item. */
 int
-destroy_dir_security_data(dir_wrap)
-  dir_security_struct *dir_wrap;
+destroy_dir_security_data(dir_security_struct *dir_wrap)
 {
   if (!dir_wrap) return TRUE;
 

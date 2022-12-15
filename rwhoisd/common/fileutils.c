@@ -36,9 +36,9 @@ static char cwd[MAX_FILE + 1];
 /* ----------------------- LOCAL FUNCTIONS --------------------- */
 
 static int
-get_path_status(path, mode)
-  char      *path;
-  mode_t    *mode;
+get_path_status(
+  char      *path,
+  mode_t    *mode)
 {
   struct stat   sb;
   int           status;
@@ -55,10 +55,7 @@ get_path_status(path, mode)
 }
 
 
-static int
-generate_dot_lock_name(filename, lockname)
-  char  *filename;
-  char  *lockname;
+static int generate_dot_lock_name (char *filename, char *lockname)
 {
   char  dir[MAX_FILE];
   char  file[MAX_FILE];
@@ -92,10 +89,7 @@ generate_dot_lock_name(filename, lockname)
   return TRUE;
 }
 
-static int
-generate_uniq_dot_lock_name(filename, lockname)
-  char *filename;
-  char *lockname;
+static int generate_uniq_dot_lock_name (char *filename, char *lockname)
 {
   char  dir[MAX_FILE];
   char  file[MAX_FILE];
@@ -123,9 +117,7 @@ generate_uniq_dot_lock_name(filename, lockname)
 
 /* file_exists: tests to see if a file exists.  Note: does not test
       for access. */
-int
-file_exists(file)
-  char  *file;
+int file_exists (char *file)
 {
   mode_t    mode;
 
@@ -135,9 +127,7 @@ file_exists(file)
   return FALSE;
 }
 
-int
-directory_exists(dir)
-  char  *dir;
+int directory_exists (char *dir)
 {
   mode_t    mode;
 
@@ -147,9 +137,7 @@ directory_exists(dir)
   return FALSE;
 }
 
-int
-is_rel_path(path)
-  char  *path;
+int is_rel_path (char *path)
 {
   if (path && *path != '/') {
     return TRUE;
@@ -157,8 +145,7 @@ is_rel_path(path)
   return FALSE;
 }
 
-int
-store_current_wd()
+int store_current_wd (void)
 {
   bzero(cwd, sizeof(cwd));
   if (getcwd(cwd, sizeof(cwd)) == NULL)
@@ -171,8 +158,7 @@ store_current_wd()
   return TRUE;
 }
 
-int
-restore_current_wd()
+int restore_current_wd (void)
 {
   if (chdir(cwd) < 0)
   {
@@ -185,8 +171,7 @@ restore_current_wd()
 }
 
 time_t
-get_path_mod_time(path)
-  char  *path;
+get_path_mod_time(char  *path)
 {
   struct stat   sb;
   int           status;
@@ -204,11 +189,7 @@ get_path_mod_time(path)
 /* split_path: splits path into the directory and file components; if
    there is no directory component, then it just returns the file
    component. */
-int
-split_path(path, dir, file)
-  char  *path;
-  char  *dir;
-  char  *file;
+int split_path (char *path, char *dir, char *file)
 {
   char  **argv;
   int   argc;
@@ -247,10 +228,7 @@ split_path(path, dir, file)
       root.  Returns NULL if the directory wasn't in the root
       directory, otherwise, return a pointer to the reduced path
       within the full path */
-char *
-path_full_to_rel(full_path, root_dir)
-  char *full_path;
-  char *root_dir;
+char *path_full_to_rel (char *full_path, char *root_dir)
 {
   int   root_dir_len  = strlen(root_dir);
   int   full_path_len = strlen(full_path);
@@ -281,12 +259,7 @@ path_full_to_rel(full_path, root_dir)
 /* path_rel_to_full: basically just concatenates root_dir and
    rel_path; returns NULL if bad data.  It copies the original path
    into the new path if the 'rel_path' isn't actually relative. */
-char *
-path_rel_to_full(new_path, new_path_len, rel_path, root_dir)
-  char *new_path;
-  int  new_path_len;
-  char *rel_path;
-  char *root_dir;
+char *path_rel_to_full (char *new_path, int new_path_len, char *rel_path, char *root_dir)
 {
   int   root_len;
 
@@ -315,15 +288,7 @@ path_rel_to_full(new_path, new_path_len, rel_path, root_dir)
       convert it to a relative path, and, if chrooted is TRUE, will
       return FALSE if the path isn't under the root directory. It will
       copy the new path into "new_path" */
-int
-canonicalize_path(new_path, new_path_len, path, root_dir, chrooted,
-                  null_allowed)
-  char  *new_path;
-  int   new_path_len;
-  char  *path;
-  char  *root_dir;
-  int   chrooted;
-  int   null_allowed;
+int canonicalize_path (char *new_path, int new_path_len, char *path, char *root_dir, int chrooted, int null_allowed)
 {
   char      *p;
 
@@ -377,8 +342,7 @@ canonicalize_path(new_path, new_path_len, path, root_dir, chrooted,
 }
 
 /* Returns current date/time in yymmddhhmmss string  */
-char *
-make_timestamp()
+char *make_timestamp (void)
 {
   static char   buffer[18];
   struct tm     *tm;
@@ -393,11 +357,7 @@ make_timestamp()
 }
 
 /* Returns a temp filename */
-char *
-create_filename(fname, template, spool_directory)
-  char *fname;
-  char *template;
-  char *spool_directory;
+char *create_filename (char *fname, char *template, char *spool_directory)
 
 {
   sprintf(fname, template, spool_directory, make_timestamp());
@@ -410,12 +370,7 @@ create_filename(fname, template, spool_directory)
 }
 
 /* Returns a data text filename */
-char *
-create_db_filename(fname, template, spool_directory, postfix)
-  char *fname;
-  char *template;
-  char *spool_directory;
-  char *postfix;
+char *create_db_filename (char *fname, char *template, char *spool_directory, char *postfix)
 {
   sprintf(fname, template, spool_directory, make_timestamp(), postfix);
   /* FIXME: should use mkstemp. see above. */
@@ -429,10 +384,10 @@ create_db_filename(fname, template, spool_directory, postfix)
    option. */
 
 FILE *
-get_file_lock(filename, mode, block)
-  char  *filename;
-  char  *mode;
-  int   block;
+get_file_lock(
+  char  *filename,
+  char  *mode,
+  int   block)
 {
   FILE  *fp;
 
@@ -481,9 +436,9 @@ get_file_lock(filename, mode, block)
 }
 
 int
-release_file_lock(filename, fp)
-  char  *filename;
-  FILE  *fp;
+release_file_lock(
+  char  *filename,
+  FILE  *fp)
 {
 
 #ifndef USE_SYS_LOCK
@@ -506,10 +461,7 @@ release_file_lock(filename, fp)
 }
 
 
-int
-get_dot_lock(filename, block)
-  char  *filename;
-  int   block;
+int get_dot_lock (char *filename, int block)
 {
   char  lockname[MAX_FILE + 1];
   char  tmplockname[MAX_FILE + 1];
@@ -583,9 +535,7 @@ get_dot_lock(filename, block)
   return TRUE;
 }
 
-int
-release_dot_lock(filename)
-  char  *filename;
+int release_dot_lock (char *filename)
 {
   char  lockname[MAX_FILE + 1];
 
@@ -603,9 +553,7 @@ release_dot_lock(filename)
   return TRUE;
 }
 
-int
-dot_lock_exists(filename)
-  char  *filename;
+int dot_lock_exists (char *filename)
 {
   char  lockname[MAX_FILE + 1];
 
@@ -619,11 +567,7 @@ dot_lock_exists(filename)
   return FALSE;
 }
 
-int
-get_placeholder_lock(filename, block, lock_fd)
-  char *filename;
-  int  block;
-  int  *lock_fd;
+int get_placeholder_lock (char *filename, int block, int *lock_fd)
 {
 #ifndef USE_SYS_LOCK
   return get_dot_lock(filename, block);
@@ -678,10 +622,7 @@ get_placeholder_lock(filename, block, lock_fd)
 #endif
 }
 
-int
-release_placeholder_lock(filename, lock_fd)
-  char *filename;
-  int  lock_fd;
+int release_placeholder_lock (char *filename, int lock_fd)
 {
 #ifndef USE_SYS_LOCK
   return release_dot_lock(filename);
@@ -695,9 +636,7 @@ release_placeholder_lock(filename, lock_fd)
 #endif
 }
 
-int
-placeholder_lock_exists(filename)
-  char *filename;
+int placeholder_lock_exists (char *filename)
 {
 #ifndef USE_SYS_LOCK
   return dot_lock_exists(filename);
@@ -730,8 +669,7 @@ placeholder_lock_exists(filename)
 }
 
 time_t
-get_path_mtime(path)
-  char      *path;
+get_path_mtime(char      *path)
 {
   struct stat   sb;
   int           status;
@@ -748,10 +686,7 @@ get_path_mtime(path)
 
 /* compares two files line-by-line, returns true if same and false if
    different. */
-int
-file_cmpr(file1, file2)
-  char *file1;
-  char *file2;
+int file_cmpr (char *file1, char *file2)
 {
   FILE        *fptr1;
   FILE        *fptr2;
@@ -820,10 +755,7 @@ file_cmpr(file1, file2)
 
 /* compare two timestamps, currently just uses strcmp(). Returns
    1 if stamp1 is newer than stamp2, 0 if equal, and -1 if older. */
-int
-timestamp_cmpr(stamp1, stamp2)
-  char *stamp1;
-  char *stamp2;
+int timestamp_cmpr (char *stamp1, char *stamp2)
 {
   return( strcmp(stamp1, stamp2) );
 }
@@ -831,9 +763,7 @@ timestamp_cmpr(stamp1, stamp2)
 /* increments a given timestamp to a larger value, but does not care about
    the month, year, seconds, minutes etc.. ranges while incrementing.
    - this should not go beyond all 99999..99s */
-static void
-increment_timestamp(stamp)
-  char *stamp;
+static void increment_timestamp (char *stamp)
 {
   int i;
 
@@ -854,9 +784,7 @@ increment_timestamp(stamp)
 
 /* increments a given timestamp if equal or greater than current time stamp,
    else returns the current time stamp. */
-char *
-get_updated_timestamp(orig_stamp)
-  char *orig_stamp;
+char *get_updated_timestamp (char *orig_stamp)
 {
   static char new_stamp[18];
   int         ret;
@@ -883,9 +811,7 @@ get_updated_timestamp(orig_stamp)
 /* examine the path if it is writable, if not split the paths, and again
    check if the directory section is writable. Returns a non-zero
    value on failure. */
-int
-examin_directory_writable(path)
-  char  *path;
+int examin_directory_writable (char *path)
 {
   char dir[MAX_FILE];
   char file[MAX_FILE];
@@ -918,9 +844,7 @@ examin_directory_writable(path)
 
 /* checks for the validity of timestamp string. Returns non-zero value
    on failure. */
-int
-examin_timestamp(stamp)
-  char *stamp;
+int examin_timestamp (char *stamp)
 {
   if (NOT_STR_EXISTS(stamp)) return ERW_EMTYSTR;
   if (!is_number_str(stamp)) return ERW_NUMSTR;
@@ -931,9 +855,7 @@ examin_timestamp(stamp)
 
 /* examine file name string format, make sure there is no directory by
    that name. Returns non-zero on failure. */
-int
-examin_file_name(value)
-  char *value;
+int examin_file_name (char *value)
 {
   if (NOT_STR_EXISTS(value)) return ERW_EMTYSTR;
   if (!is_no_whitespace_str(value)) return ERW_SPACESTR;
@@ -944,9 +866,7 @@ examin_file_name(value)
 
 /* examine directory name string format, make sure there is no file by
    that name. Returns non-zero on failure. */
-int
-examin_directory_name(value)
-  char *value;
+int examin_directory_name (char *value)
 {
   if (NOT_STR_EXISTS(value)) return ERW_EMTYSTR;
   if (!is_no_whitespace_str(value)) return ERW_SPACESTR;
@@ -957,9 +877,7 @@ examin_directory_name(value)
 
 /* examin if the given file name is a file on disk with executable
    file mode. */
-int
-examin_executable_name(value)
-  char *value;
+int examin_executable_name (char *value)
 {
   mode_t mode;
 
@@ -974,10 +892,10 @@ examin_executable_name(value)
 /* returns true if the given path is already in the paths_list. Otherwise
    it adds the path to the paths_list and returns false. */
 int
-dup_config_path_name(paths_list, path, var_name)
-  dl_list_type *paths_list;
-  char         *path;
-  char         *var_name;
+dup_config_path_name(
+  dl_list_type *paths_list,
+  char         *path,
+  char         *var_name)
 {
   int  not_done;
   char *item;
@@ -1009,8 +927,7 @@ dup_config_path_name(paths_list, path, var_name)
 }
 
 static dl_list_type *
-split_path_into_list(path)
-  char *path;
+split_path_into_list(char *path)
 {
   char         *token;
   dl_list_type *path_list;
@@ -1031,9 +948,9 @@ split_path_into_list(path)
 }
 
 static char *
-join_list_into_path(path_list, abs_path)
-  dl_list_type *path_list;
-  int          abs_path;
+join_list_into_path(
+  dl_list_type *path_list,
+  int          abs_path)
 {
   static char path[MAX_FILE];
   char        *str;
@@ -1065,8 +982,7 @@ join_list_into_path(path_list, abs_path)
 }
 
 static int
-reduce_path_list(path_list)
-  dl_list_type *path_list;
+reduce_path_list(dl_list_type *path_list)
 {
   char *token;
   int  not_done;
@@ -1095,9 +1011,7 @@ reduce_path_list(path_list)
 }
 
 /* removes any '..' in the given path */
-static char *
-get_reduced_path(path)
-  char *path;
+static char *get_reduced_path (char *path)
 {
   char         *newpath;
   dl_list_type *path_list;
@@ -1131,10 +1045,7 @@ get_reduced_path(path)
    root dir to check if the path is under root directory of the
    server. */
 
-int
-path_under_root_dir(path, rootdir)
-  char *path;
-  char *rootdir;
+int path_under_root_dir (char *path, char *rootdir)
 {
   char *newpath, fullpath[MAX_FILE];
 
@@ -1163,10 +1074,10 @@ path_under_root_dir(path, rootdir)
 
 /* returns true if it found the given path in the paths_list. */
 int
-in_config_path_list(paths_list, path, var_name)
-  dl_list_type *paths_list;
-  char         *path;
-  char         *var_name;
+in_config_path_list(
+  dl_list_type *paths_list,
+  char         *path,
+  char         *var_name)
 {
   int  not_done;
   char *item;
@@ -1195,10 +1106,10 @@ in_config_path_list(paths_list, path, var_name)
 
 /* Works on paths without '..' in them. */
 static int
-make_path_dirs(path, mode, paths_list)
-  char         *path;
-  int          mode;
-  dl_list_type *paths_list;
+make_path_dirs(
+  char         *path,
+  int          mode,
+  dl_list_type *paths_list)
 {
   int          not_done;
   char         *dirname;
@@ -1249,10 +1160,10 @@ make_path_dirs(path, mode, paths_list)
 
 /* open given filename for writing */
 FILE *
-open_file_to_write(filename, blk_time, paths_list)
-  char         *filename;
-  int          blk_time;
-  dl_list_type *paths_list;
+open_file_to_write(
+  char         *filename,
+  int          blk_time,
+  dl_list_type *paths_list)
 {
   char dir[MAX_FILE];
   char file[MAX_FILE];
@@ -1277,10 +1188,10 @@ open_file_to_write(filename, blk_time, paths_list)
 }
 
 int
-make_config_dir(dirname, mode, paths_list)
-  char         *dirname;
-  int          mode;
-  dl_list_type *paths_list;
+make_config_dir(
+  char         *dirname,
+  int          mode,
+  dl_list_type *paths_list)
 {
   char *newdir;
 

@@ -48,9 +48,7 @@ int deny_severity  = LOG_INFO;
 /* local prototypes */
 
 /* usage: prints the usage statement */
-static void
-usage(prog_name)
-  char *prog_name;
+static void usage (char *prog_name)
 {
   fprintf(stderr,
           "usage: %s [-c config_file] [-r] [-s] [-Vvq] [-di]\n", prog_name);
@@ -75,10 +73,7 @@ usage(prog_name)
   exit(64);
 }
 
-static void
-parse_cl_options(argc, argv)
-  int  argc;
-  char *argv[];
+static void parse_cl_options (int argc, char *argv[])
 {
   extern char       *optarg;
   extern int        optind;
@@ -136,8 +131,7 @@ parse_cl_options(argc, argv)
   }
 }
 
-static void
-set_cl_options()
+static void set_cl_options (void)
 {
   if (opts.opt_r)
   {
@@ -166,8 +160,7 @@ set_cl_options()
 
    note: this routine (and the other option routines) should probably
    be in another file. */
-void
-initialize()
+void initialize (void)
 {
   char  *config_file = NULL;
 
@@ -210,10 +203,7 @@ initialize()
 }
 
   
-int
-main(argc, argv)
-  int  argc;
-  char *argv[];
+int main (int argc, char *argv[])
 {
   bzero(orig_cwd, sizeof(orig_cwd));
 

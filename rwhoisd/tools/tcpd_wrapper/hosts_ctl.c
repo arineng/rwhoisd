@@ -4,10 +4,10 @@
   * access control checker. The host name and user name arguments should be
   * empty strings, STRING_UNKNOWN or real data. If a match is found, the
   * optional shell command is executed.
-  * 
+  *
   * Restriction: this interface does not pass enough information to support
   * selective remote username lookups or selective hostname double checks.
-  * 
+  *
   * Author: Wietse Venema, Eindhoven University of Technology, The Netherlands.
   */
 
@@ -21,11 +21,11 @@ static char sccsid[] = "@(#) hosts_ctl.c 1.4 94/12/28 17:42:27";
 
 /* hosts_ctl - limited interface to the hosts_access() routine */
 
-int     hosts_ctl(daemon, name, addr, user)
-char   *daemon;
-char   *name;
-char   *addr;
-char   *user;
+int     hosts_ctl(
+char   *daemon,
+char   *name,
+char   *addr,
+char   *user)
 {
     struct request_info request;
 

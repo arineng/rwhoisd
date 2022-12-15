@@ -1,18 +1,19 @@
  /*
   * Routines for controlled update/initialization of request structures.
-  * 
+  *
   * request_init() initializes its argument. Pointers and string-valued members
   * are initialized to zero, to indicate that no lookup has been attempted.
-  * 
+  *
   * request_set() adds information to an already initialized request structure.
-  * 
+  *
   * Both functions take a variable-length name-value list.
-  * 
+  *
   * Diagnostics are reported through syslog(3).
-  * 
+  *
   * Author: Wietse Venema, Eindhoven University of Technology, The Netherlands.
   */
 
+#include <unistd.h>
 #ifndef lint
 static char sccsid[] = "@(#) update.c 1.1 94/12/28 17:42:56";
 #endif
@@ -30,9 +31,9 @@ static char sccsid[] = "@(#) update.c 1.1 94/12/28 17:42:56";
 
 /* request_fill - request update engine */
 
-static struct request_info *request_fill(request, ap)
-struct request_info *request;
-va_list ap;
+static struct request_info *request_fill(
+struct request_info *request,
+va_list ap)
 {
     int     key;
     char   *ptr;

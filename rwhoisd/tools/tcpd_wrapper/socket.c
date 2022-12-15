@@ -29,11 +29,12 @@ static char sccsid[] = "@(#) socket.c 1.15 97/03/21 19:27:24";
 #include <stdio.h>
 #include <syslog.h>
 #include <string.h>
-#ifdef bsdi
+#define _BSD_SOURCE
 #include <arpa/inet.h>
-#endif
+extern const char *inet_ntop(int af, const void *restrict src,
+                             char *restrict dst, socklen_t size);
 
-extern char *inet_ntoa();
+extern char *inet_ntoa(struct in_addr in);
 
 /* Local stuff. */
 
@@ -41,7 +42,7 @@ extern char *inet_ntoa();
 
 /* Forward declarations. */
 
-static void sock_sink();
+static void sock_sink (int fd);
 
 #ifdef APPEND_DOT
 
@@ -51,9 +52,7 @@ static void sock_sink();
   * that lack DNS-style trailing dot magic, such as local files or NIS maps.
   */
 
-static struct hostent *tcpd_gethostbyname_dot(name, af)
-char   *name;
-int af;
+static struct hostent *tcpd_gethostbyname_dot (char *name, int af)
 {
     char    dot_name[MAXHOSTNAMELEN + 1];
 
@@ -75,8 +74,7 @@ int af;
 
 /* sock_host - look up endpoint addresses and install conversion methods */
 
-void    sock_host(request)
-struct request_info *request;
+void sock_host (struct request_info *request)
 {
     static struct sockaddr_gen client;
     static struct sockaddr_gen server;
@@ -128,14 +126,12 @@ struct request_info *request;
 
 /* sock_hostaddr - map endpoint address to printable form */
 
-void    sock_hostaddr(host)
-struct host_info *host;
+void sock_hostaddr (struct host_info *host)
 {
     struct sockaddr_gen *sin = host->sin;
 
     if (sin != 0)
 #ifdef HAVE_IPV6
-	
 	(void) inet_ntop(SGFAM(sin), SGADDRP(sin), host->addr, sizeof(host->addr));
 #else
 	STRN_CPY(host->addr, inet_ntoa(sin->sg_sin.sin_addr), sizeof(host->addr));
@@ -144,8 +140,7 @@ struct host_info *host;
 
 /* sock_hostname - map endpoint address to host name */
 
-void    sock_hostname(host)
-struct host_info *host;
+void sock_hostname (struct host_info *host)
 {
     struct sockaddr_gen *sin = host->sin;
     struct hostent *hp;
@@ -239,8 +234,7 @@ struct host_info *host;
 
 /* sock_sink - absorb unreceived IP datagram */
 
-static void sock_sink(fd)
-int     fd;
+static void sock_sink (int fd)
 {
     char    buf[BUFSIZ];
     struct sockaddr_in sin;
@@ -258,8 +252,7 @@ int     fd;
  * If we receive a V4 connection on a V6 socket, we pretend we really
  * got a V4 connection.
  */
-void sockgen_simplify(sg)
-sockaddr_gen *sg;
+void sockgen_simplify(sockaddr_gen *sg)
 {
 #ifdef HAVE_IPV6
     if (sg->sg_family == AF_INET6 &&

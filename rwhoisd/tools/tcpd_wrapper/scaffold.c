@@ -41,8 +41,7 @@ int     rfc931_timeout = RFC931_TIMEOUT;
 
 /* dup_hostent - create hostent in one memory block */
 
-static struct hostent *dup_hostent(hp)
-struct hostent *hp;
+static struct hostent *dup_hostent (struct hostent *hp)
 {
     struct hostent_block {
 	struct hostent host;
@@ -77,8 +76,7 @@ struct hostent *hp;
 
 /* find_inet_addr - find all addresses for this host, result to free() */
 
-struct hostent *find_inet_addr(host)
-char   *host;
+struct hostent *find_inet_addr (char *host)
 {
     union gen_addr addr;
     struct hostent *hp;
@@ -121,8 +119,7 @@ char   *host;
 
 /* check_dns - give each address thorough workout, return address count */
 
-int     check_dns(host)
-char   *host;
+int check_dns (char *host)
 {
     struct request_info request;
     struct sockaddr_gen sin;
@@ -159,8 +156,7 @@ char   *host;
 
 /* ARGSUSED */
 
-void    shell_cmd(command)
-char   *command;
+void shell_cmd (char *command)
 {
     if (hosts_access_verbose)
 	printf("command: %s", command);
@@ -170,8 +166,7 @@ char   *command;
 
 /* ARGSUSED */
 
-void    clean_exit(request)
-struct request_info *request;
+void clean_exit (struct request_info *request)
 {
     exit(0);
 }
@@ -180,8 +175,7 @@ struct request_info *request;
 
 /* ARGSUSED */
 
-void    rfc931(request)
-struct request_info *request;
+void rfc931 (struct request_info *request)
 {
     strcpy(request->user, unknown);
 }

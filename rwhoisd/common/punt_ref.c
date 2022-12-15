@@ -27,8 +27,7 @@ static int count_punt_ref_entries PROTO((dl_list_type *ref_list, char *punt));
 
 /* create and setup punt-referral list. */
 static int
-create_punt_ref(ref_list)
-  dl_list_type **ref_list;
+create_punt_ref(dl_list_type **ref_list)
 {
   if (!ref_list || *ref_list) return FALSE;
 
@@ -45,8 +44,7 @@ create_punt_ref(ref_list)
 
 /* verifies the contents of punt referral structure. */
 static int
-verify_punt_ref(referral)
-  punt_ref_struct *referral;
+verify_punt_ref(punt_ref_struct *referral)
 {
   int ret;
 
@@ -64,9 +62,9 @@ verify_punt_ref(referral)
 
 /* count the number of times a punt-referral was found in the list. */
 static int
-count_punt_ref_entries(ref_list, punt)
-  dl_list_type *ref_list;
-  char *punt;
+count_punt_ref_entries(
+  dl_list_type *ref_list,
+  char *punt)
 {
   int not_done, count;
   punt_ref_struct *referral;
@@ -101,9 +99,7 @@ count_punt_ref_entries(ref_list, punt)
 
 /* examins punt referal string format. Looks for two formats of
    punt-referral. Returns non-zero value on failure. */
-int
-examin_punt_ref(punt_str)
-  char *punt_str;
+int examin_punt_ref (char *punt_str)
 {
   static regexp *old_ref_exp = NULL;
   static regexp *url_exp     = NULL;
@@ -131,9 +127,9 @@ examin_punt_ref(punt_str)
 /* reads punt referral information from file. Creates the punt-referral
    list. */
 int
-read_punt_file (file, ref_list)
-  char         *file;
-  dl_list_type **ref_list;
+read_punt_file (
+  char         *file,
+  dl_list_type **ref_list)
 {
   FILE         *fp              = NULL;
   char         line[BUFSIZ];
@@ -194,11 +190,11 @@ read_punt_file (file, ref_list)
 /* write punt referral information to a file on disk. Uses suffix to create
    a new file name. Adds the created file name to the paths_list. */
 int
-write_punt_file(file, suffix, ref_list, paths_list)
-  char         *file;
-  char         *suffix;
-  dl_list_type *ref_list;
-  dl_list_type *paths_list;
+write_punt_file(
+  char         *file,
+  char         *suffix,
+  dl_list_type *ref_list,
+  dl_list_type *paths_list)
 {
   FILE            *fp;
   int             not_done;
@@ -237,8 +233,7 @@ write_punt_file(file, suffix, ref_list, paths_list)
 /* verify the contents of the rwhois punt-referral list. Check for any
    duplicates in the list. */
 int
-verify_punt_ref_list(ref_list)
-  dl_list_type *ref_list;
+verify_punt_ref_list(dl_list_type *ref_list)
 {
   int             not_done;
   punt_ref_struct *referral;
@@ -275,8 +270,7 @@ verify_punt_ref_list(ref_list)
 
 /* initialize the punt-referral list with defaults. */
 int
-def_init_punt_ref(ref_list)
-  dl_list_type **ref_list;
+def_init_punt_ref(dl_list_type **ref_list)
 {
   if (!ref_list) return FALSE;
 
@@ -294,8 +288,7 @@ def_init_punt_ref(ref_list)
 
 /* free-up punt referral information structure */
 int
-destroy_punt_ref_data(referral)
-  punt_ref_struct *referral;
+destroy_punt_ref_data(punt_ref_struct *referral)
 {
 
   if (!referral) return TRUE;
@@ -312,8 +305,7 @@ destroy_punt_ref_data(referral)
 
 /* free-up the complete punt-referral list. */
 void
-destroy_punt_ref_list(ref_list)
-  dl_list_type **ref_list;
+destroy_punt_ref_list(dl_list_type **ref_list)
 {
   if (!ref_list) return;
 
@@ -323,9 +315,9 @@ destroy_punt_ref_list(ref_list)
 
 /* add punt-referral (if not already in the list) to the list. */
 int
-add_punt_ref(ref_list, punt_str)
-  dl_list_type **ref_list;
-  char         *punt_str;
+add_punt_ref(
+  dl_list_type **ref_list,
+  char         *punt_str)
 {
   int             ret;
   punt_ref_struct *referral;
@@ -365,9 +357,9 @@ add_punt_ref(ref_list, punt_str)
 /* searches for a punt-referral in the list. Returns the punt-referral
    structure that matched else returns NULL. */
 punt_ref_struct *
-find_punt_ref(ref_list, punt)
-  dl_list_type *ref_list;
-  char         *punt;
+find_punt_ref(
+  dl_list_type *ref_list,
+  char         *punt)
 {
   int             not_done;
   punt_ref_struct *referral = NULL;
@@ -392,9 +384,9 @@ find_punt_ref(ref_list, punt)
 
 /* delete a punt referral from the list. */
 int
-del_punt_ref(ref_list, punt)
-  dl_list_type **ref_list;
-  char         *punt;
+del_punt_ref(
+  dl_list_type **ref_list,
+  char         *punt)
 {
   if (!ref_list || !punt || !*punt) return FALSE;
 

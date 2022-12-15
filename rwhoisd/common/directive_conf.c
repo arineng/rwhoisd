@@ -29,8 +29,7 @@ static int is_extended_directive PROTO((char *name));
 /* --------------------- Local Functions ---------------- */
 
 static int
-destroy_directive_data(data)
-  directive_struct  *data;
+destroy_directive_data(directive_struct  *data)
 {
   if (!data)
   {
@@ -60,8 +59,7 @@ destroy_directive_data(data)
    extended directive path. Checks if the essential directives are
    enabled. */
 static int
-verify_directive(dir)
-  directive_struct *dir;
+verify_directive(directive_struct *dir)
 {
   int ret;
 
@@ -98,9 +96,7 @@ verify_directive(dir)
 }
 
 /* check if the given directive name is an extended directive */
-static int
-is_extended_directive(name)
-  char *name;
+static int is_extended_directive (char *name)
 {
   return( STR_EXISTS(name) &&
           is_no_whitespace_str(name) &&
@@ -113,8 +109,7 @@ is_extended_directive(name)
 /* default_directive_list: set the default directive list according to
    protocol and implementation.  Return TRUE if success, FALSE
    otherwise */
-int
-default_directive_list()
+int default_directive_list (void)
 {
   initialize_directive_list();
 
@@ -208,9 +203,7 @@ default_directive_list()
  *              places them into directive structure 
  *  format:  <directive>:<enabled>
  */
-int
-read_directive_file(file)
-  char *file;
+int read_directive_file (char *file)
 {
   FILE          *fp;
   char          line[MAX_LINE];
@@ -277,9 +270,7 @@ read_directive_file(file)
 
 /* read_extended_directive_file: reads the extended directives from a
       file and places them into a data structure */
-int
-read_extended_directive_file(file)
-  char *file;
+int read_extended_directive_file (char *file)
 {
   FILE  *fp;
   char  line[MAX_LINE];
@@ -366,8 +357,7 @@ read_extended_directive_file(file)
 }
 
 
-void
-initialize_directive_list()
+void initialize_directive_list (void)
 {
   if (!dl_list_empty(&directive_list))
   {
@@ -379,8 +369,7 @@ initialize_directive_list()
 
 
 directive_struct *
-find_directive(name)
-  char  *name;
+find_directive(char  *name)
 {
   directive_struct  *di;
   int               not_done;
@@ -408,14 +397,15 @@ find_directive(name)
 }
 
 
-int
-add_directive(name, len, description, func, program, disabled_flag)
-  char  *name;
-  int   len;
-  char  *description;
-  int   (*func)();
-  char  *program;
-  int   disabled_flag;      /* when "off", this flag is "TRUE" */
+int 
+add_directive (
+    char *name,
+    int len,
+    char *description,
+    int (*func)(void),
+    char *program,
+    int disabled_flag      /* when "off", this flag is "TRUE" */
+)
 {
   directive_struct  *item;
 
@@ -457,7 +447,7 @@ add_directive(name, len, description, func, program, disabled_flag)
     item->program = xstrdup(program);
   }
   
-  item->function = func;
+  item->function = (int (*)(char *))func;
   item->disabled_flag = disabled_flag;
   if (item->disabled_flag) 
   { 
@@ -475,8 +465,7 @@ add_directive(name, len, description, func, program, disabled_flag)
 }
 
 
-void
-destroy_directive_list()
+void destroy_directive_list (void)
 {
   dl_list_destroy(&directive_list);
 }
@@ -491,9 +480,7 @@ get_directive_list()
 
 
 
-long 
-find_cap(directive)
-  char  *directive;
+long find_cap (char *directive)
 {
   if (STR_EQ(directive, "class"))
   {
@@ -565,12 +552,8 @@ find_cap(directive)
 /* write the directive enable/disable information. Adds the file name to
    paths_list if successful in creating a file on disk. */
 int 
-write_directive_file(file, suffix, paths_list)
-  char         *file;
-  char         *suffix;
-  dl_list_type *paths_list;
+write_directive_file(char *file, char *suffix, dl_list_type *paths_list)
 {
-
   FILE             *fp = NULL;
   int              not_done;
   directive_struct *dir;
@@ -629,10 +612,7 @@ write_directive_file(file, suffix, paths_list)
    paths_list if it was created on disk. Strips the 'X-' prefix of 
    extended directives before writing. */
 int 
-write_extended_directive_file(file, suffix, paths_list)
-  char         *file;
-  char         *suffix;
-  dl_list_type *paths_list;
+write_extended_directive_file(char *file,char *suffix,dl_list_type *paths_list)
 {
   FILE             *fp = NULL;
   int              not_done;
@@ -686,9 +666,7 @@ write_extended_directive_file(file, suffix, paths_list)
    in the path specified, looks in bin-path of rwhois server. Also
    checks for if the program is on disk and executable. Returns
    non-zero value on failure. */
-int
-examin_xdirective_program(path)
-  char *path;
+int examin_xdirective_program (char *path)
 {
   int  ret = 0;
   char new_path[MAX_FILE];
@@ -717,8 +695,7 @@ examin_xdirective_program(path)
 
 /* verifies all the directives in the directives list. Makes sure
    at least one normal directive is defined in the list. */
-int 
-verify_all_directives()
+int verify_all_directives (void)
 {
   int              not_done;
   int              n_dir;

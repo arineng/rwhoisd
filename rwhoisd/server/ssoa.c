@@ -17,9 +17,9 @@ static int create_soa_file_record PROTO((FILE         *fp,
 /* create_soa_file_record: This function maps an RWhois server
    response into an SOA file record */
 static int
-create_soa_file_record(fp, response)
-  FILE         *fp;
-  dl_list_type *response;
+create_soa_file_record(
+  FILE         *fp,
+  dl_list_type *response)
 {
   int  not_done;
   char *str;
@@ -82,9 +82,9 @@ create_soa_file_record(fp, response)
 /* create_soa_file: This function creates SOA file for a
    slave authority area */
 int
-create_soa_file(aa, server)
-  auth_area_struct *aa;
-  server_struct    *server;
+create_soa_file(
+  auth_area_struct *aa,
+  server_struct    *server)
 {
   int          sockfd;
   int          not_done             = TRUE;

@@ -34,9 +34,7 @@
 /* --------------- local prototypes ----------------------- */
 
 /* usage: prints the usage statement */
-static int
-usage(prog_name)
-  char *prog_name;
+static int usage (char *prog_name)
 {
   fprintf(stderr, "Usage:\n");
   fprintf(stderr,
@@ -57,8 +55,8 @@ usage(prog_name)
 }
 
 static void
-print_config(options)
-  repack_options_struct *options;
+print_config(
+  repack_options_struct *options)
 {
   fprintf(stderr, "rwhois conf file:  %s\n",
           SAFE_STR(options->config_file, "default"));

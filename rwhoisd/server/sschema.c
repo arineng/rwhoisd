@@ -33,10 +33,10 @@ static int base_attr PROTO((char *tag,
 /* create_schema_file_record: This function maps an RWhois
    server response into a schema file record */
 static int
-create_schema_file_record(aa, fp, response)
-  auth_area_struct *aa;
-  FILE             *fp;
-  dl_list_type     *response;
+create_schema_file_record(
+  auth_area_struct *aa,
+  FILE             *fp,
+  dl_list_type     *response)
 {
   int         not_done;
   int         first_str        = TRUE;
@@ -173,10 +173,10 @@ create_schema_file_record(aa, fp, response)
 /* create_attr_file_line: This function creates an attribute file
    line */
 static void
-create_attr_file_line(fp, tag, value)
-  FILE *fp;
-  char *tag;
-  char *value;
+create_attr_file_line(
+  FILE *fp,
+  char *tag,
+  char *value)
 {
   if (!fp    ||
       !tag   || !*tag ||
@@ -290,10 +290,7 @@ create_attr_file_line(fp, tag, value)
 
 
 /* base_attr: This function checks for a base schema attribute */
-static int
-base_attr(tag, value)
-  char *tag;
-  char *value;
+static int base_attr (char *tag, char *value)
 {
   if (STR_EQ(tag, "attribute"))
   {
@@ -319,9 +316,9 @@ base_attr(tag, value)
 /* create_schema_file: This function creates schema file and
    attribute definitions directory for a slave authority area */
 int
-create_schema_file(aa, server)
-  auth_area_struct *aa;
-  server_struct    *server;
+create_schema_file(
+  auth_area_struct *aa,
+  server_struct    *server)
 {
   int          sockfd;
   int          not_done             = TRUE;

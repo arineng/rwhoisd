@@ -30,9 +30,9 @@
 
 
 static int
-rebuild_query(auth_area, query)
-  auth_area_struct *auth_area;
-  query_struct *query;
+rebuild_query(
+  auth_area_struct *auth_area,
+  query_struct *query)
 {
   query_term_struct    *cur_or;
   query_term_struct    *cur_and;
@@ -103,15 +103,14 @@ rebuild_query(auth_area, query)
 }
 
 static ret_code_type
-search_exact_index_file(class, auth_area, file, data_fi_list,
-                        query_tree, record_list, max_hits)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  file_struct       *file;
-  dl_list_type      *data_fi_list;
-  query_term_struct *query_tree;
-  dl_list_type      *record_list;
-  int               max_hits;
+search_exact_index_file(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  file_struct       *file,
+  dl_list_type      *data_fi_list,
+  query_term_struct *query_tree,
+  dl_list_type      *record_list,
+  int               max_hits)
 {
   off_t         fposition;
   ret_code_type ret_code    = SEARCH_SUCCESSFUL;
@@ -144,15 +143,14 @@ search_exact_index_file(class, auth_area, file, data_fi_list,
 }
 
 static ret_code_type
-search_soundex_index_file(class, auth_area, file, data_fi_list,
-                          query_tree, record_list, max_hits)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  file_struct       *file;
-  dl_list_type      *data_fi_list;
-  query_term_struct *query_tree;
-  dl_list_type      *record_list;
-  int               max_hits;
+search_soundex_index_file(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  file_struct       *file,
+  dl_list_type      *data_fi_list,
+  query_term_struct *query_tree,
+  dl_list_type      *record_list,
+  int               max_hits)
 {
   char          *orig_search_val;
   char          search_val_buf[MAX_LINE];
@@ -182,15 +180,14 @@ search_soundex_index_file(class, auth_area, file, data_fi_list,
 }
 
 static ret_code_type
-search_cidr_index_file(class, auth_area, file, data_fi_list,
-                       query_tree, record_list, max_hits)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  file_struct       *file;
-  dl_list_type      *data_fi_list;
-  query_term_struct *query_tree;
-  dl_list_type      *record_list;
-  int               max_hits;
+search_cidr_index_file(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  file_struct       *file,
+  dl_list_type      *data_fi_list,
+  query_term_struct *query_tree,
+  dl_list_type      *record_list,
+  int               max_hits)
 {
   struct netinfo         prefix;
   off_t                  fposition;
@@ -255,16 +252,15 @@ search_cidr_index_file(class, auth_area, file, data_fi_list,
 }
 
 static ret_code_type
-search_index_file(class, auth_area, index_fi_list, data_fi_list, query_tree,
-                  record_list, max_hits, index_type)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  dl_list_type      *index_fi_list;
-  dl_list_type      *data_fi_list;
-  query_term_struct *query_tree;
-  dl_list_type      *record_list;
-  int               max_hits;
-  attr_index_type   index_type;
+search_index_file(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  dl_list_type      *index_fi_list,
+  dl_list_type      *data_fi_list,
+  query_term_struct *query_tree,
+  dl_list_type      *record_list,
+  int               max_hits,
+  attr_index_type   index_type)
   /* for a switch-a-roo on a query's value */
 {
   file_struct    *file;
@@ -332,12 +328,12 @@ search_index_file(class, auth_area, index_fi_list, data_fi_list, query_tree,
 }
 
 static ret_code_type
-search_class(query_tree, auth_area, class, record_list, max_hits)
-  query_term_struct *query_tree;
-  auth_area_struct  *auth_area;
-  class_struct      *class;
-  dl_list_type      *record_list;
-  int               max_hits;
+search_class(
+  query_term_struct *query_tree,
+  auth_area_struct  *auth_area,
+  class_struct      *class,
+  dl_list_type      *record_list,
+  int               max_hits)
 {
   dl_list_type     master_fi_list;
   dl_list_type     index_fi_list;
@@ -408,12 +404,12 @@ search_class(query_tree, auth_area, class, record_list, max_hits)
 }
 
 static ret_code_type
-search_auth_area(auth_area, class_name, query, record_list, max_hits)
-  auth_area_struct *auth_area;
-  char             *class_name;
-  query_struct     *query;
-  dl_list_type     *record_list;
-  int              max_hits;
+search_auth_area(
+  auth_area_struct *auth_area,
+  char             *class_name,
+  query_struct     *query,
+  dl_list_type     *record_list,
+  int              max_hits)
 {
   class_struct  *class;
   dl_list_type  *class_list;
@@ -481,11 +477,11 @@ search_auth_area(auth_area, class_name, query, record_list, max_hits)
    the record_list. Returns the number of hits, and an error code it
    'ret_code' */
 int
-search(query, record_list, max_hits, ret_code)
-  query_struct  *query;
-  dl_list_type  *record_list;
-  int           max_hits;
-  ret_code_type *ret_code;
+search(
+  query_struct  *query,
+  dl_list_type  *record_list,
+  int           max_hits,
+  ret_code_type *ret_code)
 {
   dl_list_type     *auth_area_list = NULL;
   auth_area_struct *auth_area      = NULL;
@@ -591,8 +587,8 @@ search(query, record_list, max_hits, ret_code)
 }
 
 int
-check_query_complexity(query)
-  query_struct *query;
+check_query_complexity(
+  query_struct *query)
 {
   query_term_struct *current_or;
   query_term_struct *current_and;

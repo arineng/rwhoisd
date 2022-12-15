@@ -96,9 +96,9 @@ static int print_add_result PROTO((record_struct *rec));
 
 
 static int
-get_real_object_from_anon(anon_rec, record_list)
-  anon_record_struct *anon_rec;
-  dl_list_type       *record_list;
+get_real_object_from_anon(
+  anon_record_struct *anon_rec,
+  dl_list_type       *record_list)
 {
   query_struct   *query;
   record_struct  *rec;
@@ -194,8 +194,8 @@ get_real_object_from_anon(anon_rec, record_list)
 /* generates a search str and validates that no record exists for this
      auth area. Returns TRUE if success, FALSE if failure. */
 static int
-check_uniq_record(record)
-  record_struct *record;
+check_uniq_record(
+  record_struct *record)
 {
   query_struct  *query;
   dl_list_type  record_list;
@@ -235,9 +235,9 @@ check_uniq_record(record)
    probably make sure that the other primary keys match, too, but
    doesn't. */
 static int
-ensure_objects_match(new_record, old_record)
-  record_struct *new_record;
-  record_struct *old_record;
+ensure_objects_match(
+  record_struct *new_record,
+  record_struct *old_record)
 {
   av_pair_struct *new_av;
   av_pair_struct *old_av;
@@ -304,8 +304,8 @@ ensure_objects_match(new_record, old_record)
 /* indexes the file from a new record structure. Returns TRUE if
      success, FALSE if failure. */
 static int
-index_new_record(record)
-  record_struct *record;
+index_new_record(
+  record_struct *record)
 {
   char             store_fname[MAX_FILE];
   dl_list_type     index_file_list;
@@ -365,9 +365,9 @@ index_new_record(record)
 
 /* check the add record for validity */
 static int
-check_add(record_p, reg_email)
-  record_struct **record_p;
-  char          *reg_email;
+check_add(
+  record_struct **record_p,
+  char          *reg_email)
 {
   record_struct           *rec;
   ext_parse_response_type resp      = EXT_PARSE_OK;
@@ -429,11 +429,11 @@ check_add(record_p, reg_email)
 
 /* check the mod records for validity */
 static int
-check_mod(new_record_p, old_record_p, old_record_list, reg_email)
-  record_struct      **new_record_p;
-  anon_record_struct **old_record_p;
-  dl_list_type       *old_record_list;
-  char               *reg_email;
+check_mod(
+  record_struct      **new_record_p,
+  anon_record_struct **old_record_p,
+  dl_list_type       *old_record_list,
+  char               *reg_email)
 {
   int                     validate_flag;
   record_struct           *new_rec;
@@ -525,10 +525,10 @@ check_mod(new_record_p, old_record_p, old_record_list, reg_email)
    deletion is valid.  Also fills 'record_list' with the actual
    record(s) matching the delete criteria. */
 static int
-check_del(old_rec, record_list, reg_email)
-  anon_record_struct *old_rec;
-  dl_list_type       *record_list;
-  char               *reg_email;
+check_del(
+  anon_record_struct *old_rec,
+  dl_list_type       *record_list,
+  char               *reg_email)
 {
   record_struct           *rec;
   ext_parse_response_type resp = EXT_PARSE_OK;
@@ -587,8 +587,8 @@ check_del(old_rec, record_list, reg_email)
 
 
 static int 
-add_record(rec)
-  record_struct  *rec;
+add_record(
+  record_struct  *rec)
 {
   av_pair_struct *av;
   int            status;
@@ -626,9 +626,9 @@ add_record(rec)
 /* deletes a record from a file.  Returns TRUE if success, FALSE if
      failure */
 static int
-del_record(record_list, update_soa)
-  dl_list_type *record_list;
-  int          update_soa;
+del_record(
+  dl_list_type *record_list,
+  int          update_soa)
 {
   auth_area_struct  *aa;
   record_struct     *rec;
@@ -660,9 +660,9 @@ del_record(record_list, update_soa)
 /* modifies a record from a file. Returns TRUE if success, FALSE if
      failure */
 static int 
-mod_record(new_record, old_record_list)
-  record_struct    *new_record;
-  dl_list_type     *old_record_list;
+mod_record(
+  record_struct    *new_record,
+  dl_list_type     *old_record_list)
 {
   char *updated_str;
   
@@ -683,8 +683,8 @@ mod_record(new_record, old_record_list)
 }
 
 static int
-print_add_result(rec)
-  record_struct  *rec;
+print_add_result(
+  record_struct  *rec)
 {
   av_pair_struct *av;
   char           *id;
@@ -710,9 +710,9 @@ print_add_result(rec)
 /* ------------------- Public Functions -------------------- */
 
 int
-process_registration(reg_email, action)
-  char                 *reg_email;
-  register_action_type action;
+process_registration(
+  char                 *reg_email,
+  register_action_type action)
 {
   FILE                 *spool_fp;
   anon_record_struct   *old_rec = NULL;

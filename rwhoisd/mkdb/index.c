@@ -36,9 +36,9 @@
 
 /* write_index_line: output one index line to the file */
 static int
-write_index_line(fp, item)
-  FILE          *fp;
-  index_struct  *item;
+write_index_line(
+  FILE          *fp,
+  index_struct  *item)
 {
   char      line[MAX_LINE + 1];
 
@@ -60,9 +60,7 @@ write_index_line(fp, item)
 
 /* exact_index: given a value return the string to put into the
    index This was the old normal case for everything */
-static char *
-exact_index(line)
-  char      *line;
+static char *exact_index (char *line)
 {
   char      *a;
   char      *b;
@@ -76,9 +74,7 @@ exact_index(line)
 }
 
 /* cidr_index: given a value return the string to put into the index*/
-static char *
-cidr_index(line)
-  char      *line;
+static char *cidr_index (char *line)
 {
   struct netinfo prefix;
   char          buf[MAX_LINE];
@@ -104,9 +100,7 @@ cidr_index(line)
 }
 
 
-static char *
-strip_non_soundex(str)
-  char *str;
+static char *strip_non_soundex (char *str)
 {
   int i;
   int j;
@@ -135,9 +129,7 @@ strip_non_soundex(str)
   return(str);
 }
 
-static char *
-soundex_index(value)
-  char *value;
+static char *soundex_index (char *value)
 {
   char  buf[MAX_LINE];
   char  tmp_buf[MAX_LINE];
@@ -187,10 +179,7 @@ soundex_index(value)
   return(result);
 }
 
-char *
-soundex_index_to_var(result, value)
-  char      *result;
-  char      *value;
+char *soundex_index_to_var (char *result, char *value)
 {
   char *res;
 
@@ -207,9 +196,7 @@ soundex_index_to_var(result, value)
   return(result);
 }
 
-int
-is_soundexable(str)
-  char *str;
+int is_soundexable (char *str)
 {
   int i;
   int len;
@@ -237,8 +224,8 @@ is_soundexable(str)
 /* sort_index_file: given a list of files, sort each tmp file, move it
    to its real filename, and unlink the original unsorted file */
 int
-sort_index_files(files)
-  dl_list_type *files;
+sort_index_files(
+  dl_list_type *files)
 {
   char            command_str[BUFSIZ + 1];
   index_fp_struct *index_file;
@@ -283,11 +270,11 @@ sort_index_files(files)
    unnecessary), write to each index the appropriate lines for each
    attribute.  Return the number of index lines written */
 static long
-index_record(rec, auth_area, files, status)
-  record_struct    *rec;
-  auth_area_struct *auth_area;
-  dl_list_type     *files;
-  int              *status;
+index_record(
+  record_struct    *rec,
+  auth_area_struct *auth_area,
+  dl_list_type     *files,
+  int              *status)
 {
   dl_list_type     *global_attr_list;
   dl_list_type     *av_pair_list;
@@ -481,13 +468,13 @@ index_record(rec, auth_area, files, status)
    full_file_list (but not committing it).  Returns the number of
    lines written, status in the variable.  */
 long
-index_data_file(class, auth_area, data_file, files, validate_flag, status)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  file_struct       *data_file;
-  dl_list_type      *files;
-  int               validate_flag;
-  int               *status;
+index_data_file(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  file_struct       *data_file,
+  dl_list_type      *files,
+  int               validate_flag,
+  int               *status)
 {
   record_struct    *record;
   long              num_index_lines = 0;
@@ -554,9 +541,9 @@ index_data_file(class, auth_area, data_file, files, validate_flag, status)
 /* ------------------------ Public Functions ----------------- */
 
 int
-decode_index_line(line, item)
-  char              *line;
-  index_struct *item;
+decode_index_line(
+  char              *line,
+  index_struct *item)
 {
   int   argc;
   char  **argv;
@@ -587,9 +574,9 @@ decode_index_line(line, item)
 }
 
 int
-encode_index_line(line, item)
-  char          *line;
-  index_struct  *item;
+encode_index_line(
+  char          *line,
+  index_struct  *item)
 {
   if (!item || !line)
   {
@@ -609,14 +596,13 @@ encode_index_line(line, item)
 
 
 int
-index_files(class, auth_area, index_file_list, data_file_list, validate_flag,
-            hold_lock_flag)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  dl_list_type      *index_file_list;
-  dl_list_type      *data_file_list;
-  int               validate_flag;
-  int               hold_lock_flag;
+index_files(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  dl_list_type      *index_file_list,
+  dl_list_type      *data_file_list,
+  int               validate_flag,
+  int               hold_lock_flag)
 {
   file_struct   *data_file;
   file_struct   *index_file;
@@ -745,15 +731,7 @@ index_files(class, auth_area, index_file_list, data_file_list, validate_flag,
 }
 
 
-int
-index_files_by_name(class_name, auth_area_name, base_dir,
-                    num_data_files, file_names, validate_flag)
-  char  *class_name;
-  char  *auth_area_name;
-  char  *base_dir;
-  int   num_data_files;
-  char  **file_names;
-  int   validate_flag;
+int index_files_by_name (char *class_name, char *auth_area_name, char *base_dir, int num_data_files, char **file_names, int validate_flag)
 {
   class_struct      *class;
   auth_area_struct  *auth_area;
@@ -828,12 +806,7 @@ index_files_by_name(class_name, auth_area_name, base_dir,
   return(status);
 }
 
-int
-index_files_by_suffix(class_name, auth_area_name, suffix, validate_flag)
-  char *class_name;
-  char *auth_area_name;
-  char *suffix;
-  int  validate_flag;
+int index_files_by_suffix (char *class_name, char *auth_area_name, char *suffix, int validate_flag)
 {
   class_struct     *class;
   auth_area_struct *auth_area;
@@ -903,8 +876,8 @@ index_files_by_suffix(class_name, auth_area_name, suffix, validate_flag)
 /* --------------- Destructor Components ------------ */
 
 int
-destroy_index_item(item)
-  index_struct *item;
+destroy_index_item(
+  index_struct *item)
 {
   if (!item)
   {

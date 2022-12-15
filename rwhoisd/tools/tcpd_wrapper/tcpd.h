@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <strings.h>
 
 typedef struct sockaddr_gen {
     union {
@@ -29,7 +30,7 @@ typedef union gen_addr {
 #endif
 } gen_addr;
 
-extern void sockgen_simplify();
+void sockgen_simplify(sockaddr_gen *sg);
 
 #define sg_sa		sg_addr._sg_sa
 #define sg_sin		sg_addr._sg_sin
@@ -92,9 +93,9 @@ struct request_info {
     char    pid[10];			/* access via eval_pid(request) */
     struct host_info client[1];		/* client endpoint info */
     struct host_info server[1];		/* server endpoint info */
-    void  (*sink) ();			/* datagram sink function or 0 */
-    void  (*hostname) ();		/* address to printable hostname */
-    void  (*hostaddr) ();		/* address to printable address */
+    void  (*sink) (int fd);			/* datagram sink function or 0 */
+    void  (*hostname) (struct host_info *);		/* address to printable hostname */
+    void  (*hostaddr) (struct host_info *);		/* address to printable address */
     void  (*cleanup) ();		/* cleanup function or 0 */
     struct netconfig *config;		/* netdir handle */
 };
@@ -137,20 +138,20 @@ extern void fromhost();			/* get/validate client host info */
 #define fromhost sock_host		/* no TLI support needed */
 #endif
 
-extern int hosts_access();		/* access control */
-extern void shell_cmd();		/* execute shell command */
-extern char *percent_x();		/* do %<char> expansion */
-extern void rfc931();			/* client name from RFC 931 daemon */
-extern void clean_exit();		/* clean up and exit */
-extern void refuse();			/* clean up and exit */
-extern char *xgets();			/* fgets() on steroids */
-extern char *split_at();		/* strchr() and split */
-extern unsigned long dot_quad_addr();	/* restricted inet_addr() */
-extern int numeric_addr();		/* IP4/IP6 inet_addr (restricted) */
-extern struct hostent *tcpd_gethostbyname();
-					/* IP4/IP6 gethostbyname */
+extern int hosts_access(struct request_info *request);		/* access control */
+extern void shell_cmd(char *command);		/* execute shell command */
+extern char *percent_x(char *result, int result_len, char *string, struct request_info *request);		/* do %<char> expansion */
+extern void rfc931(struct sockaddr_gen *rmt_sin, struct sockaddr_gen *our_sin, char *dest);			/* client name from RFC 931 daemon */
+extern void clean_exit (struct request_info *request);/* clean up and exit */
+extern void    refuse(struct request_info *request);/* clean up and exit */
+extern char *xgets(char *ptr, int len, FILE *fp);			/* fgets() on steroids */
+extern char *split_at(char *string, int delimiter);		/* strchr() and split */
+extern unsigned long dot_quad_addr(char *str);	/* restricted inet_addr() */
+extern int numeric_addr(char *str, union gen_addr *addr, int *af, int *len);		/* IP4/IP6 inet_addr (restricted) */
+extern struct hostent *tcpd_gethostbyname(char *host, int af);/* IP4/IP6 gethostbyname */
+extern int setenv (const char *__name, const char *__value, int __replace);
 #ifdef HAVE_IPV6
-extern char *skip_ipv6_addrs();		/* skip over colons in IPv6 addrs */
+extern char *skip_ipv6_addrs(char *str);		/* skip over colons in IPv6 addrs */
 #else
 #define skip_ipv6_addrs(x)	x
 #endif
@@ -196,20 +197,20 @@ extern struct request_info *request_set();	/* update request structure */
   * host_info structures serve as caches for the lookup results.
   */
 
-extern char *eval_user();		/* client user */
-extern char *eval_hostname();		/* printable hostname */
-extern char *eval_hostaddr();		/* printable host address */
-extern char *eval_hostinfo();		/* host name or address */
-extern char *eval_client();		/* whatever is available */
-extern char *eval_server();		/* whatever is available */
+extern char *eval_user(struct request_info *request);		/* client user */
+extern char *eval_hostname(struct host_info *host);		/* printable hostname */
+extern char *eval_hostaddr(struct host_info *host);		/* printable host address */
+extern char *eval_hostinfo(struct host_info *host);		/* host name or address */
+extern char *eval_client(struct request_info *request);		/* whatever is available */
+extern char *eval_server(struct request_info *request);		/* whatever is available */
 #define eval_daemon(r)	((r)->daemon)	/* daemon process name */
 #define eval_pid(r)	((r)->pid)	/* process id */
 
 /* Socket-specific methods, including DNS hostname lookups. */
 
-extern void sock_host();		/* look up endpoint addresses */
-extern void sock_hostname();		/* translate address to hostname */
-extern void sock_hostaddr();		/* address to printable address */
+extern void sock_host(struct request_info *request);		/* look up endpoint addresses */
+extern void sock_hostname(struct host_info *host);		/* translate address to hostname */
+extern void sock_hostaddr(struct host_info *host);		/* address to printable address */
 #define sock_methods(r) \
 	{ (r)->hostname = sock_hostname; (r)->hostaddr = sock_hostaddr; }
 
@@ -257,7 +258,7 @@ extern struct tcpd_context tcpd_context;
   * behavior.
   */
 
-extern void process_options();		/* execute options */
+extern void process_options(char *options, struct request_info *request);		/* execute options */
 extern int dry_run;			/* verification flag */
 
 /* Bug workarounds. */
@@ -269,7 +270,7 @@ extern long fix_inet_addr();
 
 #ifdef BROKEN_FGETS			/* partial reads from sockets */
 #define fgets fix_fgets
-extern char *fix_fgets();
+extern char *fix_fgets (char *buf, int len, FILE *fp);
 #endif
 
 #ifdef RECVFROM_BUG			/* no address family info */
@@ -279,7 +280,7 @@ extern int fix_recvfrom();
 
 #ifdef GETPEERNAME_BUG			/* claims success with UDP */
 #define getpeername fix_getpeername
-extern int fix_getpeername();
+extern int fix_getpeername(int sock, struct sockaddr *sa, int *len);
 #endif
 
 #ifdef SOLARIS_24_GETHOSTBYNAME_BUG	/* lists addresses as aliases */
@@ -294,5 +295,5 @@ extern char *fix_strtok();
 
 #ifdef LIBC_CALLS_STRTOK		/* libc calls strtok() */
 #define strtok	my_strtok
-extern char *my_strtok();
+extern char *my_strtok(char *buf, char *sep);
 #endif

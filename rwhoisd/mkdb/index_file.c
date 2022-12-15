@@ -18,8 +18,8 @@
 /* ------------------- Private Functions -------------------- */
 
 static char * 
-mkdb_ft_2_ft_templ(mkdb_type)
-  mkdb_file_type mkdb_type;
+mkdb_ft_2_ft_templ(
+  mkdb_file_type mkdb_type)
 {
   switch(mkdb_type)
   {
@@ -35,8 +35,8 @@ mkdb_ft_2_ft_templ(mkdb_type)
 }
 
 static char *
-translate_type_to_str(mkdb_type)
-  mkdb_file_type mkdb_type;
+translate_type_to_str(
+  mkdb_file_type mkdb_type)
 {
   switch(mkdb_type)
   {
@@ -52,9 +52,9 @@ translate_type_to_str(mkdb_type)
 }
 
 static char *
-generate_index_file_tmpname(type, prefix)
-  mkdb_file_type type;
-  char           *prefix;
+generate_index_file_tmpname(
+  mkdb_file_type type,
+  char           *prefix)
 {
   char           tmpname[MAX_FILE + 1];
   
@@ -74,12 +74,12 @@ generate_index_file_tmpname(type, prefix)
 
 /* create_index_fp: creates an index_fp_struct and fills it out */
 static index_fp_struct *
-create_index_fp(type, class, auth_area, base_dir, base_name)
-  mkdb_file_type   type;
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  char             *base_dir;
-  char             *base_name;
+create_index_fp(
+  mkdb_file_type   type,
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  char             *base_dir,
+  char             *base_name)
 {
   index_fp_struct *file;
   char            *name;
@@ -107,9 +107,9 @@ create_index_fp(type, class, auth_area, base_dir, base_name)
 }
 
 static int
-does_index_type_exist(type, index_file_list)
-  mkdb_file_type    type;
-  dl_list_type      *index_file_list;
+does_index_type_exist(
+  mkdb_file_type    type,
+  dl_list_type      *index_file_list)
 {
   index_fp_struct *index_file;
   int             not_done;
@@ -137,10 +137,10 @@ does_index_type_exist(type, index_file_list)
 /* given a type and prefix, and spool directory, generate the real
    filename template. */
 char *
-generate_index_file_basename(type, spool_directory, prefix)
-  mkdb_file_type type;
-  char           *spool_directory;
-  char           *prefix;
+generate_index_file_basename(
+  mkdb_file_type type,
+  char           *spool_directory,
+  char           *prefix)
 {
   char           template[MAX_FILE];
   
@@ -160,8 +160,8 @@ generate_index_file_basename(type, spool_directory, prefix)
    here. It is unclear whether this is the case but there needs to be
    some break between the indexing method and the mkdb file type. */
 mkdb_file_type
-convert_file_type(attr_index)
-  attr_index_type attr_index;
+convert_file_type(
+  attr_index_type attr_index)
 {
   switch(attr_index)
   {
@@ -175,11 +175,11 @@ convert_file_type(attr_index)
     return(MKDB_NO_FILE);
   }
 }
- 
+
 index_fp_struct *
-find_index_file_by_type(files, type)
-  dl_list_type   *files;
-  mkdb_file_type type;
+find_index_file_by_type(
+  dl_list_type   *files,
+  mkdb_file_type type)
 {
   index_fp_struct *file;
   int             found = 0;
@@ -212,12 +212,12 @@ find_index_file_by_type(files, type)
      of the types and just exit because we've added 'em all and
      there's no sense in looking at any more of 'em.*/
 int
-build_index_list(class, auth_area, index_file_list, base_dir, base_name)
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  dl_list_type     *index_file_list;
-  char             *base_dir;
-  char             *base_name;
+build_index_list(
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  dl_list_type     *index_file_list,
+  char             *base_dir,
+  char             *base_name)
 {
   dl_list_type     *attr_list;
   int              not_done;
@@ -298,8 +298,8 @@ build_index_list(class, auth_area, index_file_list, base_dir, base_name)
   
 
 int
-unlink_index_tmp_files(index_file_list)
-   dl_list_type  *index_file_list;
+unlink_index_tmp_files(
+   dl_list_type  *index_file_list)
 {
   index_fp_struct *index_file;
   int             not_done;
@@ -329,8 +329,8 @@ unlink_index_tmp_files(index_file_list)
 }
 
 int
-destroy_index_fp_data(data)
-  index_fp_struct *data;
+destroy_index_fp_data(
+  index_fp_struct *data)
 {
   if (!data)
   {

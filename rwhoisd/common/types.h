@@ -212,7 +212,7 @@ typedef struct _directive_struct
   int   len;
   int   disabled_flag;
   long  cap_bit;
-  int   (*function)();
+  int   (*function)(char* c);
   char  *name;
   char  *description;
   char  *program;

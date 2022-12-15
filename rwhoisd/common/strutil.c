@@ -20,10 +20,7 @@ static int is_id_char PROTO((char value));
 
 /* stripchar: Strips out all occurences of a specific character (in
    place) */
-char *
-stripchar(str, ch)
-  char *str;
-  char ch;
+char *stripchar (char *str, char ch)
 {
   int i;
   int j;
@@ -50,10 +47,7 @@ stripchar(str, ch)
 
 /* strip_trailing: strips any characters matching ch off of the end of
    a string. */
-char *
-strip_trailing(str, ch)
-  char *str;
-  char ch;
+char *strip_trailing (char *str, char ch)
 {
   int i;
   int len;
@@ -75,10 +69,7 @@ strip_trailing(str, ch)
 
 /* strip_leading: strips any characters matching ch off the front of a
    string. */
-char *
-strip_leading(str, ch)
-  char *str;
-  char ch;
+char *strip_leading (char *str, char ch)
 {
   char *p1;
   char *p2;
@@ -105,9 +96,7 @@ strip_leading(str, ch)
   return(str);
 }
 
-char *
-strip_control(str)
-  char *str;
+char *strip_control (char *str)
 {
   int i;
   int j;
@@ -133,9 +122,7 @@ strip_control(str)
 }
 
 /* rtrim: strips whitespace off of the end of a string. */
-char *
-rtrim(str)
-  char *str;
+char *rtrim (char *str)
 {
   int i;
 
@@ -153,9 +140,7 @@ rtrim(str)
 }
 
 /* ltrim: strips the whitespace off the the front of a string */
-char *
-ltrim(str)
-  char *str;
+char *ltrim (char *str)
 {
   char *p1;
   char *p2;
@@ -184,9 +169,7 @@ ltrim(str)
 }
 
 /* trim: trim whitespace off of both ends of a string (in place) */
-char *
-trim(str)
-  char *str;
+char *trim (char *str)
 {
   if (!str)
   {
@@ -201,9 +184,7 @@ trim(str)
 
 
 /* reverses the string */
-char *
-strrev(str)
-  char *str;
+char *strrev (char *str)
 {
   char *head;
   char *tail;
@@ -224,9 +205,7 @@ strrev(str)
   return(str);
 }
 
-char *
-skip_whitespace(str)
-  char  *str;
+char *skip_whitespace (char *str)
 {
   char  *p = str;
 
@@ -239,10 +218,7 @@ skip_whitespace(str)
   return(p);
 }
 
-int
-count_char(str, c)
-  char  *str;
-  char  c;
+int count_char (char *str, char c)
 {
   char  *s;
   int   count;
@@ -260,9 +236,7 @@ count_char(str, c)
   return(count);
 }
 
-int
-count_spaces(str)
-  char  *str;
+int count_spaces (char *str)
 {
   char  *s;
   int   count;
@@ -283,9 +257,10 @@ count_spaces(str)
 
 /* strSTR: does a case-insensitve sub-string search */
 char *
-strSTR(str1, str2)       /*  by Jeff Odum  09/91  */
-  char *str1;
-  char *str2;
+strSTR (       /*  by Jeff Odum  09/91  */
+    char *str1,
+    char *str2
+)
 {
   int i;
   int j;
@@ -319,9 +294,7 @@ strSTR(str1, str2)       /*  by Jeff Odum  09/91  */
 }
 
 /* strupr: Upcases a string. */
-char *
-strupr(a)
-  char *a;
+char *strupr (char *a)
 {
   char *b;
 
@@ -337,9 +310,7 @@ strupr(a)
   return (b);
 }
 
-char *
-compact_whitespace(str)
-  char *str;
+char *compact_whitespace (char *str)
 {
   int i;
   int j;
@@ -377,9 +348,7 @@ compact_whitespace(str)
 }
 
 /* check if the string has any whitespaces (space, tab ..) */
-int
-is_no_whitespace_str( str )
-  char *str;
+int is_no_whitespace_str (char *str)
 {
   if (!str) return FALSE;
 
@@ -394,9 +363,7 @@ is_no_whitespace_str( str )
 }
 
 /* check if the given character string is just made of digits. */
-int
-is_number_str( str )
-  char *str;
+int is_number_str (char *str)
 {
   if (!str) return FALSE;
 
@@ -411,9 +378,7 @@ is_number_str( str )
 }
 
 /* check if the given character is an id character */
-static int
-is_id_char( value )
-  char value;
+static int is_id_char (char value)
 {
   return( isalnum(value) || 
           (value == '-') || 
@@ -421,9 +386,7 @@ is_id_char( value )
 }
 
 /* check if the given string is made of only id characters */
-int
-is_id_str( value )
-  char *value;
+int is_id_str (char *value)
 {
   int i;
 

@@ -18,10 +18,10 @@
 #include "validate_rec.h"
 
 anon_av_pair_struct *
-get_anon_av_pair(line, validate_flag, status)
-  char            *line;
-  int             validate_flag;
-  av_parse_result *status;
+get_anon_av_pair(
+  char            *line,
+  int             validate_flag,
+  av_parse_result *status)
 {
   anon_av_pair_struct *av_pair = NULL;
   char                attr_name[MAX_LINE];
@@ -59,11 +59,11 @@ get_anon_av_pair(line, validate_flag, status)
    file pointer set at the beginning of a record in a data file, read
    the anonymous record into the structure. */
 anon_record_struct *
-mkdb_read_anon_record(data_file_no, validate_flag, status, fp)
-  int              data_file_no;
-  int              validate_flag;
-  rec_parse_result *status;
-  FILE             *fp;
+mkdb_read_anon_record(
+  int              data_file_no,
+  int              validate_flag,
+  rec_parse_result *status,
+  FILE             *fp)
 {
   anon_record_struct  *rec;
   anon_av_pair_struct *av;
@@ -150,9 +150,9 @@ mkdb_read_anon_record(data_file_no, validate_flag, status, fp)
 }
 
 anon_av_pair_struct *
-find_anon_attr_in_rec(anon_rec, attr_name)
-  anon_record_struct *anon_rec;
-  char               *attr_name;
+find_anon_attr_in_rec(
+  anon_record_struct *anon_rec,
+  char               *attr_name)
 {
   anon_av_pair_struct *av;
   dl_list_type        *av_list;
@@ -181,8 +181,8 @@ find_anon_attr_in_rec(anon_rec, attr_name)
 }
 
 anon_av_pair_struct *
-find_anon_auth_area_in_rec(anon_rec)
-  anon_record_struct *anon_rec;
+find_anon_auth_area_in_rec(
+  anon_record_struct *anon_rec)
 {
   anon_av_pair_struct *av;
   dl_list_type        *av_list;
@@ -214,8 +214,8 @@ find_anon_auth_area_in_rec(anon_rec)
 }
 
 anon_av_pair_struct *
-find_anon_class_in_rec(anon_rec)
-  anon_record_struct *anon_rec;
+find_anon_class_in_rec(
+  anon_record_struct *anon_rec)
 {
   anon_av_pair_struct *av;
   dl_list_type        *av_list;
@@ -249,8 +249,8 @@ find_anon_class_in_rec(anon_rec)
 }
 
 anon_av_pair_struct *
-find_anon_updated_in_rec(anon_rec)
-  anon_record_struct *anon_rec;
+find_anon_updated_in_rec(
+  anon_record_struct *anon_rec)
 {
   anon_av_pair_struct *av;
   dl_list_type        *av_list;
@@ -283,8 +283,8 @@ find_anon_updated_in_rec(anon_rec)
 
 
 int
-destroy_anon_record_data(rec)
-  anon_record_struct    *rec;
+destroy_anon_record_data(
+  anon_record_struct    *rec)
 {
   if (!rec) return TRUE;
   
@@ -296,8 +296,8 @@ destroy_anon_record_data(rec)
 }
 
 int
-destroy_anon_av_pair_data(av)
-  anon_av_pair_struct   *av;
+destroy_anon_av_pair_data(
+  anon_av_pair_struct   *av)
 {
   if (!av) return TRUE;
 

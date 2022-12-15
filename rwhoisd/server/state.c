@@ -31,8 +31,7 @@ typedef struct _rwhois_state_struct
 
 static rwhois_state_struct  state_info;
 
-int 
-get_rwhois_secure_mode()
+int get_rwhois_secure_mode (void)
 {
   return(state_info.secure_mode);
 }
@@ -50,23 +49,20 @@ get_rwhois_state()
 }
 
 int
-set_rwhois_state(s)
-  rwhois_state_type s;
+set_rwhois_state(
+  rwhois_state_type s)
 {
   state_info.state = s;
 
   return TRUE;
 }
 
-char *
-get_rwhois_spool_file_name()
+char *get_rwhois_spool_file_name (void)
 {
   return(state_info.spool_file_name);
 }
 
-int
-set_rwhois_spool_file_name(file)
-  char *file;
+int set_rwhois_spool_file_name (char *file)
 {
   strncpy(state_info.spool_file_name, file,
           sizeof(state_info.spool_file_name));
@@ -99,8 +95,7 @@ open_spool_file(char *mode)
   return(fp);
 }
 
-void
-close_spool_file()
+void close_spool_file (void)
 {
   if (state_info.spool_fp)
   {
@@ -109,9 +104,7 @@ close_spool_file()
   }
 }
 
-int
-move_spool_file(new_file_name)
-  char *new_file_name;
+int move_spool_file (char *new_file_name)
 {
   if (! *(state_info.spool_file_name))
   {
@@ -146,8 +139,7 @@ move_spool_file(new_file_name)
   return TRUE;
 }
 
-int
-remove_spool_file()
+int remove_spool_file (void)
 {
   if (! *(state_info.spool_file_name))
   {
@@ -171,29 +163,23 @@ remove_spool_file()
   return TRUE;
 }
 
-char *
-get_client_vendor_id()
+char *get_client_vendor_id (void)
 {
   return(state_info.client_vendor_id);
 }
 
-void
-set_client_vendor_id(id)
-  char *id;
+void set_client_vendor_id (char *id)
 {
   strncpy(state_info.client_vendor_id, id,
           sizeof(state_info.client_vendor_id));
 }
 
-char *
-get_register_email()
+char *get_register_email (void)
 {
   return(state_info.register_email);
 }
 
-void
-set_register_email(email)
-  char *email;
+void set_register_email (char *email)
 {
   strncpy(state_info.register_email, email, sizeof(state_info.register_email));
 }
@@ -205,8 +191,8 @@ get_register_action()
 }
 
 void
-set_register_action(action)
-  register_action_type action;
+set_register_action(
+  register_action_type action)
 {
   state_info.register_action = action;
 }

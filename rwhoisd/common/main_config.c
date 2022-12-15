@@ -36,12 +36,7 @@ static server_state_struct    save_server_state_data;
 /* canonicalize_conf_path: a wrapper around canonicalize path that
       fills in much of the required data, and changes the path "in
       place". */
-static int
-canonicalize_conf_path(path, path_len, is_file, null_allowed)
-  char  *path;
-  int   path_len;
-  int   is_file;
-  int   null_allowed;
+static int canonicalize_conf_path (char *path, int path_len, int is_file, int null_allowed)
 {
   int   status;
   char  canon_path[MAX_FILE + 1];
@@ -105,10 +100,7 @@ canonicalize_conf_path(path, path_len, is_file, null_allowed)
 
 /* read_main_config_file: read the main configuration file.  Does not
       take care of second pass validation (for now). */
-int
-read_main_config_file(config_file, chrooted)
-  char  *config_file;
-  int   chrooted;
+int read_main_config_file (char *config_file, int chrooted)
 {
   FILE  *fp;
   char  line[BUFSIZ + 1];
@@ -330,8 +322,7 @@ read_main_config_file(config_file, chrooted)
 }
 
 /* clean and default config data */
-void
-init_server_config_data()
+void init_server_config_data (void)
 {
   /* clear everything */
   bzero(&server_config_data, sizeof(server_config_data));
@@ -385,8 +376,7 @@ init_server_config_data()
 }
 
 /* initialize server state */
-void
-init_server_state()
+void init_server_state (void)
 {
 
   bzero(&server_state_data, sizeof(server_state_data));
@@ -401,8 +391,7 @@ init_server_state()
      canonicalize paths, and detect errors that can not be detected
      immediately; it will return TRUE if there were no fatal errors,
      FALSE if not. */
-int
-verify_server_config_data()
+int verify_server_config_data (void)
 {
   int   status;
 
@@ -478,8 +467,7 @@ verify_server_config_data()
 
 
 void
-display_server_config_data(file)
-  FILE  *file;
+display_server_config_data(FILE  *file)
 {
   fprintf(file, "--------------------------------\n");
 
@@ -613,8 +601,7 @@ display_server_config_data(file)
 }
 
 
-int
-save_server_state()
+int save_server_state (void)
 {
   bcopy(&server_state_data, &save_server_state_data,
         sizeof(save_server_state_data));
@@ -622,8 +609,7 @@ save_server_state()
   return TRUE;
 }
 
-int
-restore_server_state()
+int restore_server_state (void)
 {
   bcopy(&save_server_state_data, &server_state_data,
         sizeof(server_state_data));
@@ -635,9 +621,7 @@ restore_server_state()
 /* ---------------- The Guard Functions ----------------- */
 
 /* set_root_dir: We can actually detect errors on this one. */
-int
-set_root_dir(dir)
-  char  *dir;
+int set_root_dir (char *dir)
 {
   if (dir && *dir)
   {
@@ -663,14 +647,12 @@ set_root_dir(dir)
   return TRUE;
 }
 
-char *
-get_root_dir()
+char *get_root_dir (void)
 {
   return(server_config_data.root_dir);
 }
 
-int
-chdir_root_dir()
+int chdir_root_dir (void)
 {
   char  *dir = get_root_dir();
 
@@ -685,51 +667,40 @@ chdir_root_dir()
   return TRUE;
 }
 
-int
-set_bin_path(path)
-  char  *path;
+int set_bin_path (char *path)
 {
   strncpy(server_config_data.bin_path, path, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_bin_path()
+char *get_bin_path (void)
 {
   return(server_config_data.bin_path);
 }
 
-int
-set_notify_log(log)
-  char  *log;
+int set_notify_log (char *log)
 {
   strncpy(server_config_data.notify_log, log, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_notify_log()
+char *get_notify_log (void)
 {
   return(server_config_data.notify_log);
 }
 
-int
-set_log_default(file)
-  char *file;
+int set_log_default (char *file)
 {
   strncpy(server_config_data.log_default_file, file, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_log_default()
+char *get_log_default (void)
 {
   return(server_config_data.log_default_file);
 }
 
-int
-set_log_facility(facility)
-   char *facility;
+int set_log_facility (char *facility)
 {
   if (STR_EQ(facility,"LOG_KERN"))
   {
@@ -820,286 +791,224 @@ set_log_facility(facility)
   return(-1);
 }
 
-int
-get_log_facility()
+int get_log_facility (void)
 {
    return(server_config_data.log_facility);
 }
 
-int
-set_log_emerg(log)
-  char  *log;
+int set_log_emerg (char *log)
 {
   strncpy(server_config_data.log_emerg_file, log, MAX_FILE);
   return TRUE;
 }
-char *
-get_log_emerg()
+char *get_log_emerg (void)
 {
   return(server_config_data.log_emerg_file);
 }
 
-int
-set_log_alert(log)
-  char  *log;
+int set_log_alert (char *log)
 {
   strncpy(server_config_data.log_alert_file, log, MAX_FILE);
   return TRUE;
 }
-char *
-get_log_alert()
+char *get_log_alert (void)
 {
   return(server_config_data.log_alert_file);
 }
 
-int
-set_log_crit(log)
-  char  *log;
+int set_log_crit (char *log)
 {
   strncpy(server_config_data.log_crit_file, log, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_log_crit()
+char *get_log_crit (void)
 {
   return(server_config_data.log_crit_file);
 }
 
-int
-set_log_err(log)
-  char  *log;
+int set_log_err (char *log)
 {
   strncpy(server_config_data.log_err_file, log, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_log_err()
+char *get_log_err (void)
 {
   return(server_config_data.log_err_file);
 }
 
-int
-set_log_warn(log)
-  char  *log;
+int set_log_warn (char *log)
 {
   strncpy(server_config_data.log_warn_file, log, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_log_warn()
+char *get_log_warn (void)
 {
   return(server_config_data.log_warn_file);
 }
 
-int
-set_log_notice(log)
-  char  *log;
+int set_log_notice (char *log)
 {
   strncpy(server_config_data.log_notice_file, log, MAX_FILE);
   return TRUE;
 }
-char *
-get_log_notice()
+char *get_log_notice (void)
 {
   return(server_config_data.log_notice_file);
 }
 
-int
-set_log_info(log)
-  char  *log;
+int set_log_info (char *log)
 {
   strncpy(server_config_data.log_info_file, log, MAX_FILE);
   return TRUE;
 }
-char *
-get_log_info()
+char *get_log_info (void)
 {
   return(server_config_data.log_info_file);
 }
 
-int
-set_log_debug(log)
-  char  *log;
+int set_log_debug (char *log)
 {
   strncpy(server_config_data.log_debug_file, log, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_log_debug()
+char *get_log_debug (void)
 {
   return(server_config_data.log_debug_file);
 }
 
-int
-set_directive_file(file)
-  char *file;
+int set_directive_file (char *file)
 {
   strncpy(server_config_data.directive_file, file, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_directive_file()
+char *get_directive_file (void)
 {
   return(server_config_data.directive_file);
 }
 
-int
-set_x_directive_file(file)
-  char *file;
+int set_x_directive_file (char *file)
 {
   strncpy(server_config_data.x_directive_file, file, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_x_directive_file()
+char *get_x_directive_file (void)
 {
   return(server_config_data.x_directive_file);
 }
 
-int
-set_auth_area_file(file)
-  char  *file;
+int set_auth_area_file (char *file)
 {
   strncpy(server_config_data.auth_area_file, file, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_auth_area_file()
+char *get_auth_area_file (void)
 {
   return(server_config_data.auth_area_file);
 }
 
-int
-set_register_log(log)
-  char  *log;
+int set_register_log (char *log)
 {
   strncpy(server_config_data.register_log, log, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_register_log()
+char *get_register_log (void)
 {
   return(server_config_data.register_log);
 }
 
-int
-set_register_spool(spool)
-  char  *spool;
+int set_register_spool (char *spool)
 {
   strncpy(server_config_data.register_spool, spool, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_register_spool()
+char *get_register_spool (void)
 {
   return(server_config_data.register_spool);
 }
 
-int
-set_punt_file(file)
-  char  *file;
+int set_punt_file (char *file)
 {
   strncpy(server_config_data.punt_file, file, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_punt_file()
+char *get_punt_file (void)
 {
   return(server_config_data.punt_file);
 }
 
-int
-set_security_allow(file)
-  char  *file;
+int set_security_allow (char *file)
 {
   strncpy(server_config_data.security_allow, file, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_security_allow()
+char *get_security_allow (void)
 {
   return(server_config_data.security_allow);
 }
 
-int
-set_security_deny(file)
-  char  *file;
+int set_security_deny (char *file)
 {
   strncpy(server_config_data.security_deny, file, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_security_deny()
+char *get_security_deny (void)
 {
   return(server_config_data.security_deny);
 }
 
-int
-set_local_hostname(name)
-  char  *name;
+int set_local_hostname (char *name)
 {
   strncpy(server_config_data.hostname, name, MAX_LINE);
   return TRUE;
 }
 
-char *
-get_local_hostname()
+char *get_local_hostname (void)
 {
   return(server_config_data.hostname);
 }
 
-int
-set_process_userid(id)
-  char  *id;
+int set_process_userid (char *id)
 {
   strncpy(server_config_data.process_userid, id, MAX_LINE);
   return TRUE;
 }
 
-char *
-get_process_userid()
+char *get_process_userid (void)
 {
   return(server_config_data.process_userid);
 }
 
-int
-set_chrooted(val)
-  int   val;
+int set_chrooted (int val)
 {
   server_config_data.chrooted = val;
   return TRUE;
 }
 
-int
-set_chrooted_str(str)
-  char  *str;
+int set_chrooted_str (char *str)
 {
   server_config_data.chrooted = true_false(str);
   return TRUE;
 }
 
-int
-is_chrooted()
+int is_chrooted (void)
 {
   return(server_config_data.chrooted);
 }
 
 
-int
-set_use_syslog(str)
-  char  *str;
+int set_use_syslog (char *str)
 {
 #ifndef NO_SYSLOG
   server_config_data.use_syslog = FALSE;
@@ -1108,101 +1017,80 @@ set_use_syslog(str)
   return TRUE;
 }
 
-int
-is_syslog_used()
+int is_syslog_used (void)
 {
   return(server_config_data.use_syslog);
 }
 
-int
-set_default_deadman_time(sec)
-  int   sec;
+int set_default_deadman_time (int sec)
 {
   server_config_data.default_deadman_time = sec;
   return TRUE;
 }
 
-int
-get_default_deadman_time()
+int get_default_deadman_time (void)
 {
   return(server_config_data.default_deadman_time);
 }
 
-int
-set_max_hits_ceiling(hits)
-  int   hits;
+int set_max_hits_ceiling (int hits)
 {
   server_config_data.max_hits_ceiling = hits;
   return TRUE;
 }
 
-int
-get_max_hits_ceiling()
+int get_max_hits_ceiling (void)
 {
   return(server_config_data.max_hits_ceiling);
 }
 
-int
-set_max_hits_default(hits)
-  int   hits;
+int set_max_hits_default (int hits)
 {
   server_config_data.max_hits_default = hits;
   return TRUE;
 }
 
-int
-get_max_hits_default()
+int get_max_hits_default (void)
 {
   return(server_config_data.max_hits_default);
 }
 
-int
-set_port(p)
-  int   p;
+int set_port (int p)
 {
   server_config_data.port = p;
   return TRUE;
 }
 
-int
-get_port()
+int get_port (void)
 {
   return(server_config_data.port);
 }
 
-int
-set_root_server(val)
-  int   val;
+int set_root_server (int val)
 {
   server_config_data.root_server = val;
   return TRUE;
 }
 
-int
-set_root_server_str(str)
-  char  *str;
+int set_root_server_str (char *str)
 {
   server_config_data.root_server = true_false(str);
   return TRUE;
 }
 
-int
-is_root_server()
+int is_root_server (void)
 {
   return(server_config_data.root_server);
 }
 
 int
-set_server_type(type)
-  rwhois_server_type type;
+set_server_type(rwhois_server_type type)
 {
   server_config_data.server_type = type;
   return TRUE;
 }
 
-int
-set_server_type_str(str)
-  char *str;
+int set_server_type_str (char *str)
 
 {
   if (STR_EQ(str, "INETD") ) {
@@ -1222,8 +1110,7 @@ get_server_type()
 }
 
 /* is_daemon_server: true if DAEMON, false if not */
-int
-is_daemon_server()
+int is_daemon_server (void)
 {
   if (get_server_type() == DAEMON_SERVER) {
     return (TRUE);
@@ -1231,59 +1118,47 @@ is_daemon_server()
   return (FALSE);
 }
 
-int
-set_background(val)
-  int   val;
+int set_background (int val)
 {
   server_config_data.background = val;
   return TRUE;
 }
 
-int
-get_background()
+int get_background (void)
 {
   return server_config_data.background;
 }
 
-int
-set_verbosity(val)
-  int   val;
+int set_verbosity (int val)
 {
   server_config_data.verbose = val;
   return TRUE;
 }
 
-int
-get_verbosity()
+int get_verbosity (void)
 {
   return server_config_data.verbose;
 }
 
-int
-set_pid_file(file)
-  char  *file;
+int set_pid_file (char *file)
 {
   strncpy(server_config_data.pid_file, file, MAX_FILE);
   return TRUE;
 }
 
-char *
-get_pid_file()
+char *get_pid_file (void)
 {
   return(server_config_data.pid_file);
 }
 
-int
-set_server_contact(contact)
-  char *contact;
+int set_server_contact (char *contact)
 {
   strncpy(server_config_data.server_contact, contact, MAX_LINE);
 
   return TRUE;
 }
 
-char *
-get_server_contact()
+char *get_server_contact (void)
 {
   return(server_config_data.server_contact);
 }
@@ -1291,23 +1166,18 @@ get_server_contact()
 
 /* sever_state functions. */
 
-int
-set_hit_limit(limit)
-  int   limit;
+int set_hit_limit (int limit)
 {
   server_state_data.limit = limit;
   return TRUE;
 }
 
-int
-get_hit_limit()
+int get_hit_limit (void)
 {
   return(server_state_data.limit);
 }
 
-int
-set_holdconnect(val)
-  char *val;
+int set_holdconnect (char *val)
 {
   if(STR_EQ(val, "OFF")){
     server_state_data.holdconnect = FALSE;
@@ -1322,16 +1192,13 @@ set_holdconnect(val)
   return TRUE;
 }
 
-int
-get_holdconnect()
+int get_holdconnect (void)
 {
   return(server_state_data.holdconnect);
 }
 
 
-int
-set_forward(val)
-  char *val;
+int set_forward (char *val)
 {
   if (STR_EQ(val, "OFF"))
   {
@@ -1350,65 +1217,52 @@ set_forward(val)
   return TRUE;
 }
 
-int
-get_forward()
+int get_forward (void)
 {
   return(server_state_data.forward);
 }
 
 
-int
-set_display(mode)
-  char *mode;
+int set_display (char *mode)
 {
   strncpy(server_state_data.display, mode, MAX_LINE);
 
   return TRUE;
 }
 
-char *
-get_display()
+char *get_display (void)
 {
   return server_state_data.display;
 }
 
-int
-set_query_allow_wild(val)
-  int val;
+int set_query_allow_wild (int val)
 {
   server_config_data.query_allow_wild = val;
   return TRUE;
 }
 
-int
-get_query_allow_wild()
+int get_query_allow_wild (void)
 {
   return(server_config_data.query_allow_wild);
 }
 
-int
-set_query_allow_substr(val)
-  int val;
+int set_query_allow_substr (int val)
 {
   server_config_data.query_allow_substr = val;
   return TRUE;
 }
 
-int
-get_query_allow_substr()
+int get_query_allow_substr (void)
 {
   return(server_config_data.query_allow_substr);
 }
 
-int
-get_max_children()
+int get_max_children (void)
 {
   return(server_config_data.max_children);
 }
 
-int
-set_max_children(val)
-  int val;
+int set_max_children (int val)
 {
   server_config_data.max_children = val;
 
@@ -1416,45 +1270,36 @@ set_max_children(val)
 }
 
 
-int
-get_skip_referral_search()
+int get_skip_referral_search (void)
 {
   return(server_config_data.skip_referral_search);
 }
 
-int
-set_skip_referral_search(val)
-  int val;
+int set_skip_referral_search (int val)
 {
   server_config_data.skip_referral_search = val;
   return TRUE;
 }
 
 
-int
-get_listen_queue_length()
+int get_listen_queue_length (void)
 {
   return(server_config_data.listen_queue_length);
 }
 
-int
-set_listen_queue_length(val)
-  int val;
+int set_listen_queue_length (int val)
 {
   server_config_data.listen_queue_length = val;
   return TRUE;
 }
 
 
-int
-get_child_priority()
+int get_child_priority (void)
 {
   return(server_config_data.child_priority_offset);
 }
 
-int
-set_child_priority(val)
-  int val;
+int set_child_priority (int val)
 {
   server_config_data.child_priority_offset = val;
   return TRUE;
@@ -1462,8 +1307,7 @@ set_child_priority(val)
 
 /* returns the server type string associated with the server type */
 char *
-get_server_type_str(serv_type)
-  rwhois_server_type serv_type;
+get_server_type_str(rwhois_server_type serv_type)
 {
   switch (serv_type)
   {
@@ -1479,9 +1323,7 @@ get_server_type_str(serv_type)
 
 /* returns the server log facility string associated with the server log
    facility type */
-char *
-get_log_facility_str(facility_val)
-  int facility_val;
+char *get_log_facility_str (int facility_val)
 {
   char *facility_str = NULL;
 
@@ -1551,11 +1393,11 @@ get_log_facility_str(facility_val)
    configuration parameters. Also appends the main config file name
    to paths_list if it was successful in creating a file on disk. */
 int
-write_main_config_file(file, suffix, rwconf, paths_list)
-  char                  *file;
-  char                  *suffix;
-  rwhois_configs_struct *rwconf;
-  dl_list_type          *paths_list;
+write_main_config_file(
+  char                  *file,
+  char                  *suffix,
+  rwhois_configs_struct *rwconf,
+  dl_list_type          *paths_list)
 {
   FILE *fptr;
   char new_file[MAX_FILE];
@@ -1733,9 +1575,7 @@ write_main_config_file(file, suffix, rwconf, paths_list)
 }
 
 /* examine the format of user id string. Returns non-zero value if failed. */
-int
-examin_userid(uid)
-  char *uid;
+int examin_userid (char *uid)
 {
   if (NOT_STR_EXISTS(uid)) return ERW_EMTYSTR;
   if (!is_id_str(uid)) return ERW_IDSTR;
@@ -1745,9 +1585,7 @@ examin_userid(uid)
 
 /* examine the rwhois log file name format. Check if it is under the
    root directory. Returns non-zero value on failure. */
-int
-examin_rwlog_file(file)
-  char *file;
+int examin_rwlog_file (char *file)
 {
   int ret;
 
@@ -1759,9 +1597,7 @@ examin_rwlog_file(file)
 
 /* examine the rwhois config file name format. Check if it is under the
    root directory. Returns non-zero value on failure. */
-int
-examin_rwconf_file(file)
-  char *file;
+int examin_rwconf_file (char *file)
 {
   int ret;
 
@@ -1773,9 +1609,7 @@ examin_rwconf_file(file)
 
 /* examine the rwhois config directory name format. Check if it is under the
    root directory. Returns non-zero value on failure. */
-int
-examin_rwconf_dir(dir)
-  char *dir;
+int examin_rwconf_dir (char *dir)
 {
   int ret;
 
@@ -1787,9 +1621,7 @@ examin_rwconf_dir(dir)
 
 /* examine the rwhois executable program format. Check if it is
    an executable on disk. Returns non-zero value on failure. */
-int
-examin_rwexe_file(file)
-  char *file;
+int examin_rwexe_file (char *file)
 {
   int ret;
 
@@ -1801,9 +1633,7 @@ examin_rwexe_file(file)
 
 /* examine the rwhois executable program format. Check if it is
    an executable on disk. Returns non-zero value on failure. */
-int
-examin_server_contact(contact)
-  char *contact;
+int examin_server_contact (char *contact)
 {
   int ret;
 
@@ -1815,8 +1645,7 @@ examin_server_contact(contact)
 
 /* verify the contents of main server configuration variables.
    Returns false if any errors encountered. */
-int
-verify_main_config()
+int verify_main_config (void)
 {
   int errnum;
 
@@ -2054,8 +1883,7 @@ verify_main_config()
    to the paths_list. Class parse-programs, log file names are no added
    considered here. */
 int
-verify_main_config_paths(paths_list)
-  dl_list_type *paths_list;
+verify_main_config_paths(dl_list_type *paths_list)
 {
   int ret = 0;
 
@@ -2093,8 +1921,7 @@ verify_main_config_paths(paths_list)
    are already in the configuration paths_list. Returns non-zero value
    on failure. */
 int
-verify_non_admin_paths(paths_list)
-  dl_list_type *paths_list;
+verify_non_admin_paths(dl_list_type *paths_list)
 {
   int ret = 0;
 

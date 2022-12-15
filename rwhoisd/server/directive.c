@@ -34,13 +34,11 @@
 #include "soa.h"
 #include "status.h"
 #include "xfer.h"
+#include "../common/types.h"
 
 /* --------------------- Local Functions ------------------ */
 
-static int
-add_directive_func(name, func)
-  char *name;
-  int  (*func)();
+static int add_directive_func (char *name, int (*func)(void))
 {
   directive_struct  *item;
 
@@ -55,7 +53,7 @@ add_directive_func(name, func)
     return FALSE;
   }
 
-  item->function = func;
+  item->function = (int (*)(char*))func;
 
   return TRUE;
 }
@@ -63,31 +61,28 @@ add_directive_func(name, func)
 /* --------------------- Public Functions ----------------- */
 
 /* initializes the native commands */
-void
-init_directive_functions()
+void init_directive_functions (void)
 {
-  add_directive_func("class", class_directive);
-  add_directive_func("directive", directive_directive);
-  add_directive_func("display", display_directive);
-  add_directive_func("forward", forward_directive);
-  add_directive_func("holdconnect", holdconnect_directive);
-  add_directive_func("limit", limit_directive);
-  add_directive_func("security", security_directive);
-  add_directive_func("notify", notify_directive); 
-  add_directive_func("quit", quit_directive);
-  add_directive_func("register", register_directive);
-  add_directive_func("rwhois", rwhois_directive);
-  add_directive_func("schema", schema_directive);
-  add_directive_func("soa", soa_directive);
-  add_directive_func("status", status_directive);
-  add_directive_func("xfer", xfer_directive);
+  add_directive_func("class", (int (*)(void))class_directive);
+  add_directive_func("directive", (int (*)(void))directive_directive);
+  add_directive_func("display", (int (*)(void))display_directive);
+  add_directive_func("forward",(int (*)(void))forward_directive);
+  add_directive_func("holdconnect", (int (*)(void))holdconnect_directive);
+  add_directive_func("limit", (int (*)(void))limit_directive);
+  add_directive_func("security", (int (*)(void))security_directive);
+  add_directive_func("notify", (int (*)(void))notify_directive);
+  add_directive_func("quit", (int (*)(void))quit_directive);
+  add_directive_func("register", (int (*)(void))register_directive);
+  add_directive_func("rwhois", (int (*)(void))rwhois_directive);
+  add_directive_func("schema", (int (*)(void))schema_directive);
+  add_directive_func("soa", (int (*)(void))soa_directive);
+  add_directive_func("status", (int (*)(void))status_directive);
+  add_directive_func("xfer", (int (*)(void))xfer_directive);
 
 }
 
 /* is_directive: returns TRUE if is directive command, FALSE otherwise */
-int
-is_directive(str)
-  char *str;
+int is_directive (char *str)
 {
   if (!str || !*str)
   {
@@ -104,9 +99,7 @@ is_directive(str)
 
 /* run directive: given a query string that is a directive, decode the
       directive and run it */
-int
-run_directive(query_str)
-  char  *query_str;
+int run_directive (char *query_str)
 {
   directive_struct  *di;
   char              *directive;
@@ -184,9 +177,7 @@ run_directive(query_str)
    Response:    %directive directive:<name>
                 %directive description:<description>
                 %directive */
-int
-directive_directive( str)
-  char *str;
+int directive_directive (char *str)
 {
   dl_list_type      *full_list;
   directive_struct  *dir_struct;

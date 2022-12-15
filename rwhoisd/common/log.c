@@ -66,10 +66,10 @@ get_log_context()
 }
 
 int
-set_log_context(file, line_num, section)
-  char          *file;
-  long          line_num;
-  log_section   section;
+set_log_context(
+  char          *file,
+  long          line_num,
+  log_section   section)
 {
   if (STR_EXISTS(file))
   {
@@ -89,8 +89,7 @@ set_log_context(file, line_num, section)
   return TRUE;
 }
 
-void
-clear_log_context()
+void clear_log_context (void)
 {
   bzero(&context, sizeof(context));
 }
@@ -107,15 +106,12 @@ restore_log_context(log_context_struct *save)
   bcopy(save, &context, sizeof(context));
 }
 
-void
-inc_log_context_line_num(inc)
-  int inc;
+void inc_log_context_line_num (int inc)
 {
   context.cur_line_num += inc;
 }
 
-char *
-file_context_str()
+char *file_context_str (void)
 {
   static char buf[MAX_LINE];
 
@@ -203,8 +199,9 @@ log_warning(char *format, ...)
 
 /* gets hostname of the *client* */
 char *
-get_client_hostname(sock)
-  int sock;             /* peer socket */
+get_client_hostname (
+    int sock             /* peer socket */
+)
 {
   static char           buf[MAX_LINE];
   static int            tried_once = FALSE;
@@ -225,7 +222,7 @@ get_client_hostname(sock)
 
   tried_once = TRUE;
 
-  if (getpeername(sock, (struct sockaddr *)&name, &namelen) != 0)
+  if (getpeername(sock, (struct sockaddr *)&name, (socklen_t*)&namelen) != 0)
   {
     if( errno == EBADF || 
         errno == ENOTCONN || 
@@ -268,8 +265,7 @@ get_client_hostname(sock)
 }
 
 /* logs time of query */
-char *
-timestamp()
+char *timestamp (void)
 {
   time_t        now;
   struct tm     *ts;
@@ -290,8 +286,7 @@ timestamp()
 }
  
 char *
-section_to_name(section)
-  log_section  section;
+section_to_name(log_section  section)
 {
   char  *ret_val;
  
@@ -348,8 +343,7 @@ section_to_name(section)
 }
  
 char *
-level_to_name(local_level)
-  internal_log_levels local_level;
+level_to_name(internal_log_levels local_level)
 {
   switch(local_level)
   {
@@ -375,8 +369,7 @@ level_to_name(local_level)
 }
 
 int
-local_to_syslog(local_level)
-  internal_log_levels local_level;
+local_to_syslog(internal_log_levels local_level)
 {
   switch(local_level)
   {
@@ -405,8 +398,7 @@ local_to_syslog(local_level)
  
  
 char *
-get_log_filename(level)
-  internal_log_levels level;
+get_log_filename(internal_log_levels level)
 {
   char *ret;
 
@@ -455,8 +447,7 @@ get_log_filename(level)
   }
 }
  
-void
-setup_logging()
+void setup_logging (void)
 {
 #ifndef NO_SYSLOG
   openlog("rwhoisd", LOG_PID, get_log_facility());
@@ -470,8 +461,7 @@ setup_logging()
 /*
     get the value of log_setup variable
  */
-int
-get_log_setup()
+int get_log_setup (void)
 {       
   return( log_setup );
 }
@@ -479,9 +469,7 @@ get_log_setup()
 /* this function returns the error string corresponding to the error number
    given. It stuffs the error number into the string before returning. 
    The error numbers correspond to return values of examin_?? functions. */
-char *
-examin_error_string(err_num)
-  int err_num;
+char *examin_error_string (int err_num)
 {
   int         i;
   static char buff[BUFSIZ]; 

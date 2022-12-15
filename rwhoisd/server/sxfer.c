@@ -63,9 +63,9 @@ static int class_in_xfer_arg PROTO((class_struct    *class,
 /* create_data_file_record: This function maps an RWhois server
    response into a data file record */
 static int
-create_data_file_record(aa, response)
-  auth_area_struct *aa;
-  dl_list_type     *response;
+create_data_file_record(
+  auth_area_struct *aa,
+  dl_list_type     *response)
 {
   int         not_done;
   int         first_str        = TRUE;
@@ -155,10 +155,10 @@ create_data_file_record(aa, response)
 
 /* create_data_file_line: This function creates a data file line */
 static void
-create_data_file_line(fp, tag, value)
-  FILE *fp;
-  char *tag;
-  char *value;
+create_data_file_line(
+  FILE *fp,
+  char *tag,
+  char *value)
 {
   if (STR_EQ(tag, "Class-Name"))
   {
@@ -171,9 +171,7 @@ create_data_file_line(fp, tag, value)
 
 /* destroy_xfer_class_data: This function frees a
    xfer_class_struct structure */
-static int
-destroy_xfer_class_data(xclass)
-  xfer_class_struct *xclass;
+static int destroy_xfer_class_data (xfer_class_struct *xclass)
 {
   if (!xclass)
   {
@@ -189,9 +187,7 @@ destroy_xfer_class_data(xclass)
 
 /* destroy_xfer_arg_data: This function frees a xfer_arg_struct
    structure */
-static int
-destroy_xfer_arg_data(xarg)
-  xfer_arg_struct *xarg;
+static int destroy_xfer_arg_data (xfer_arg_struct *xarg)
 {
   if (!xarg)
   {
@@ -212,11 +208,7 @@ destroy_xfer_arg_data(xarg)
 
 
 /* xfer_split_av: This function parses an attribute=value string */
-static void 
-xfer_split_av(str, attr, value)
-  char *str;
-  char *attr;
-  char *value;
+static void xfer_split_av (char *str, char *attr, char *value)
 {
   char *eq = NULL;
 
@@ -241,9 +233,9 @@ xfer_split_av(str, attr, value)
 /* xfer_parse_args: This function parses the xfer-arg parameter for
    partial replication */
 static xfer_arg_struct * 
-xfer_parse_args(str, aa)
-  char             *str;
-  auth_area_struct *aa;
+xfer_parse_args(
+  char             *str,
+  auth_area_struct *aa)
 {
   xfer_arg_struct   *xs;
   xfer_class_struct *cur_xclass = NULL;
@@ -323,9 +315,9 @@ xfer_parse_args(str, aa)
 /* class_in_xfer_arg: This function checks if a class is in
    the xfer-arg parameter for partial replication */
 static int
-class_in_xfer_arg(class, xs)
-  class_struct    *class;
-  xfer_arg_struct *xs;
+class_in_xfer_arg(
+  class_struct    *class,
+  xfer_arg_struct *xs)
 {
   xfer_class_struct *xfer_class;
   class_struct      *c;
@@ -356,10 +348,10 @@ class_in_xfer_arg(class, xs)
 /* create_data_files: This function creates data files for a
    slave authority area */
 int
-create_data_files(aa, server, initial)
-  auth_area_struct *aa;
-  server_struct    *server;
-  int              initial;
+create_data_files(
+  auth_area_struct *aa,
+  server_struct    *server,
+  int              initial)
 {
   int             sockfd;
   int             not_done             = TRUE;
@@ -473,9 +465,9 @@ create_data_files(aa, server, initial)
 /* index_data_files_by_suffix: This function indexes data files
    by suffix */
 int
-index_data_files_by_suffix(aa, suffix)
-  auth_area_struct *aa;
-  char             *suffix;
+index_data_files_by_suffix(
+  auth_area_struct *aa,
+  char             *suffix)
 {
   schema_struct   *schema;
   dl_list_type    *class_list;

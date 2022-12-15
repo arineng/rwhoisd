@@ -19,10 +19,7 @@
 #define MAX_PATH_LEN    1024
 #define PATH_STR        "PATH"
 
-int
-initialize_environment_list(envptr, env_size)
-  char  ***envptr;
-  int   env_size;
+int initialize_environment_list (char ***envptr, int env_size)
 {
   char  **env;
 
@@ -33,12 +30,7 @@ initialize_environment_list(envptr, env_size)
   return TRUE;
 }
 
-int
-add_env_value(env, env_size, var, value)
-  char  **env;
-  int   env_size;
-  char  *var;
-  char  *value;
+int add_env_value (char **env, int env_size, char *var, char *value)
 {
   int   i;
   char  buf[MAX_LINE];
@@ -69,9 +61,7 @@ add_env_value(env, env_size, var, value)
 }
 
 
-void
-free_environment_list(env)
-  char  **env;
+void free_environment_list (char **env)
 {
   int   i = 0;
   
@@ -85,10 +75,7 @@ free_environment_list(env)
 
 /* run_program: runs the program 'program', using parameters 'param'.
    It also passes on the environment. */
-int
-run_program(program, param)
-  char *program;
-  char *param;
+int run_program (char *program, char *param)
 {
   extern char   **environ;
   char          **myenv;
@@ -183,10 +170,7 @@ run_program(program, param)
 /* run_env_program: like "run_program", but explicitly sets additional
    environment variables; also, it will take the arguments in argv,
    argc format. */
-int
-run_env_program(argv, envargv)
-  char  **argv;
-  char  **envargv;
+int run_env_program (char **argv, char **envargv)
 {
   char          **myenv;
   extern char   **environ;

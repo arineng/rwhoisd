@@ -24,8 +24,8 @@ static int hit_count = 0;
 /* --------------------- Private Functions ------------------- */
 
 static int
-open_fp(file)
-  file_struct *file;
+open_fp(
+  file_struct *file)
 {
   /* open the file, if necessary */
   if (!file->fp)
@@ -41,8 +41,8 @@ open_fp(file)
 }
 
 static int
-close_fp(file)
-  file_struct *file;
+close_fp(
+  file_struct *file)
 {
   if (file->fp)
   {
@@ -57,11 +57,11 @@ close_fp(file)
 /* check_hit_list_for_hit: returns TRUE if the index_item already
    exists in the record_list */
 static int
-check_hit_list_for_hit(class, auth_area, record_list, index_item)
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  dl_list_type     *record_list;
-  index_struct     index_item;
+check_hit_list_for_hit(
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  dl_list_type     *record_list,
+  index_struct     index_item)
 {
   int           not_done;
   record_struct *record;
@@ -89,11 +89,11 @@ check_hit_list_for_hit(class, auth_area, record_list, index_item)
    allows us to invalidate certain kinds of searches (e.g.,
    unspecified searches on a type ID attribute) */
 static int
-validate_search_cond(class, auth_area, query_item, index_item)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  query_term_struct *query_item;
-  index_struct      *index_item;
+validate_search_cond(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  query_term_struct *query_item,
+  index_struct      *index_item)
 {
   attribute_struct *attr;
 
@@ -114,9 +114,9 @@ validate_search_cond(class, auth_area, query_item, index_item)
    conditions, returns true if the record matches all of the
    conditions */
 static int
-validate_and_list(record, query_list)
-  record_struct     *record;
-  query_term_struct *query_list;
+validate_and_list(
+  record_struct     *record,
+  query_term_struct *query_list)
 {
   dl_list_type   *pair_list;
   av_pair_struct *pair;
@@ -160,12 +160,12 @@ validate_and_list(record, query_list)
 
 /* note: this routine should probably reside in some form in records.c */
 static record_struct *
-fill_out_record(class, auth_area, index_item, data_fi_list, status)
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  index_struct     *index_item;
-  dl_list_type     *data_fi_list;
-  rec_parse_result *status;
+fill_out_record(
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  index_struct     *index_item,
+  dl_list_type     *data_fi_list,
+  rec_parse_result *status)
 {
   file_struct      *fi;
   record_struct    *result;
@@ -200,21 +200,17 @@ fill_out_record(class, auth_area, index_item, data_fi_list, status)
 
 /* --------------------- Public Functions -------------------- */
 
-void
-set_hit_count(value)
-  int value;
+void set_hit_count (int value)
 {
   hit_count = value;
 }
 
-void
-inc_hit_count()
+void inc_hit_count (void)
 {
   hit_count++;
 }
 
-int
-get_hit_count()
+int get_hit_count (void)
 {
   return(hit_count);
 }
@@ -224,9 +220,9 @@ get_hit_count()
    the index. The business of actually checking AND operations and
    such is done in the linear scan which should be called next. */
 off_t
-binary_search(file, query_item)
-  file_struct       *file;
-  query_term_struct *query_item;
+binary_search(
+  file_struct       *file,
+  query_term_struct *query_item)
 {
   FILE              *fp         = NULL;
   char              buf[MAX_BUF];
@@ -328,17 +324,16 @@ binary_search(file, query_item)
    doesn't match (if find_all_flag is false). Returns the number of
    hits it added to 'hit_list', -1 on error. */
 ret_code_type
-full_scan(class, auth_area, file, data_fi_list, query_item, record_list,
-          max_hits, start_pos, find_all_flag)
-  class_struct      *class;
-  auth_area_struct  *auth_area;
-  file_struct       *file;
-  dl_list_type      *data_fi_list;
-  query_term_struct *query_item;
-  dl_list_type      *record_list;
-  int               max_hits;
-  off_t             start_pos;
-  int               find_all_flag;
+full_scan(
+  class_struct      *class,
+  auth_area_struct  *auth_area,
+  file_struct       *file,
+  dl_list_type      *data_fi_list,
+  query_term_struct *query_item,
+  dl_list_type      *record_list,
+  int               max_hits,
+  off_t             start_pos,
+  int               find_all_flag)
 {
   FILE             *fp;
   char             line[MAX_LINE];
@@ -492,11 +487,11 @@ full_scan(class, auth_area, file, data_fi_list, query_item, record_list,
 #define     BUF_MID             (int) MAX_BACKUP_BUFFER / 2
 
 int
-scan_for_bol(fp, low, offset, high)
-  FILE          *fp;
-  register off_t low;
-  register off_t *offset;
-  register off_t high;
+scan_for_bol(
+  FILE          *fp,
+  register off_t low,
+  register off_t *offset,
+  register off_t high)
 {
   register off_t c;
   register int  inc = -1;
@@ -647,9 +642,9 @@ scan_for_bol(fp, low, offset, high)
    If there isn't a match then return(1) */
 
 int
-search_compare(query_item, index_value)
-  query_term_struct *query_item;
-  char              *index_value;
+search_compare(
+  query_term_struct *query_item,
+  char              *index_value)
 {
   int  relationship = 0;
   char *substring;

@@ -285,9 +285,7 @@ Boolean_T metaphone(const char *Word, char *Metaph, metaphlag Flag)
 
 #if 0
 /* strupr: Upcases a string. */
-char *
-strupr(a)
-  char *a;
+char *strupr (char *a)
 {
   char *b;
  
