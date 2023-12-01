@@ -114,6 +114,9 @@ AC_CHECK_FUNCS(getcwd gethostname socket strftime uname flock lockf \
 	       setsid crypt memset memcpy usleep wait3 getaddrinfo vsnprintf)
 AC_REPLACE_FUNCS(strerror)
 
+AS_IF([test "${ac_cv_type_signal}" = "int"],
+    AC_DEFINE([RETSIGTYPE_IS_INT], [1], [Define if RETSIGTYPE is int.])
+    )
 
 dnl Optional software.
 

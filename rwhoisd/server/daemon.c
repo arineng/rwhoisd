@@ -105,7 +105,9 @@ sigchld_handler(
   /* reset the signal handler -- some older systems remove the signal
      handler upon use.  POSIX systems should not do this */
   signal(SIGCHLD, (__sighandler_t)sigchld_handler);
+#ifdef RETSIGTYPE_IS_INT
   return 0;
+#endif
 }
 
 static RETSIGTYPE
@@ -114,7 +116,9 @@ sighup_handler(
 {
   hup_recvd = TRUE;
   signal(SIGHUP, (__sighandler_t)sighup_handler);
+#ifdef RETSIGTYPE_IS_INT
   return 0;
+#endif
 }
 
 static RETSIGTYPE
@@ -124,7 +128,9 @@ exit_handler(
   log(L_LOG_NOTICE, UNKNOWN, "Exiting");
   delpid();
   exit(0);
+#ifdef RETSIGTYPE_IS_INT
   return 0;
+#endif
 }
 
 static void set_sighup (void)
