@@ -46,8 +46,8 @@ static void print_auth_struct PROTO((void));
 /*------------------ LOCAL FUNCTIONS -----------------------------*/
 
 static void 
-free_auth_struct(auth)
-  auth_struct *auth;
+free_auth_struct(
+  auth_struct *auth)
 {
   if (!auth)
   {
@@ -72,9 +72,7 @@ free_auth_struct(auth)
   free(auth);
 }
 
-static security_arg_struct *
-security_parse_args(str)
-  char *str;
+static security_arg_struct *security_parse_args (char *str)
 {
   int                 i;
   int                 argc;
@@ -180,8 +178,8 @@ security_parse_args(str)
    authentication of all requests sent by the client, and response for
    all responses from the server. */
 static auth_struct * 
-security_store_auth(prs)
-  security_arg_struct *prs;
+security_store_auth(
+  security_arg_struct *prs)
 {
   auth_struct *auth = NULL;
 
@@ -240,8 +238,7 @@ security_store_auth(prs)
 }
 
 
-static void
-print_auth_struct()
+static void print_auth_struct (void)
 {
   if (request)
   {
@@ -265,9 +262,7 @@ print_auth_struct()
 }
 
 
-static void 
-free_security_args_struct(prs)
-    security_arg_struct *prs;
+static void free_security_args_struct (security_arg_struct *prs)
 {
   if (prs->mode)
   {
@@ -292,9 +287,7 @@ free_security_args_struct(prs)
 
 /*------------------- PUBLIC FUNCTIONS -------------------------*/
 
-int
-security_directive(str)
-  char  *str;
+int security_directive (char *str)
 {
   security_arg_struct *prs;
 

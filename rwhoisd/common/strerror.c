@@ -500,8 +500,7 @@ BUGS
 
 */
 
-static void
-init_error_tables ()
+static void init_error_tables (void)
 {
   const struct error_info *eip;
   int nbytes;
@@ -586,8 +585,7 @@ DESCRIPTION
 
 */
 
-int
-errno_max ()
+int errno_max (void)
 {
   int maxsize;
 
@@ -629,9 +627,7 @@ DESCRIPTION
 
 */
 
-char *
-strerror (errnoval)
-  int errnoval;
+char *strerror (int errnoval)
 {
   char *msg;
   static char buf[32];
@@ -698,9 +694,7 @@ BUGS
 
 */
 
-char *
-strerrno (errnoval)
-  int errnoval;
+char *strerrno (int errnoval)
 {
   char *name;
   static char buf[32];
@@ -747,9 +741,7 @@ DESCRIPTION
 
 */
 
-int
-strtoerrno (name)
-  char *name;
+int strtoerrno (char *name)
 {
   int errnoval = 0;
 
@@ -781,7 +773,7 @@ strtoerrno (name)
 
 #ifdef MAIN
 
-main ()
+int main (void)
 {
   int errn;
   int errnmax;

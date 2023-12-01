@@ -35,9 +35,7 @@ static int run_query PROTO((char *str));
 /* ------------------- LOCAL FUNCTIONS -------------------- */
 
 
-static int
-processline(str)
-  char *str;
+static int processline (char *str)
 {
   int                status = FALSE;
   rwhois_state_type  state  = get_rwhois_state();
@@ -85,9 +83,7 @@ processline(str)
 }
 
 
-static int
-run_query(str)
-  char *str;
+static int run_query (char *str)
 {
   query_struct      *query;
   dl_list_type      record_list;
@@ -185,9 +181,7 @@ run_query(str)
 
 
 /* run_session: runs a rwhois client session */
-void
-run_session(real_flag)
-  int real_flag;
+void run_session (int real_flag)
 {
   char target[MAX_LINE];
   int  not_finished    = TRUE;
@@ -240,8 +234,7 @@ run_session(real_flag)
 
 
 /* print_welcome_header: prints the standard rwhois banner greeting */
-void
-print_welcome_header()
+void print_welcome_header (void)
 {
   char             *hostname;
   dl_list_type     *dir_list;

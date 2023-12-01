@@ -24,8 +24,8 @@
 /* soa_parse_args: this function parses the input argument string 
    and stores the arguments in soa_arg_struct. */
 static dl_list_type * 
-soa_parse_args(str)
-    char *str;
+soa_parse_args(
+    char *str)
 {
   int              argc;
   char             **argv;
@@ -67,8 +67,8 @@ soa_parse_args(str)
 
 /* soa_display_autharea: Function to display the auth_area information. */
 static int 
-soa_display_auth_area(aa)
-  auth_area_struct *aa;
+soa_display_auth_area(
+  auth_area_struct *aa)
 {
   if (!aa)
   {
@@ -99,8 +99,8 @@ soa_display_auth_area(aa)
 /* soa_display_auth_areas displays the auth-area info for the list of
      authority areas. */
 static void 
-soa_display_auth_areas(auth_area_list)
-  dl_list_type  *auth_area_list;
+soa_display_auth_areas(
+  dl_list_type  *auth_area_list)
 {
   int           not_done;
 
@@ -117,8 +117,8 @@ soa_display_auth_areas(auth_area_list)
 
 /* update_soa_auth_area: update soa for one auth_area */
 static int 
-update_soa_auth_area(aa)
-  auth_area_struct *aa;
+update_soa_auth_area(
+  auth_area_struct *aa)
 {
   if (!aa)
   {
@@ -141,8 +141,8 @@ update_soa_auth_area(aa)
  *  authority areas. 
  */
 static void 
-update_soa_auth_area_list(auth_area_list)
-  dl_list_type  *auth_area_list;
+update_soa_auth_area_list(
+  dl_list_type  *auth_area_list)
 {
   int           not_done;
 
@@ -161,8 +161,7 @@ update_soa_auth_area_list(auth_area_list)
 
 /* soa_directive:  This is the main directive function which processes the
      -soa directive.  */
-int soa_directive(str)
-    char *str;
+int soa_directive (char *str)
 {
   dl_list_type     *aa_list      = NULL;
 

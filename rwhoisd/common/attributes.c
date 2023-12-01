@@ -51,20 +51,18 @@ verify_attribute_defs PROTO((auth_area_struct *aa,
 /* -------------------- LOCAL FUNCTIONS ------------------------ */
 
 static attribute_struct *
-create_attribute(name, desc, format, index, type, is_hierarchical,
-                 is_required, is_repeatable, is_primary_key, is_multi_line,
-                 is_private)
-  char            *name;
-  char            *desc;
-  char            *format;
-  attr_index_type index;
-  attr_type       type;
-  int             is_hierarchical;
-  int             is_required;
-  int             is_repeatable;
-  int             is_primary_key;
-  int             is_multi_line;
-  int             is_private;
+create_attribute(
+  char            *name,
+  char            *desc,
+  char            *format,
+  attr_index_type index,
+  attr_type       type,
+  int             is_hierarchical,
+  int             is_required,
+  int             is_repeatable,
+  int             is_primary_key,
+  int             is_multi_line,
+  int             is_private)
 {
   attribute_struct  *attr;
 
@@ -100,11 +98,7 @@ create_attribute(name, desc, format, index, type, is_hierarchical,
    Check the alias list, if this alias already exits, return FALSE.
    This is spun off into its own routine to deal with the memory
    allocation. */
-static int
-add_attribute_alias(alias_array, num_aliases, alias)
-  char ***alias_array;
-  int  *num_aliases;
-  char *alias;
+static int add_attribute_alias (char ***alias_array, int *num_aliases, char *alias)
 {
   int   i;
   char  **array = *alias_array;
@@ -138,9 +132,9 @@ add_attribute_alias(alias_array, num_aliases, alias)
 /* writes/append a specific attribute definition to the class attribute 
    template file. */
 static int 
-write_attribute_defs(fp, attr)
-  FILE             *fp; 
-  attribute_struct *attr;
+write_attribute_defs(
+  FILE             *fp,
+  attribute_struct *attr)
 {
   int i;
 
@@ -178,9 +172,9 @@ write_attribute_defs(fp, attr)
 /* count the number of times a given attibute occurs in the attribute
    list */
 static int
-count_attribute_entries(attr_list, attr_name)
-  dl_list_type *attr_list;
-  char *attr_name;
+count_attribute_entries(
+  dl_list_type *attr_list,
+  char *attr_name)
 {
   int               i, not_done;
   int               count = 0;
@@ -220,10 +214,10 @@ count_attribute_entries(attr_list, attr_name)
 
 /* verifies the correctness of a class attribute definition */
 static int
-verify_attribute_defs(aa, class, attr)
-  auth_area_struct *aa;
-  class_struct     *class;
-  attribute_struct *attr;
+verify_attribute_defs(
+  auth_area_struct *aa,
+  class_struct     *class,
+  attribute_struct *attr)
 {
   int i;
   int ret;
@@ -298,8 +292,7 @@ verify_attribute_defs(aa, class, attr)
 /* returns how to index the word based on the attribute. If none
    declared, returns all words. */
 attr_index_type
-translate_index_type(itype)
-  char *itype;
+translate_index_type(char *itype)
 {
   if (STR_EQ(itype, A_INDEX_ALL))
   {
@@ -325,8 +318,7 @@ translate_index_type(itype)
 
 /* returns the description of the attribute */
 attr_type
-translate_attr_type(type)
-  char *type;
+translate_attr_type(char *type)
 {
   if (STR_EQ(type, A_SEE_ALSO))
   {
@@ -345,9 +337,9 @@ translate_attr_type(type)
 /* reads the attributes for the class; returns TRUE if ok, FALSE if
    not. */
 int
-read_attributes(class, attr_ref_list)
-  class_struct  *class;
-  dl_list_type  *attr_ref_list;
+read_attributes(
+  class_struct  *class,
+  dl_list_type  *attr_ref_list)
 {
   FILE              *fp                 = NULL;
   attribute_struct  *attr               = NULL;
@@ -492,10 +484,10 @@ read_attributes(class, attr_ref_list)
 }
 
 int
-add_attribute(attr, class, attr_ref_list)
-  attribute_struct      *attr;
-  class_struct          *class;
-  dl_list_type          *attr_ref_list;
+add_attribute(
+  attribute_struct      *attr,
+  class_struct          *class,
+  dl_list_type          *attr_ref_list)
 {
   attribute_struct  *tmp_attr;
   dl_list_type      *attr_list = &(class->attribute_list);
@@ -576,11 +568,11 @@ add_attribute(attr, class, attr_ref_list)
 
   
 int
-add_global_attribute(attr, class, attr_ref_list, global_id)
-  attribute_struct  *attr;
-  class_struct      *class;
-  dl_list_type      *attr_ref_list;
-  int               *global_id;
+add_global_attribute(
+  attribute_struct  *attr,
+  class_struct      *class,
+  dl_list_type      *attr_ref_list,
+  int               *global_id)
 {
   attribute_ref_struct  *ref;
   attribute_ref_struct  *alias_ref;
@@ -659,9 +651,9 @@ add_global_attribute(attr, class, attr_ref_list, global_id)
 
 
 int
-add_base_schema(class, attr_ref_list)
-  class_struct  *class;
-  dl_list_type  *attr_ref_list;
+add_base_schema(
+  class_struct  *class,
+  dl_list_type  *attr_ref_list)
 {
   attribute_struct  *attr;
 
@@ -855,9 +847,9 @@ add_base_schema(class, attr_ref_list)
 }
 
 attribute_struct *
-find_attribute_by_name(class, name)
-  class_struct  *class;
-  char          *name;
+find_attribute_by_name(
+  class_struct  *class,
+  char          *name)
 {
   int               not_done;
   attribute_struct  *val;
@@ -897,9 +889,9 @@ find_attribute_by_name(class, name)
 }
 
 attribute_struct *
-find_attribute_by_id(class, id)
-  class_struct  *class;
-  int           id;
+find_attribute_by_id(
+  class_struct  *class,
+  int           id)
 {
   int               not_done;
   attribute_struct  *val;
@@ -930,9 +922,9 @@ find_attribute_by_id(class, id)
 }
 
 attribute_struct *
-find_attribute_by_global_id(class, global_id)
-  class_struct  *class;
-  int           global_id;
+find_attribute_by_global_id(
+  class_struct  *class,
+  int           global_id)
 {
   int               not_done;
   attribute_struct  *val;
@@ -963,9 +955,9 @@ find_attribute_by_global_id(class, global_id)
 }
 
 attribute_ref_struct *
-find_global_attr_by_name(attr_ref_list, name)
-  dl_list_type  *attr_ref_list;
-  char          *name;
+find_global_attr_by_name(
+  dl_list_type  *attr_ref_list,
+  char          *name)
 {
   int                   not_done;
   attribute_ref_struct  *val;
@@ -1002,9 +994,9 @@ find_global_attr_by_name(attr_ref_list, name)
 }
 
 attribute_ref_struct *
-find_global_attr_by_id(attr_ref_list, id)
-  dl_list_type  *attr_ref_list;
-  int           id;
+find_global_attr_by_id(
+  dl_list_type  *attr_ref_list,
+  int           id)
 {
   int                   not_done;
   attribute_ref_struct  *val;
@@ -1034,8 +1026,7 @@ find_global_attr_by_id(attr_ref_list, id)
 
 /* returns the description of the attribute */
 char *
-show_attribute_type(type)
-  attr_type type;
+show_attribute_type(attr_type type)
 {
   switch (type)
   {
@@ -1052,8 +1043,7 @@ show_attribute_type(type)
 
 /* returns the description of index type */
 char *
-show_index_type(index)
-  attr_index_type index;
+show_index_type(attr_index_type index)
 {
   switch (index)
   {
@@ -1074,8 +1064,7 @@ show_index_type(index)
 
 
 void
-display_attribute(attr)
-  attribute_struct  *attr;
+display_attribute(attribute_struct  *attr)
 {
   int i;
   
@@ -1107,8 +1096,7 @@ display_attribute(attr)
 }
 
 void
-display_attribute_list(list)
-  dl_list_type  *list;
+display_attribute_list(dl_list_type  *list)
 {
   int   not_done;
 
@@ -1128,8 +1116,7 @@ display_attribute_list(list)
 /* destroy_attr_data: destroy function for the attribute_struct data
       type */
 int
-destroy_attr_data(attr)
-  attribute_struct  *attr;
+destroy_attr_data(attribute_struct  *attr)
 {
   int   i;
   
@@ -1171,8 +1158,7 @@ destroy_attr_data(attr)
 /* destroy_attr_ref_data: the destroy function for the
       attribute_ref_struct type. */
 int
-destroy_attr_ref_data(attr_ref)
-  attribute_ref_struct  *attr_ref;
+destroy_attr_ref_data(attribute_ref_struct  *attr_ref)
 {
   int   i;
   
@@ -1208,11 +1194,11 @@ destroy_attr_ref_data(attr_ref)
    was successful the file name is added to the 'paths_list'. It also
    creates the class database directory. */
 int 
-write_class_attributes(file, suffix, class, paths_list)
-  char         *file;
-  char         *suffix;
-  class_struct *class;
-  dl_list_type *paths_list;
+write_class_attributes(
+  char         *file,
+  char         *suffix,
+  class_struct *class,
+  dl_list_type *paths_list)
 {
   FILE             *fp;
   int              not_done;
@@ -1293,10 +1279,10 @@ write_class_attributes(file, suffix, class, paths_list)
 
 /* creates a class attribute and appends it to the attribute list */
 int 
-create_attribute_def(attr, class, aa)
-  attribute_struct *attr;
-  class_struct     *class;
-  auth_area_struct *aa;
+create_attribute_def(
+  attribute_struct *attr,
+  class_struct     *class,
+  auth_area_struct *aa)
 {
   int              i;
   dl_list_type     *attr_ref_list;
@@ -1343,8 +1329,7 @@ create_attribute_def(attr, class, aa)
 
 /* checks if the attribute specified is a base attribute - hard coded */
 int
-is_base_attr(attr)
-  attribute_struct *attr;
+is_base_attr(attribute_struct *attr)
 {
   if (STR_EQ(attr->name, BC_CLASS_NAME))
     return TRUE;
@@ -1381,9 +1366,9 @@ is_base_attr(attr)
 
 /* verify each attribute in the attribute list */
 int
-verify_attribute_list(aa, class)
-  auth_area_struct *aa;
-  class_struct     *class;
+verify_attribute_list(
+  auth_area_struct *aa,
+  class_struct     *class)
 {
   int              not_done;
   int              non_base;
@@ -1423,9 +1408,7 @@ verify_attribute_list(aa, class)
    examine the validity of an attribute name or its alias. Returns a
    non-zero value if failed.
 */
-int
-examin_attribute_name(name)
-  char *name;
+int examin_attribute_name (char *name)
 {
   if (NOT_STR_EXISTS(name)) return ERW_EMTYSTR;
   if (!is_id_str(name)) return ERW_IDSTR;
@@ -1436,9 +1419,7 @@ examin_attribute_name(name)
    examine the validity of attribute display format syntax. Returns a
    non-zero value if failed.
 */
-int
-examin_attribute_format(fmt)
-  char *fmt;
+int examin_attribute_format (char *fmt)
 {
   if (NOT_STR_EXISTS(fmt)) return ERW_EMTYSTR;
   return( 0 );
@@ -1448,11 +1429,11 @@ examin_attribute_format(fmt)
 /* add a new attibute to the list after making sure it is not a
    duplicate. */
 int
-add_new_attribute_alias(aa, class, attr, alias)
-  auth_area_struct *aa;
-  class_struct     *class;
-  attribute_struct *attr;
-  char             *alias;
+add_new_attribute_alias(
+  auth_area_struct *aa,
+  class_struct     *class,
+  attribute_struct *attr,
+  char             *alias)
 {
   /* bad parameters */
   if (!aa || !class || !attr || !alias || !*alias) return FALSE;

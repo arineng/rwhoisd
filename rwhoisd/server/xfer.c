@@ -57,8 +57,8 @@ typedef struct xfer_arg_struct
 
 
 static int
-destroy_xfer_class_data(xclass)
-  xfer_class_struct *xclass;
+destroy_xfer_class_data(
+  xfer_class_struct *xclass)
 {
   if (!xclass) return TRUE;
 
@@ -68,9 +68,7 @@ destroy_xfer_class_data(xclass)
   return TRUE;
 }
 
-static int
-destroy_xfer_arg_data(xarg)
-  xfer_arg_struct *xarg;
+static int destroy_xfer_arg_data (xfer_arg_struct *xarg)
 {
   if (!xarg) return TRUE;
 
@@ -89,11 +87,7 @@ destroy_xfer_arg_data(xarg)
 /* xfer_split_av: splits a string into its attribute and 
 value components. */
 
-static void 
-xfer_split_av(in_str, attr, value)
-  char *in_str;
-  char *attr;
-  char *value;
+static void xfer_split_av (char *in_str, char *attr, char *value)
 {
   char  *eq = NULL;
 
@@ -122,9 +116,7 @@ xfer_split_av(in_str, attr, value)
      directive.  It checks for all required arguments and stores the
      optional arguments in the appropriate data structure as defined
      in xfer_arg_struct.*/
-static xfer_arg_struct * 
-xfer_parse_args(str)
-  char *str;
+static xfer_arg_struct *xfer_parse_args (char *str)
 {
   xfer_arg_struct   *xs;
   xfer_class_struct *cur_xclass = NULL;
@@ -267,9 +259,9 @@ xfer_parse_args(str)
      attributes; if the xfer_class's attribute list is empty, assume
      that we want all attributes */
 static int
-attr_in_xfer_class(attr, xfer_class)
-  attribute_struct  *attr;
-  xfer_class_struct *xfer_class;
+attr_in_xfer_class(
+  attribute_struct  *attr,
+  xfer_class_struct *xfer_class)
 {
   dl_list_type     *attr_list;
   attribute_struct *a;
@@ -295,9 +287,9 @@ attr_in_xfer_class(attr, xfer_class)
 }
 
 static int
-is_record_new(rec, serial_no)
-  record_struct *rec;
-  char          *serial_no;
+is_record_new(
+  record_struct *rec,
+  char          *serial_no)
 {
   av_pair_struct *av;
 
@@ -320,10 +312,10 @@ is_record_new(rec, serial_no)
      displays only those fields which match the attributes given in
      curr_class.  It returns TRUE if any data is displayed. */
 static int 
-xfer_display_record(rec, class, curr_class)
-  record_struct     *rec;
-  class_struct      *class;
-  xfer_class_struct *curr_class;
+xfer_display_record(
+  record_struct     *rec,
+  class_struct      *class,
+  xfer_class_struct *curr_class)
 {
   av_pair_struct *av_pair;
   int            not_done;
@@ -360,12 +352,12 @@ xfer_display_record(rec, class, curr_class)
      of curr_class in authority area aa, depending on the value of serial_no.
      It returns TRUE if any data is xferred. */ 
 static int 
-xfer_file_xfer(aa, curr_file, class, curr_class, serial_no)
-  auth_area_struct  *aa;
-  file_struct       *curr_file; 
-  class_struct      *class;
-  xfer_class_struct *curr_class;
-  char              *serial_no;
+xfer_file_xfer(
+  auth_area_struct  *aa,
+  file_struct       *curr_file,
+  class_struct      *class,
+  xfer_class_struct *curr_class,
+  char              *serial_no)
 {
   record_struct    *rec;
   FILE             *fp;
@@ -401,11 +393,11 @@ xfer_file_xfer(aa, curr_file, class, curr_class, serial_no)
    authority area aa, depending upon the value of the serial number.  It
    returns TRUE on successful xfer of data. */
 static int 
-xfer_class(aa, class, curr_class, serial_no)
-  auth_area_struct  *aa;
-  class_struct      *class;
-  xfer_class_struct *curr_class; 
-  char              *serial_no;
+xfer_class(
+  auth_area_struct  *aa,
+  class_struct      *class,
+  xfer_class_struct *curr_class,
+  char              *serial_no)
 {
   int          not_done;
   int          found_data       = 0;
@@ -454,9 +446,9 @@ xfer_class(aa, class, curr_class, serial_no)
      authority area aa, depending upon the value of serial number.  It
      returns TRUE if data is transferred.  */
 static int 
-xfer_all_classes(aa, serial_no)
-  auth_area_struct *aa;
-  char             *serial_no;
+xfer_all_classes(
+  auth_area_struct *aa,
+  char             *serial_no)
 {
   int          not_done;
   int          found_data = 0;
@@ -484,9 +476,7 @@ xfer_all_classes(aa, serial_no)
   return(found_data);
 }  /* end of xfer_all_classes */
 
-static int
-xfer_some_classes(xs)
-  xfer_arg_struct *xs;
+static int xfer_some_classes (xfer_arg_struct *xs)
 {
   xfer_class_struct *curr_class;
   int               not_done;
@@ -512,9 +502,7 @@ xfer_some_classes(xs)
 /* xfer_directive:  This function xfers data depending upon the 
    parameters passed in str.  Returns TRUE on success. */
 
-int 
-xfer_directive( str)
-  char *str;
+int xfer_directive (char *str)
 {
   xfer_arg_struct   *xs;
   int               found_data;

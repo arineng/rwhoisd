@@ -15,8 +15,7 @@
    malloc()s a new node into existance, and defaults the member
    variables. */
 static dl_node_type *
-create_new_node(data)
-  void  *data;
+create_new_node(void  *data)
 {
   dl_node_type  *node;
   
@@ -30,10 +29,10 @@ create_new_node(data)
   return node;
 }
 int
-dl_list_default(list, destroy_head_flag, destroy_data)
-  dl_list_type  *list;
-  int           destroy_head_flag;
-  int           (*destroy_data)();
+dl_list_default(
+  dl_list_type  *list,
+  int           destroy_head_flag,
+  int           (*destroy_data)())
 {
   if (list) {
     list->head              = NULL;
@@ -48,8 +47,7 @@ dl_list_default(list, destroy_head_flag, destroy_data)
 }
 
 void *
-dl_list_value(list)
-  dl_list_type  *list;
+dl_list_value(dl_list_type  *list)
 {
   if (!list) return NULL;
   if (!(list->current)) return NULL;
@@ -58,9 +56,9 @@ dl_list_value(list)
 }   
 
 void *
-dl_list_next_value(list, n)
-  dl_list_type  *list;
-  int           n;
+dl_list_next_value(
+  dl_list_type  *list,
+  int           n)
 {
   dl_node_type  *p;
   int               i;
@@ -79,9 +77,9 @@ dl_list_next_value(list, n)
 }
 
 void *
-dl_list_prev_value(list, n)
-  dl_list_type  *list;
-  int           n;
+dl_list_prev_value(
+  dl_list_type  *list,
+  int           n)
 {
   dl_node_type  *p;
   int               i;
@@ -100,8 +98,7 @@ dl_list_prev_value(list, n)
 }
 
 int
-dl_list_empty(list)
-  dl_list_type  *list;
+dl_list_empty(dl_list_type  *list)
 {
   /* if any of the standard position fields are NULL, then the list is
      empty, or it has been generated incorrectly, in which case, we
@@ -117,8 +114,7 @@ dl_list_empty(list)
 
 
 int
-dl_list_first(list)
-  dl_list_type  *list;
+dl_list_first(dl_list_type  *list)
 {
   if (!list) return FALSE;
   if (!(list->head)) return FALSE;
@@ -129,8 +125,7 @@ dl_list_first(list)
 }
 
 int
-dl_list_last(list)
-  dl_list_type  *list;
+dl_list_last(dl_list_type  *list)
 {
   if (!list) return FALSE;
 
@@ -143,8 +138,7 @@ dl_list_last(list)
 }
 
 int
-dl_list_next(list)
-  dl_list_type  *list;
+dl_list_next(dl_list_type  *list)
 {
   if (!list) return FALSE;
 
@@ -158,8 +152,7 @@ dl_list_next(list)
 }
 
 int
-dl_list_prev(list)
-  dl_list_type  *list;
+dl_list_prev(dl_list_type  *list)
 {
   if (!list) return FALSE;
 
@@ -173,9 +166,9 @@ dl_list_prev(list)
 }
     
 int
-dl_list_insert(list, data)
-  dl_list_type  *list;
-  void          *data;
+dl_list_insert(
+  dl_list_type  *list,
+  void          *data)
 {
   dl_node_type  *node;
     
@@ -208,9 +201,9 @@ dl_list_insert(list, data)
 }
 
 int
-dl_list_insert_before(list, data)
-  dl_list_type  *list;
-  void          *data;
+dl_list_insert_before(
+  dl_list_type  *list,
+  void          *data)
 {
   dl_node_type  *node;
 
@@ -244,9 +237,9 @@ dl_list_insert_before(list, data)
 
 
 int
-dl_list_append(list, data)
-  dl_list_type  *list;
-  void          *data;
+dl_list_append(
+  dl_list_type  *list,
+  void          *data)
 {
   dl_node_type  *old_pos;
 
@@ -268,9 +261,9 @@ dl_list_append(list, data)
 
 
 int
-dl_list_prepend(list, data)
-  dl_list_type  *list;
-  void          *data;
+dl_list_prepend(
+  dl_list_type  *list,
+  void          *data)
 {
   dl_node_type  *old_pos;
 
@@ -291,9 +284,9 @@ dl_list_prepend(list, data)
 }
 
 int
-dl_list_append_list(list1, list2)
-  dl_list_type  *list1;
-  dl_list_type  *list2;
+dl_list_append_list(
+  dl_list_type  *list1,
+  dl_list_type  *list2)
 {
   dl_node_type  *pos1;
   dl_node_type  *pos2;
@@ -319,17 +312,16 @@ dl_list_append_list(list1, list2)
 }
 
 dl_node_type *
-dl_list_get_pos(list)
-  dl_list_type *list;
+dl_list_get_pos(dl_list_type *list)
 {
   if (!list) return NULL;
   return(list->current);
 }
 
 int
-dl_list_put_pos(list, pos)
-  dl_list_type  *list;
-  dl_node_type  *pos; 
+dl_list_put_pos(
+  dl_list_type  *list,
+  dl_node_type  *pos)
 {
   if (!pos) return FALSE;
 
@@ -338,9 +330,9 @@ dl_list_put_pos(list, pos)
 }
 
 dl_node_type *
-dl_list_exchange_pos(list, pos)
-  dl_list_type  *list;
-  dl_node_type  *pos; 
+dl_list_exchange_pos(
+  dl_list_type  *list,
+  dl_node_type  *pos)
 {
   dl_node_type  *p;
 
@@ -352,8 +344,7 @@ dl_list_exchange_pos(list, pos)
 }
     
 int
-dl_list_delete(list)
-  dl_list_type  *list;
+dl_list_delete(dl_list_type  *list)
 {
   dl_node_type  *current;
     
@@ -395,8 +386,7 @@ dl_list_delete(list)
 }
 
 int
-dl_list_destroy(list)
-  dl_list_type  *list;
+dl_list_destroy(dl_list_type  *list)
 {
   int   status;
 
@@ -427,9 +417,7 @@ dl_list_destroy(list)
   return TRUE;
 }
 
-int
-simple_destroy_data(data)
-  void  *data;
+int simple_destroy_data (void *data)
 {
   if (data) {
     free(data);
@@ -437,9 +425,7 @@ simple_destroy_data(data)
   return TRUE;
 }   
 
-int
-null_destroy_data(data)
-  void  *data;
+int null_destroy_data (void *data)
 {
   return TRUE;
 }

@@ -74,8 +74,8 @@ static int install_write_file_list PROTO((class_struct     *class,
 /* select_mkdb_file_type: returns the database file type (data or
    index) based on the tag. */
 static mkdb_file_type
-select_type(ftype)
-  char  *ftype;
+select_type(
+  char  *ftype)
 {
   if (STR_EQ(ftype, MKDB_EXACT_INDEX_STR) ||
       STR_EQ(ftype, MKDB_OLD_INDEX_STR) ||
@@ -102,8 +102,8 @@ select_type(ftype)
 }
 
 static char *
-select_str_from_type(type)
-  mkdb_file_type    type;
+select_str_from_type(
+  mkdb_file_type    type)
 {
   switch (type)
   {
@@ -121,8 +121,8 @@ select_str_from_type(type)
 }
 
 static file_struct *
-read_file_struct(fp)
-  FILE  *fp;
+read_file_struct(
+  FILE  *fp)
 {
   char        line[MAX_LINE + 1];
   char        tag[MAX_LINE];
@@ -200,10 +200,10 @@ read_file_struct(fp)
 }
 
 static int
-write_file_struct(fp, fi, not_last)
-  FILE        *fp;
-  file_struct *fi;
-  int         not_last;
+write_file_struct(
+  FILE        *fp,
+  file_struct *fi,
+  int         not_last)
 {
 
   if (!fp || !fi)
@@ -233,9 +233,9 @@ write_file_struct(fp, fi, not_last)
 /* read_file_list: reads a file_list data file into the file_list
    structure, by type.  Returns TRUE on success. */
 static int
-read_file_list(index_file, file_list)
-  char            *index_file;
-  dl_list_type    *file_list;
+read_file_list(
+  char            *index_file,
+  dl_list_type    *file_list)
 {
   FILE              *fp = NULL;
   file_struct       *fi;
@@ -297,9 +297,9 @@ read_file_list(index_file, file_list)
 /* write_file_list: writes a file list to the master index file. The
    entire file_list must be given to this routine. */
 static void
-write_file_list(filename, file_list)
-  char         *filename;
-  dl_list_type *file_list;
+write_file_list(
+  char         *filename,
+  dl_list_type *file_list)
 {
   FILE         *fp;
   file_struct  *fi;
@@ -331,8 +331,8 @@ write_file_list(filename, file_list)
    file_list is the full file list, and b) that they are sequentially
    increasing (that is, the last element has the highest number */
 static int
-next_file_no(file_list)
-  dl_list_type  *file_list;
+next_file_no(
+  dl_list_type  *file_list)
 {
   file_struct   *file;
 
@@ -354,10 +354,10 @@ next_file_no(file_list)
 }
 
 static char *
-generate_file_name(tmp_filename, base_filename, full_file_list)
-  char         *tmp_filename;
-  char         *base_filename;
-  dl_list_type *full_file_list;
+generate_file_name(
+  char         *tmp_filename,
+  char         *base_filename,
+  dl_list_type *full_file_list)
 {
   file_struct  *f;
   char         template[MAX_FILE + 1];
@@ -410,11 +410,11 @@ generate_file_name(tmp_filename, base_filename, full_file_list)
 /* fills the 'index_file' varible with the path and name of the master
    index file, given the instance type (read, write, backup, etc) */
 static int
-get_master_index_file(class, auth_area, instance_type, index_file)
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  master_inst_type instance_type;
-  char             *index_file;
+get_master_index_file(
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  master_inst_type instance_type,
+  char             *index_file)
 {
   if (!class || !class->name || !index_file)
   {
@@ -440,10 +440,10 @@ get_master_index_file(class, auth_area, instance_type, index_file)
 /* adds a file structure to a list, checking for duplication and
    assigning the index number.  */
 static int
-add_file_struct(file, file_list, lock_mode)
-  file_struct    *file;
-  dl_list_type   *file_list;
-  mkdb_lock_type lock_mode;
+add_file_struct(
+  file_struct    *file,
+  dl_list_type   *file_list,
+  mkdb_lock_type lock_mode)
 {
   file_struct *tmp_file;
   char        file_path[MAX_FILE + 1];
@@ -523,9 +523,9 @@ add_file_struct(file, file_list, lock_mode)
 
 /* deletes a given file from a file list */
 static int
-delete_file_no(file_no, file_list)
-  int          file_no;
-  dl_list_type *file_list;
+delete_file_no(
+  int          file_no,
+  dl_list_type *file_list)
 {
   file_struct *file;
   int         not_done;
@@ -549,10 +549,10 @@ delete_file_no(file_no, file_list)
 
 /* locks or unlocks a given file number with a file list */
 static int
-lock_unlock_file_no(file_no, lock, file_list)
-  int            file_no;
-  mkdb_lock_type lock;
-  dl_list_type   *file_list;
+lock_unlock_file_no(
+  int            file_no,
+  mkdb_lock_type lock,
+  dl_list_type   *file_list)
 {
   file_struct *file;
   int         not_done;
@@ -577,9 +577,9 @@ lock_unlock_file_no(file_no, lock, file_list)
 /* updates the statistics of the corresponding (by file no) file
    structure in list.  */
 static int
-update_file_no(update_file, file_list)
-  file_struct  *update_file;
-  dl_list_type *file_list;
+update_file_no(
+  file_struct  *update_file,
+  dl_list_type *file_list)
 {
   file_struct *file;
   int         not_done;
@@ -604,10 +604,10 @@ update_file_no(update_file, file_list)
 
 /* add the files in the list to the full file list */
 static int
-add_file_list(file_list, full_file_list, lock_mode)
-  dl_list_type     *file_list;
-  dl_list_type     *full_file_list;
-  mkdb_lock_type   lock_mode;
+add_file_list(
+  dl_list_type     *file_list,
+  dl_list_type     *full_file_list,
+  mkdb_lock_type   lock_mode)
 {
   file_struct   *file;
   int           not_done;
@@ -630,9 +630,9 @@ add_file_list(file_list, full_file_list, lock_mode)
 
 /* delete the files in the list from the full file list */
 static int
-delete_file_list(file_list, full_file_list)
-  dl_list_type *file_list;
-  dl_list_type *full_file_list;
+delete_file_list(
+  dl_list_type *file_list,
+  dl_list_type *full_file_list)
 {
   file_struct *file;
   int         not_done;
@@ -661,9 +661,9 @@ delete_file_list(file_list, full_file_list)
 /* modifies the statistics of the files in the list in the full file
    list */
 static int
-mod_file_list(file_list, full_file_list)
-  dl_list_type *file_list;
-  dl_list_type *full_file_list;
+mod_file_list(
+  dl_list_type *file_list,
+  dl_list_type *full_file_list)
 {
   file_struct   *file;
   int           not_done;
@@ -688,10 +688,10 @@ mod_file_list(file_list, full_file_list)
 }
 
 static int
-lock_unlock_file_list(file_list, full_file_list, lock)
-  dl_list_type   *file_list;
-  dl_list_type   *full_file_list;
-  mkdb_lock_type lock;
+lock_unlock_file_list(
+  dl_list_type   *file_list,
+  dl_list_type   *full_file_list,
+  mkdb_lock_type lock)
 {
   file_struct   *file;
   int           not_done;
@@ -717,9 +717,9 @@ lock_unlock_file_list(file_list, full_file_list, lock)
 }
 
 static int
-install_write_file_list(class, auth_area)
-  class_struct     *class;
-  auth_area_struct *auth_area;
+install_write_file_list(
+  class_struct     *class,
+  auth_area_struct *auth_area)
 {
   char w_index_file_name[MAX_FILE + 1];
   char r_index_file_name[MAX_FILE + 1];
@@ -774,9 +774,9 @@ install_write_file_list(class, auth_area)
    have to spin looking for a possibly transient master index file. (3
    stat() calls are much cheaper than any amount of waiting... */
 static int
-is_area_indexed(class, auth_area)
-  class_struct *class;
-  auth_area_struct *auth_area;
+is_area_indexed(
+  class_struct *class,
+  auth_area_struct *auth_area)
 {
   char w_index_file_name[MAX_FILE + 1];
   char r_index_file_name[MAX_FILE + 1];
@@ -819,9 +819,9 @@ is_area_indexed(class, auth_area)
 
 
 int
-mkdb_file_type_equals(type1, type2)
-  mkdb_file_type type1;
-  mkdb_file_type type2;
+mkdb_file_type_equals(
+  mkdb_file_type type1,
+  mkdb_file_type type2)
 {
   if (type1 == type2) return TRUE;
 
@@ -851,8 +851,8 @@ mkdb_file_type_equals(type1, type2)
 }
 
 file_struct *
-copy_file_struct(fi)
-  file_struct *fi;
+copy_file_struct(
+  file_struct *fi)
 {
   file_struct *copy;
 
@@ -881,9 +881,9 @@ copy_file_struct(fi)
 }
 
 int
-copy_file_list(target_file_list, source_file_list)
-  dl_list_type *target_file_list;
-  dl_list_type *source_file_list;
+copy_file_list(
+  dl_list_type *target_file_list,
+  dl_list_type *source_file_list)
 {
   int         not_done;
   file_struct *f;
@@ -912,11 +912,7 @@ copy_file_list(target_file_list, source_file_list)
 }
 /* get_dir: given class and auth_area (or just auth_area) return the
      data directory in 'dir'.  Return TRUE on success. */
-int
-get_dir(class_name, auth_area_name, dir)
-  char  *class_name;
-  char  *auth_area_name;
-  char  *dir;
+int get_dir (char *class_name, char *auth_area_name, char *dir)
 {
   auth_area_struct *auth_area;
   class_struct     *class;
@@ -967,10 +963,10 @@ get_dir(class_name, auth_area_name, dir)
      pointed to by class & auth_area, and appends them to file_list,
      which should already be initialized. */
 int
-get_file_list(class, auth_area, file_list)
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  dl_list_type     *file_list;
+get_file_list(
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  dl_list_type     *file_list)
 {
   char  index_file[MAX_FILE + 1];
 
@@ -1001,10 +997,10 @@ get_file_list(class, auth_area, file_list)
      and auth_area (by name), or just auth_area.  Returns TRUE on
      success. */
 int
-get_file(class_name, auth_area_name, file_list)
-  char            *class_name;
-  char            *auth_area_name;
-  dl_list_type    *file_list;
+get_file(
+  char            *class_name,
+  char            *auth_area_name,
+  dl_list_type    *file_list)
 {
   auth_area_struct *auth_area;
   schema_struct    *schema;
@@ -1076,10 +1072,10 @@ get_file(class_name, auth_area_name, file_list)
 }
 
 int
-filter_file_list(result_list, type, master_list)
-  dl_list_type   *result_list;
-  mkdb_file_type type;
-  dl_list_type   *master_list;
+filter_file_list(
+  dl_list_type   *result_list,
+  mkdb_file_type type,
+  dl_list_type   *master_list)
 {
   int         not_done;
   file_struct *fi;
@@ -1115,9 +1111,9 @@ filter_file_list(result_list, type, master_list)
 
 
 int
-unlink_master_file_list(class, auth_area)
-  class_struct     *class;
-  auth_area_struct *auth_area;
+unlink_master_file_list(
+  class_struct     *class,
+  auth_area_struct *auth_area)
 {
   char  index_file[MAX_FILE];
 
@@ -1150,12 +1146,12 @@ unlink_master_file_list(class, auth_area)
 
 
 file_struct *
-add_single_file(class, auth_area, file_name, type, num_recs)
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  char             *file_name;
-  mkdb_file_type   type;
-  long             num_recs;
+add_single_file(
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  char             *file_name,
+  mkdb_file_type   type,
+  long             num_recs)
 {
   file_struct  *file;
   file_struct  *list_file;
@@ -1194,15 +1190,14 @@ add_single_file(class, auth_area, file_name, type, num_recs)
 
 
 int
-modify_file_list(class, auth_area, add_list, delete_list,
-                 mod_list, unlock_list, lock_list)
-  class_struct     *class;
-  auth_area_struct *auth_area;
-  dl_list_type     *add_list;
-  dl_list_type     *delete_list;
-  dl_list_type     *mod_list;
-  dl_list_type     *unlock_list;
-  dl_list_type     *lock_list;
+modify_file_list(
+  class_struct     *class,
+  auth_area_struct *auth_area,
+  dl_list_type     *add_list,
+  dl_list_type     *delete_list,
+  dl_list_type     *mod_list,
+  dl_list_type     *unlock_list,
+  dl_list_type     *lock_list)
 {
   dl_list_type   full_file_list;
   char           write_index_file[MAX_FILE + 1];
@@ -1296,8 +1291,8 @@ modify_file_list(class, auth_area, add_list, delete_list,
 
 
 void
-unlink_file_list(file_list)
-  dl_list_type *file_list;
+unlink_file_list(
+  dl_list_type *file_list)
 {
   file_struct  *file;
   int          not_done;
@@ -1329,10 +1324,10 @@ unlink_file_list(file_list)
 /* find_file_by_id: searches a file list for a file_struct with
      'id'.  Returns NULL if not found. */
 file_struct *
-find_file_by_id(list, id, type)
-  dl_list_type   *list;
-  int            id;
-  mkdb_file_type type;
+find_file_by_id(
+  dl_list_type   *list,
+  int            id,
+  mkdb_file_type type)
 {
   int           not_done;
   file_struct   *fi;
@@ -1357,10 +1352,10 @@ find_file_by_id(list, id, type)
 /* find_file_by_name: searches a file list for a file_struct with
    filename 'name'.  Returns NULL if not found. */
 file_struct *
-find_file_by_name(list, name, type)
-  dl_list_type   *list;
-  char           *name;
-  mkdb_file_type type;
+find_file_by_name(
+  dl_list_type   *list,
+  char           *name,
+  mkdb_file_type type)
 {
   int           not_done;
   file_struct   *fi;
@@ -1383,8 +1378,8 @@ find_file_by_name(list, name, type)
 }
 
 long
-records_in_auth_area(auth_area)
-  auth_area_struct *auth_area;
+records_in_auth_area(
+  auth_area_struct *auth_area)
 {
   dl_list_type master_file_list;
   dl_list_type data_file_list;
@@ -1422,10 +1417,10 @@ records_in_auth_area(auth_area)
 /* build_base_file_struct: given a path, a type and the number of
      records, allocate and return a resultant file structure. */
 file_struct *
-build_base_file_struct(file_name, type, num_recs)
-  char           *file_name;
-  mkdb_file_type type;
-  long           num_recs;
+build_base_file_struct(
+  char           *file_name,
+  mkdb_file_type type,
+  long           num_recs)
 {
   struct stat    sb;
   int            status;
@@ -1449,11 +1444,11 @@ build_base_file_struct(file_name, type, num_recs)
 }
 
 file_struct *
-build_tmp_base_file_struct(tmp_filename, base_template, type, num_recs)
-  char           *tmp_filename;
-  char           *base_template;
-  mkdb_file_type type;
-  long           num_recs;
+build_tmp_base_file_struct(
+  char           *tmp_filename,
+  char           *base_template,
+  mkdb_file_type type,
+  long           num_recs)
 {
   struct stat    sb;
   int            status;
@@ -1483,12 +1478,12 @@ build_tmp_base_file_struct(tmp_filename, base_template, type, num_recs)
 
 
 int
-build_file_list_by_names(file_list, type, base_dir, num_names, names)
-  dl_list_type      *file_list;
-  mkdb_file_type    type;
-  char              *base_dir;
-  int               num_names;
-  char              **names;
+build_file_list_by_names(
+  dl_list_type      *file_list,
+  mkdb_file_type    type,
+  char              *base_dir,
+  int               num_names,
+  char              **names)
 {
   file_struct   *df;
   char          path[MAX_FILE + 1];
@@ -1518,11 +1513,11 @@ build_file_list_by_names(file_list, type, base_dir, num_names, names)
 }
 
 int
-build_file_list_by_suffix(file_list, type, base_dir, suffix)
-  dl_list_type   *file_list;
-  mkdb_file_type type;
-  char           *base_dir;
-  char           *suffix;
+build_file_list_by_suffix(
+  dl_list_type   *file_list,
+  mkdb_file_type type,
+  char           *base_dir,
+  char           *suffix)
 {
   file_struct   *fi;
   DIR           *dir_fp;
@@ -1572,8 +1567,8 @@ build_file_list_by_suffix(file_list, type, base_dir, suffix)
 /* --------------- Destructor Components  ------------- */
 
 int
-destroy_file_struct_data(data)
-  file_struct   *data;
+destroy_file_struct_data(
+  file_struct   *data)
 {
   if (!data)
   {
@@ -1604,5 +1599,3 @@ destroy_file_struct_data(data)
 
   return TRUE;
 }
-
-

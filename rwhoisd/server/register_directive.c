@@ -27,9 +27,7 @@
 /************* Directive String Parsing/Processing Routines */
   
 /* verify that the action is one of "add", "mod", and "del" */
-static int
-valid_registration_action(action_str)
-  char *action_str;
+static int valid_registration_action (char *action_str)
 {
   register_action_type  action;
 
@@ -43,9 +41,7 @@ valid_registration_action(action_str)
 }
 
 /* verifies that the email address is an email address */
-static int
-valid_registration_email_address(email)
-  char *email;
+static int valid_registration_email_address (char *email)
 {
   static regexp     *prog   = NULL;
   int               status  = FALSE;
@@ -69,12 +65,7 @@ valid_registration_email_address(email)
 /* given the truncated argument list (argv[0] should be the first arg
     *after* the on/off arg, check to see if the remaining arguments
     are valid, and write the header to the spool file */
-static int
-handle_registration_header(reg_action, reg_email, argc, argv)
-  char  *reg_action;
-  char  *reg_email;
-  int   argc;
-  char  **argv;
+static int handle_registration_header (char *reg_action, char *reg_email, int argc, char **argv)
 {
   char  *action     = NULL;
   char  *email      = NULL;
@@ -107,10 +98,7 @@ handle_registration_header(reg_action, reg_email, argc, argv)
   return (TRUE);
 }
 
-static int
-register_on(argc, argv)
-  int   argc;
-  char  **argv;
+static int register_on (int argc, char **argv)
 {
   FILE  *spool_fp;
   char  fname[MAX_FILE];
@@ -200,8 +188,7 @@ register_on(argc, argv)
   return TRUE;
 }
 
-static int
-register_off()
+static int register_off (void)
 {
   /* if we weren't in the correct state, this directive is invalid */
   if (get_rwhois_state() != SPOOL_STATE)
@@ -236,9 +223,7 @@ register_off()
 
 /* ------------------- PUBLIC FUNCTIONS ----------------- */
 
-int
-register_directive(str)
-  char *str;
+int register_directive (char *str)
 {
   int   argc;
   char  **argv;

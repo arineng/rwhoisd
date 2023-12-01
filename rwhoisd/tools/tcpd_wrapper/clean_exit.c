@@ -13,6 +13,7 @@ static char sccsid[] = "@(#) clean_exit.c 1.4 94/12/28 17:42:19";
 #endif
 
 #include <stdio.h>
+#include <unistd.h>
 
 extern void exit();
 
@@ -20,8 +21,7 @@ extern void exit();
 
 /* clean_exit - clean up and exit */
 
-void    clean_exit(request)
-struct request_info *request;
+void clean_exit (struct request_info *request)
 {
 
     /*

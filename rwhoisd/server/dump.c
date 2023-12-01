@@ -21,8 +21,8 @@
 /* display_dump_format: this procedure displays the results using the
      "dump" command */
 int
-display_dump_format(record)
-  record_struct *record;
+display_dump_format(
+  record_struct *record)
 {
   class_struct   *class;
   dl_list_type   *field_list;

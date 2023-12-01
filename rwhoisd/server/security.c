@@ -19,6 +19,7 @@
 #include "main_config.h"
 #include "types.h"
 
+int     hosts_ctl(char   *daemon, char   *name, char   *addr, char   *user);
 /***************************************************************************
 sets up a security playground by doing a chroot and setuid (taken
 from W.Z. Venema's chrootuid code.
@@ -26,8 +27,7 @@ from W.Z. Venema's chrootuid code.
 returns TRUE if ok
         FALSE otherwise
 ****************************************************************************/
-int
-setup_security()
+int setup_security (void)
 {
   struct passwd *pwd    = NULL;
   char          *userid = NULL;
@@ -101,9 +101,7 @@ setup_security()
    returns TRUE if can
            FALSE if not
 ****************************************************************************/
-int
-authorized_directive(directive)
-  char *directive;
+int authorized_directive (char *directive)
 {
 #ifdef USE_TCP_WRAPPERS
   char                    *hosts_allow;
@@ -195,8 +193,7 @@ authorized_directive(directive)
 #endif /* USE_TCP_WRAPPERS */
 }
 
-int
-authorized_client()
+int authorized_client (void)
 {
   return( authorized_directive( "rwhoisd" ) );
 }

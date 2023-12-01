@@ -34,9 +34,7 @@ typedef struct schema_arg_struct
 
 /* ------------------- Local Functions -------------------- */
 
-static int
-destroy_schema_arg_struct(ss)
-  schema_arg_struct *ss;
+static int destroy_schema_arg_struct (schema_arg_struct *ss)
 {
   if (!ss) return TRUE;
   
@@ -49,9 +47,7 @@ destroy_schema_arg_struct(ss)
 
 /* schema_parse_args:  This function parses that are given in the -schema
    call.  It returns a schema_arg_struct on success. */
-static schema_arg_struct * 
-schema_parse_args(str)
-  char *str;
+static schema_arg_struct *schema_parse_args (char *str)
 {
   schema_arg_struct *ss;
   auth_area_struct  *auth_area;
@@ -121,9 +117,9 @@ schema_parse_args(str)
 /* schema_display_attribute:  this function displays the information about
    each attribute of a class. */
 static void 
-schema_display_attribute(name, attr)
-  char             *name;
-  attribute_struct *attr;
+schema_display_attribute(
+  char             *name,
+  attribute_struct *attr)
 {
   print_response(RESP_SCHEMA, "%s:attribute:%s", name, 
                  SAFE_STR_NONE(attr->name));
@@ -181,9 +177,9 @@ schema_display_attribute(name, attr)
 /* schema_display_attribute_list:  This function displays all the
    attributes in a class.  */ 
 static void 
-schema_display_attribute_list(name, list)
-  char         *name;
-  dl_list_type *list;
+schema_display_attribute_list(
+  char         *name,
+  dl_list_type *list)
 {
   int not_done;
  
@@ -206,8 +202,8 @@ schema_display_attribute_list(name, list)
 /* schema_display_class: This function is called to display the
      class in a schema. */
 static void 
-schema_display_class(class)
-  class_struct *class;
+schema_display_class(
+  class_struct *class)
 {
     schema_display_attribute_list(class->name, &(class->attribute_list));
 }
@@ -216,8 +212,8 @@ schema_display_class(class)
 /* schema_display_all_schemas: This function is called to display all the
      classes in a schema. */
 static void 
-schema_display_classes(class_list)
-  dl_list_type *class_list;
+schema_display_classes(
+  dl_list_type *class_list)
 {   
   int          not_done;
   class_struct *class;
@@ -239,8 +235,7 @@ schema_display_classes(class_list)
 
 /* schema_directive:  This function process the call to -schema
      directive.*/
-int schema_directive(str)
-  char * str;
+int schema_directive (char *str)
 {
   schema_arg_struct *in = NULL;
 

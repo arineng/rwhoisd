@@ -83,8 +83,7 @@ static FILE *out;
 static int  printed_error_flag = FALSE;
 
 void
-set_out_fp(fp)
-  FILE *fp;
+set_out_fp(FILE *fp)
 {
   out = fp;
 }
@@ -97,8 +96,7 @@ get_out_fp()
 
 /* FIXME: this entire solution, which attempts to reliably prevent the
    printing of multiple "%error" codes in succession is a hack. */
-void
-clear_printed_error_flag()
+void clear_printed_error_flag (void)
 {
   printed_error_flag = FALSE;
 }
@@ -108,10 +106,7 @@ clear_printed_error_flag()
 
 /* prints to stdout the error messages. Format: %error ### message
      text, where ### follows rfc 640 */
-void
-print_error(err_no, str)
-  int   err_no;
-  char *str;
+void print_error (int err_no, char *str)
 {
   int   i;
   
@@ -140,7 +135,7 @@ print_error(err_no, str)
 }
 
 /* prints to stdout the ok message */
-void print_ok ()
+void print_ok (void)
 {
   printf ("%%ok\n");
 }

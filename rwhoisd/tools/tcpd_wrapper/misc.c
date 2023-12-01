@@ -19,7 +19,7 @@ static char sccsic[] = "@(#) misc.c 1.2 96/02/11 17:01:29";
 
 #include "tcpd.h"
 
-extern char *fgets();
+extern char *fgets (char *__restrict __s, int __n, FILE *__restrict __stream);
 
 #ifndef	INADDR_NONE
 #define	INADDR_NONE	(-1)		/* XXX should be 0xffffffff */
@@ -27,10 +27,7 @@ extern char *fgets();
 
 /* xgets - fgets() with backslash-newline stripping */
 
-char   *xgets(ptr, len, fp)
-char   *ptr;
-int     len;
-FILE   *fp;
+char *xgets (char *ptr, int len, FILE *fp)
 {
     int     got;
     char   *start = ptr;
@@ -54,9 +51,7 @@ FILE   *fp;
 
 /* split_at - break string at delimiter or return NULL */
 
-char   *split_at(string, delimiter)
-char   *string;
-int     delimiter;
+char *split_at (char *string, int delimiter)
 {
     char   *cp;
 
@@ -67,8 +62,7 @@ int     delimiter;
 
 /* dot_quad_addr - convert dotted quad to internal form */
 
-unsigned long dot_quad_addr(str)
-char   *str;
+unsigned long dot_quad_addr (char *str)
 {
     int     in_run = 0;
     int     runs = 0;
@@ -90,11 +84,7 @@ char   *str;
 
 /* numeric_addr - convert textual IP address to binary form */
 
-int numeric_addr(str, addr, af, len)
-char *str;
-union gen_addr *addr;
-int *af;
-int *len;
+int numeric_addr (char *str, union gen_addr *addr, int *af, int *len)
 {
     union gen_addr t;
 
@@ -123,9 +113,7 @@ int *len;
 
 /* tcpd_gethostbyname - an IP family neutral gethostbyname */
 
-struct hostent *tcpd_gethostbyname(host, af)
-char *host;
-int af;
+struct hostent *tcpd_gethostbyname (char *host, int af)
 {
 #ifdef HAVE_IPV6
     struct hostent *hp;
@@ -164,8 +152,7 @@ int af;
  *
  * We also allow a '/prefix' specifier.
  */
-char *skip_ipv6_addrs(str)
-char *str;
+char *skip_ipv6_addrs (char *str)
 {
     char *obr, *cbr, *colon;
     char *p = str;

@@ -17,9 +17,7 @@
 #include "strutil.h"
 
 /* set_holdconnect: sets the holdconnect value */
-int 
-holdconnect_directive( str )
-  char  *str;
+int holdconnect_directive (char *str)
 {
   log(L_LOG_DEBUG, CLIENT, "holdconnect directive: %s", str);
   

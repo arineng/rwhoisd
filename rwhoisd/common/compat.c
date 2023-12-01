@@ -17,8 +17,7 @@
  *    is used in order to get local FQDN name. I think it has no need to
  *    modify only in order to get local FQDN.
  */
-char *
-sys_gethostname()
+char *sys_gethostname (void)
 {
   static char       hostname[MAX_HOSTNAME + 1];
   struct hostent    *hp;
@@ -61,9 +60,9 @@ sys_gethostname()
 }
 
 int
-sys_file_lock(fd, op)
-  int           fd;
-  file_lock_t   op;
+sys_file_lock(
+  int           fd,
+  file_lock_t   op)
 {
   /* we should have one or the other (flock or lockf) always */
 #ifdef HAVE_LOCKF

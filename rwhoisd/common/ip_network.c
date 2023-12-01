@@ -12,12 +12,11 @@
 #include "common_regexps.h"
 #include "misc.h"
 #include "defines.h"
+#include "../regexp/regexp.h"
 
 /* Given an ipv4 string, remove zero padding (in place).  If this
    doesn't look like an IPv4 string, it will do nothing. */
-static void
-clean_ipv4_addr( str )
-  char *str;
+static void clean_ipv4_addr (char *str)
 {
   int o[4];
   int n;
@@ -49,10 +48,7 @@ clean_ipv4_addr( str )
 }
 
 /* address convert from ascii ip network string to netinfo structure */
-int
-addrstring_to_ni( addstr, ni )
-  char *addstr;
-  struct netinfo *ni;
+int addrstring_to_ni (char *addstr, struct netinfo *ni)
 {
 #ifdef HAVE_IPV6
   /* neither inet_pton nor inet_addr will convert zero-padded ipv4
@@ -92,10 +88,7 @@ addrstring_to_ni( addstr, ni )
 }
 
 /* Mask addr to prefix */
-void
-mask_addr_to_len( ni, len )
-  struct netinfo *ni;
-  int           len;
+void mask_addr_to_len (struct netinfo *ni, int len)
 {
   int numbytes, i;
 
@@ -122,10 +115,7 @@ mask_addr_to_len( ni, len )
                 
 /* compares two numerical IP addresses in network byte order (big endian)
    (-2 if address family mismatch, -1 if a < b, 0 if a = b, 1 if a > b) */
-int
-compare_addr(a, b)
-  struct netinfo *a;
-  struct netinfo *b;
+int compare_addr (struct netinfo *a, struct netinfo *b)
 {
   int i, numbytes;
 
@@ -148,9 +138,7 @@ compare_addr(a, b)
   return(0);
 }
 
-int
-is_network_valid_for_searching(value)
-  char *value;
+int is_network_valid_for_searching (char *value)
 {
   static regexp *net_prog = NULL;
 
@@ -169,9 +157,7 @@ is_network_valid_for_searching(value)
   }
 }
 
-int
-is_network_valid_for_index(line)
-  char *line;
+int is_network_valid_for_index (char *line)
 {
   static regexp *strict_net_prog = NULL;
   struct netinfo prefix;
@@ -192,9 +178,7 @@ is_network_valid_for_index(line)
   return FALSE;
 }
 
-int
-is_cidr_network(value)
-  char *value;
+int is_cidr_network (char *value)
 {
   static regexp *net_prog = NULL;
 
@@ -216,9 +200,7 @@ is_cidr_network(value)
 /* determine_network_len_from_policy: given a network IP number
    without an explicit prefix length, determine the prefix length by
    the first octet and presence of 0 octets. */
-int
-determine_network_len_from_policy(addr)
-  struct netinfo *addr;
+int determine_network_len_from_policy (struct netinfo *addr)
 {
   uint32_t *prefix;
   int      len = 32;
@@ -253,9 +235,7 @@ determine_network_len_from_policy(addr)
    low-order non-zero octets.  128.0.0.0 would yield 8, 128.1.0.0 would
    yield 16, 128.0.1.0 would yield 24, and so on */
 
-int
-determine_network_len_from_octets(addr)
-  struct netinfo *addr;
+int determine_network_len_from_octets (struct netinfo *addr)
 {
   int len = 32;
   int i;
@@ -274,10 +254,7 @@ determine_network_len_from_octets(addr)
 /* get_network_prefix_prefix_len_and_mask: This function parses
    network prefix and prefix length, given a string in quad-octet
    prefix/prefix length format */
-int
-get_network_prefix_and_len( str, ni )
-  char          *str;
-  struct netinfo *ni;
+int get_network_prefix_and_len (char *str, struct netinfo *ni)
 {
   char *buf;
   char *p;
@@ -329,10 +306,7 @@ get_network_prefix_and_len( str, ni )
   return(TRUE);
 }
 
-int
-write_network( str, ni )
-  char *str;
-  struct netinfo *ni;
+int write_network (char *str, struct netinfo *ni)
 {
   if (!str)
   {
@@ -345,11 +319,7 @@ write_network( str, ni )
 }
 
 
-char *
-ni_to_addrstring(ni, str, str_len)
-  struct netinfo        *ni;
-  char                  *str;
-  int                    str_len;
+char *ni_to_addrstring (struct netinfo *ni, char *str, int str_len)
 {
   if (ni->af == AF_INET)
   {
@@ -388,9 +358,7 @@ ni_to_addrstring(ni, str, str_len)
   return NULL;
 }
 
-char *
-natop( ni )
-  struct netinfo *ni;
+char *natop (struct netinfo *ni)
 {
   static char str[MAX_LINE];
 

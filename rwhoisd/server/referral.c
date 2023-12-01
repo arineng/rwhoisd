@@ -71,9 +71,7 @@ static int aa_has_referrals PROTO((auth_area_struct *aa));
 /* roughly check network format, detailed check is done in with_network() 
  * network str has to have "prefix/prefix-length" format 
  */
-static int
-is_net( str )
-  char *str;
+static int is_net (char *str)
 {
   if ( !str || !*str) return FALSE;
 
@@ -86,9 +84,7 @@ is_net( str )
 
 /* domain str has to have "XX.XXX" format */
 /* what about second level domain */
-static int
-is_domain( str )
-  char *str;
+static int is_domain (char *str)
 {
   if (! str || !*str) return FALSE;
 
@@ -106,10 +102,7 @@ is_domain( str )
 
 /* hierarchical_value_domain: This function parses a domain
    hierarchical value */
-static int
-hierarchical_value_domain(value, hvalue)
-  char *value;
-  char *hvalue;
+static int hierarchical_value_domain (char *value, char *hvalue)
 {
   char *p;
 
@@ -153,10 +146,7 @@ hierarchical_value_domain(value, hvalue)
    hierarchical value in prefix/prefix length format.  Note that is
    repeats some of the same logic from the ip_network routines, but
    this is trying to discover a (possibly) embedded instance. */
-static int
-hierarchical_value_network(value, hvalue)
-  char *value;
-  char *hvalue;
+static int hierarchical_value_network (char *value, char *hvalue)
 {
   struct netinfo value_info;
 
@@ -179,10 +169,7 @@ hierarchical_value_network(value, hvalue)
 
 /* within_domain: This function checks if a subdomain is within
    a domain */
-static int
-within_domain(subdomain, domain)
-  char *subdomain;
-  char *domain;
+static int within_domain (char *subdomain, char *domain)
 {
   int    rval = FALSE;
   static regexp *prog = NULL;
@@ -226,10 +213,7 @@ within_domain(subdomain, domain)
 
 /* within_network: This function checks if a subnetwork is
    within a network */
-static int
-within_network(subnetwork, network)
-  char *subnetwork;
-  char *network;
+static int within_network (char *subnetwork, char *network)
 {
   int           rval            = FALSE;
   static regexp *prog           = NULL;
@@ -278,8 +262,8 @@ within_network(subnetwork, network)
 /* get_up_referral: This function gets punt referrals to the
    root RWhois server */
 static int
-get_up_referral(referral_list)
-  dl_list_type *referral_list;
+get_up_referral(
+  dl_list_type *referral_list)
 {
   FILE            *fp;
   char            *punt_file;
@@ -336,11 +320,11 @@ get_up_referral(referral_list)
 /* get_down_referral: This function gets link referrals to a
    referred authority area */ 
 static int
-get_down_referral(hvalue, htype, aa_name, referral_list)
-  char         *hvalue;
-  int          htype;
-  char         *aa_name;
-  dl_list_type *referral_list;
+get_down_referral(
+  char         *hvalue,
+  int          htype,
+  char         *aa_name,
+  dl_list_type *referral_list)
 {
   query_struct      *query;
   dl_list_type      record_list;
@@ -448,9 +432,7 @@ get_down_referral(hvalue, htype, aa_name, referral_list)
 
 
 /* reduce_domain: This function reduces a domain */
-static int
-reduce_domain(domain)
-  char *domain;
+static int reduce_domain (char *domain)
 {
   int  rval = FALSE;
   char *p;
@@ -473,9 +455,7 @@ reduce_domain(domain)
 }
 
 /* reduce_network: This function reduces a network */
-static int
-reduce_network(network)
-  char *network;
+static int reduce_network (char *network)
 {
   struct netinfo ni;
  
@@ -504,10 +484,10 @@ reduce_network(network)
 
 
 static int
-build_referral_query(query, search_value, aa_name)
-  query_struct *query;
-  char *search_value;
-  char *aa_name;
+build_referral_query(
+  query_struct *query,
+  char *search_value,
+  char *aa_name)
 {
   char query_str[MAX_LINE];
 
@@ -534,10 +514,7 @@ build_referral_query(query, search_value, aa_name)
   return TRUE;
 }
 
-static void
-print_referral(referral_to, aa_name)
-  char *referral_to;
-  char *aa_name;
+static void print_referral (char *referral_to, char *aa_name)
 {
 
   if (NOT_STR_EXISTS(referral_to))
@@ -561,8 +538,8 @@ print_referral(referral_to, aa_name)
 
 /* print_referral_list: This function prints a referral list */
 static void
-print_referral_list(referral_list)
-  dl_list_type *referral_list;
+print_referral_list(
+  dl_list_type *referral_list)
 {
   int             not_done;
   referral_struct *referral;
@@ -587,8 +564,8 @@ print_referral_list(referral_list)
 
 /* destroy_referral_list: This function frees a referral list */
 static void
-destroy_referral_list(referral_list)
-  dl_list_type *referral_list;
+destroy_referral_list(
+  dl_list_type *referral_list)
 {
   if (!referral_list)
   {
@@ -601,8 +578,8 @@ destroy_referral_list(referral_list)
 
 /* destroy_referral_data: This function frees a referral structure */
 static int
-destroy_referral_data(referral)
-  referral_struct *referral;
+destroy_referral_data(
+  referral_struct *referral)
 {
   if (!referral)
   {
@@ -631,8 +608,8 @@ destroy_referral_data(referral)
 /* refer_query: This function refers a query to another RWhois
    server if this server can not resolve the query */
 int
-refer_query(query)
-  query_struct *query;
+refer_query(
+  query_struct *query)
 {
   query_term_struct *ver;
   query_term_struct *hor;
@@ -678,9 +655,9 @@ refer_query(query)
 
 /* refer_query_term:  This function refers a query term */
 int
-refer_query_term(query_term, referral_list)
-  query_term_struct *query_term;
-  dl_list_type      *referral_list;
+refer_query_term(
+  query_term_struct *query_term,
+  dl_list_type      *referral_list)
 {
   dl_list_type     *auth_area_list    = NULL;
   auth_area_struct *auth_area;
@@ -750,11 +727,7 @@ refer_query_term(query_term, referral_list)
 
 /* parse_hierarchical_value: This function parses hierarchical value
    from the search value in a query term */
-int
-parse_hierarchical_value(value, hvalue, htype)
-  char *value;
-  char *hvalue;
-  int  *htype;
+int parse_hierarchical_value (char *value, char *hvalue, int *htype)
 {
   int    rval = FALSE;
   static regexp *net_prog   = NULL;
@@ -826,11 +799,7 @@ parse_hierarchical_value(value, hvalue, htype)
 
 /* hierarchical_value_within_aa: This function checks if a
    hierarchical value is within an authority area */
-int
-hierarchical_value_within_aa(hvalue, htype, aa_name)
-  char *hvalue;
-  int  htype;
-  char *aa_name;
+int hierarchical_value_within_aa (char *hvalue, int htype, char *aa_name)
 {
   if (!hvalue  || !*hvalue ||
       !aa_name || !*aa_name)
@@ -864,8 +833,8 @@ hierarchical_value_within_aa(hvalue, htype, aa_name)
 /*   here we only check the specific referral_auth_area attribute*/
 
 int
-referral_rec_check( ref_rec )
-  record_struct *ref_rec; 
+referral_rec_check(
+  record_struct *ref_rec)
 {
   int           not_done;
   av_pair_struct    *av;
@@ -934,8 +903,8 @@ referral_rec_check( ref_rec )
 }
 
 static int
-aa_has_referrals(aa)
-  auth_area_struct *aa;
+aa_has_referrals(
+  auth_area_struct *aa)
 {
   class_ref_struct     *c_ref;
 

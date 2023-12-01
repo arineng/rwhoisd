@@ -21,10 +21,7 @@ static long initial_time = -1;
 /******************************************************************************
   sets the timer for seconds before calling function
 ******************************************************************************/
-void
-set_timer(seconds, function)
-  int   seconds;
-  void  *function;
+void set_timer (int seconds, void *function)
 {
   if (seconds)
   {
@@ -37,8 +34,7 @@ set_timer(seconds, function)
 /******************************************************************************
  notifies user that deadman time has come - logs it and bye!
 ******************************************************************************/
-void
-is_a_deadman()
+void is_a_deadman (void)
 {
   print_error (DEADMAN_TIME, "");
   log(L_LOG_INFO, CLIENT, "deadman time exceeded - terminating connection.");
@@ -48,8 +44,7 @@ is_a_deadman()
 /******************************************************************************
  unsets the timer
 ******************************************************************************/
-void
-unset_timer()
+void unset_timer (void)
 {
   signal(SIGALRM, SIG_IGN);
 }
@@ -57,9 +52,7 @@ unset_timer()
 /******************************************************************************
  sets seconds before exiting (read from config file)
 ******************************************************************************/
-void
-set_deadman_time(secs)
-  char *secs;
+void set_deadman_time (char *secs)
 {
   if (atoi (secs))
   {
@@ -70,8 +63,7 @@ set_deadman_time(secs)
 /******************************************************************************
  recovers the deadman second timer
 ******************************************************************************/
-int
-get_deadman_time ()
+int get_deadman_time (void)
 {
   /* value is uninitialized -- pull default from config */
   if (deadman_time < 0)
@@ -82,15 +74,13 @@ get_deadman_time ()
 }
 
 
-void
-set_initial_time()
+void set_initial_time (void)
 {
   initial_time = time((time_t *) NULL);
 }
 
 
-long
-get_time_elapsed()
+long get_time_elapsed (void)
 {
   long current_time;
  

@@ -19,10 +19,10 @@
       trailing terminating characters from the line. Returns a pointer
       to the buffer itself */
 char *
-readline(fp, buffer, size)
-  FILE *fp;
-  char *buffer;
-  int  size;
+readline(
+  FILE *fp,
+  char *buffer,
+  int  size)
 {
   if (! fgets(buffer, size, fp))
   {
@@ -43,9 +43,7 @@ readline(fp, buffer, size)
 
 /* new_record: tests to see if 'line' is a record separator.  Returns
       TRUE if it is, FALSE if not */
-int
-new_record(line)
-  char *line;
+int new_record (char *line)
 {
   if (!line || !*line)
   {
@@ -64,11 +62,7 @@ new_record(line)
 
 /* parse_line: splits a <tag>: <datum> line into its respective
       components. */
-int
-parse_line(line, tag, datum)
-  char *line;
-  char *tag;
-  char *datum;
+int parse_line (char *line, char *tag, char *datum)
 {
   char *colon = NULL;
   char *d_ptr = NULL;
@@ -110,12 +104,7 @@ parse_line(line, tag, datum)
 
 /* delimstr: retrieves 'cnt' delimiters from mainbuf into
       cpbuf. Returns TRUE if successful, FALSE if not. */
-int
-delimstr(mainbuf, delim, cpbuf, cnt)
-  char *mainbuf;
-  char *delim;
-  char *cpbuf;
-  int  cnt;
+int delimstr (char *mainbuf, char *delim, char *cpbuf, int cnt)
 {
   int           i           = 0;
   char          *token;
@@ -162,10 +151,7 @@ delimstr(mainbuf, delim, cpbuf, cnt)
     next_cp is set to point to after the word, and the function
     returns the word if found, else NULL (with the dest buffer
     unchanged). */
-char *
-get_word(cp, buf)
-  char *cp;
-  char *buf;
+char *get_word (char *cp, char *buf)
 {
   char *original_buf = buf;
 
@@ -194,12 +180,7 @@ get_word(cp, buf)
 
 
 /* paste: pastes the new info into the query string */
-void
-paste(line, cut_start, cut_end, rpl)
-  char *line;
-  char *cut_start;
-  char *cut_end;
-  char *rpl;
+void paste (char *line, char *cut_start, char *cut_end, char *rpl)
 
 {
   char  *cp             = line;
@@ -218,9 +199,7 @@ paste(line, cut_start, cut_end, rpl)
 }
 
 /* on_off: return the ascii equivalents to the boolean argument */
-char *
-on_off(b)
-  int b;
+char *on_off (int b)
 {
   static char *on  = "ON";
   static char *off = "OFF";
@@ -237,9 +216,7 @@ on_off(b)
 
 /* true_false: returns TRUE if the string is set to an acceptable true
       value: "true", "yes", 'on".  FALSE otherwise. */
-int
-true_false(b)
-  char *b;
+int true_false (char *b)
 {
   trim(b);
   
@@ -253,9 +230,7 @@ true_false(b)
   }
 }
 
-char *
-true_false_str(b)
-  int   b;
+char *true_false_str (int b)
 {
   if (b)
     return "TRUE";
@@ -265,12 +240,7 @@ true_false_str(b)
 
 /* get_tuple: parses a <tag1>:<tag2>:<datum> line. Returns TRUE if it
       succeeded, FALSE if not */
-int
-get_tuple(tag1, tag2, data, line)
-  char *tag1;
-  char *tag2;
-  char *data;
-  char *line;
+int get_tuple (char *tag1, char *tag2, char *data, char *line)
 {
   char str[MAX_LINE];
 
@@ -285,11 +255,7 @@ get_tuple(tag1, tag2, data, line)
 }
 
 
-int
-split_arg_list(list, argcptr, argvptr)
-  char *list;
-  int  *argcptr;
-  char ***argvptr;
+int split_arg_list (char *list, int *argcptr, char ***argvptr)
 {
     char            **argv;
     register char   *p;
@@ -383,13 +349,7 @@ split_arg_list(list, argcptr, argvptr)
      will avoid adding NULL elements to the middle of the list and
      terminate the list with a NULL array element.  free argv[0] and
      argv when done (free_arg_list). */
-int
-split_list(list, sep, max_fields, argcptr, argvptr)
-  char  *list;
-  char  sep;
-  int   max_fields;
-  int   *argcptr;
-  char  ***argvptr;
+int split_list (char *list, int sep, int max_fields, int *argcptr, char ***argvptr)
 {
   char          **argv;
   register char *p;
@@ -452,9 +412,7 @@ split_list(list, sep, max_fields, argcptr, argvptr)
   return TRUE;
 }
 
-void
-free_arg_list(argv)
-  char **argv;
+void free_arg_list (char **argv)
 {
   /* first, if possible, free argv[0], which should be the start of
      the copied list string */
@@ -474,8 +432,7 @@ free_arg_list(argv)
 /* The "safe" memory routines */
 
 void *
-xmalloc(bytes)
-  size_t bytes;
+xmalloc(size_t bytes)
 {
   char *cp;
  
@@ -495,9 +452,9 @@ xmalloc(bytes)
 }
 
 void *
-xcalloc(nelem, size)
-  size_t nelem;
-  size_t size;
+xcalloc(
+  size_t nelem,
+  size_t size)
 {
   char  *cp;
 
@@ -521,9 +478,9 @@ xcalloc(nelem, size)
 }
 
 void *
-xrealloc(ptr, bytes)
-  void      *ptr;
-  size_t    bytes;
+xrealloc(
+  void      *ptr,
+  size_t    bytes)
 {
   char *cp;
  
@@ -546,9 +503,7 @@ xrealloc(ptr, bytes)
   return(cp);
 }
 
-char *
-xstrdup (str)
-  const char *str;
+char *xstrdup (const char *str)
 {
   char *s;
  
@@ -564,9 +519,9 @@ xstrdup (str)
 }
 
 void *
-xmemdup(buf, bytes)
-  const void    *buf;
-  size_t        bytes;
+xmemdup(
+  const void    *buf,
+  size_t        bytes)
 {
   void  *b;
   
@@ -583,11 +538,11 @@ xmemdup(buf, bytes)
 
 
 char *
-regncpy(result, prog, item, len)
-  char   *result;
-  regexp *prog;
-  int    item;
-  int    len;
+regncpy(
+  char   *result,
+  regexp *prog,
+  int    item,
+  int    len)
 {
   int   slice_length;
   
@@ -600,8 +555,7 @@ regncpy(result, prog, item, len)
   return(result);
 }
 
-void
-randomize()
+void randomize (void)
 {
   int seed;
 
@@ -609,8 +563,7 @@ randomize()
   srand(seed);
 }
 
-char *
-generate_salt()
+char *generate_salt (void)
 {
   int         r[2]; 
   static char s[3];

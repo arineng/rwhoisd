@@ -23,6 +23,7 @@ static char sccsid[] = "@(#) rfc931.c 1.10 95/01/02 16:11:34";
 #include <setjmp.h>
 #include <signal.h>
 #include <string.h>
+#include <unistd.h>
 
 /* Local stuff. */
 
@@ -37,10 +38,7 @@ static jmp_buf timebuf;
 
 /* fsocket - open stdio stream on top of socket */
 
-static FILE *fsocket(domain, type, protocol)
-int     domain;
-int     type;
-int     protocol;
+static FILE *fsocket (int domain, int type, int protocol)
 {
     int     s;
     FILE   *fp;
@@ -59,18 +57,14 @@ int     protocol;
 
 /* timeout - handle timeouts */
 
-static void timeout(sig)
-int     sig;
+static void timeout (int sig)
 {
     longjmp(timebuf, sig);
 }
 
 /* rfc931 - return remote user name, given socket structures */
 
-void    rfc931(rmt_sin, our_sin, dest)
-struct sockaddr_gen *rmt_sin;
-struct sockaddr_gen *our_sin;
-char   *dest;
+void rfc931 (struct sockaddr_gen *rmt_sin, struct sockaddr_gen *our_sin, char *dest)
 {
     unsigned rmt_port;
     unsigned our_port;

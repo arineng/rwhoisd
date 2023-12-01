@@ -37,8 +37,7 @@ int get_tuple PROTO((char *tag1, char *tag2, char *data, char *line));
 
 int split_arg_list PROTO((char *list, int *argcptr, char ***argvptr));
 
-int split_list PROTO((char *list, char sep, int max_fields,
-                      int *argcptr, char ***argvptr));
+int split_list (char *list, int sep, int max_fields, int *argcptr, char ***argvptr);
 
 void free_arg_list PROTO((char **argv));
 

@@ -38,11 +38,7 @@ static dl_list_type *class_ref_list = NULL;
 
 /* -------------------- LOCAL FUNCTIONS ------------------- */
 
-static int
-add_class_alias(alias_array, num_aliases, alias)
-  char ***alias_array;
-  int  *num_aliases;
-  char *alias;
+static int add_class_alias (char ***alias_array, int *num_aliases, char *alias)
 {
   int   i;
   char  **array = *alias_array;
@@ -77,9 +73,9 @@ add_class_alias(alias_array, num_aliases, alias)
    any duplicate use of class names and class aliases across the authority
    area. */
 static int 
-verify_class(aa, class)
-  auth_area_struct *aa;
-  class_struct *class;
+verify_class(
+  auth_area_struct *aa,
+  class_struct *class)
 {
   int i, errnum; 
  
@@ -168,9 +164,9 @@ verify_class(aa, class)
 /* count the number of times a class name occurs in the authority area
    class list. Looks at the aliases as well. */
 static int
-count_class_entries(class_list, class_name)
-  dl_list_type *class_list;
-  char *class_name;
+count_class_entries(
+  dl_list_type *class_list,
+  char *class_name)
 {
   int          not_done;
   int          i, count = 0;
@@ -211,9 +207,9 @@ count_class_entries(class_list, class_name)
 
 /* append a valid class to the authority area class list. */
 static int
-append_class( class, aa )
-  class_struct     *class;
-  auth_area_struct *aa;
+append_class(
+  class_struct     *class,
+  auth_area_struct *aa)
 {
   dl_list_type *class_list;
   class_struct *tmp_class;
@@ -245,8 +241,8 @@ append_class( class, aa )
 /* reads the main schema/object configuration file.  Returns TRUE if
      successful, FALSE otherwise.  */
 int
-read_schema(aa)
-  auth_area_struct *aa;
+read_schema(
+  auth_area_struct *aa)
 {
   char                  line[MAX_LINE];
   char                  tag[MAX_TEMPLATE_DESC];
@@ -435,10 +431,10 @@ read_schema(aa)
 }
 
 int
-add_class(schema, class, aa)
-  schema_struct    *schema;
-  class_struct     *class;
-  auth_area_struct *aa;
+add_class(
+  schema_struct    *schema,
+  class_struct     *class,
+  auth_area_struct *aa)
 {
   class_struct       *tmp_class;
   dl_list_type       *class_list = &(schema->class_list);
@@ -503,9 +499,9 @@ add_class(schema, class, aa)
 
 /* add class to class_ref_list */
 int
-add_global_class(class, aa)
-  class_struct      *class;
-  auth_area_struct  *aa;
+add_global_class(
+  class_struct      *class,
+  auth_area_struct  *aa)
 {
   class_ref_struct  *ref;
   class_ref_struct  *alias_ref;
@@ -588,25 +584,25 @@ add_global_class(class, aa)
 
 
 dl_list_type *
-get_class_list(schema)
-  schema_struct *schema;
+get_class_list(
+  schema_struct *schema)
 {
   return(&(schema->class_list));
 }
 
 
 dl_list_type *
-get_schema_attribute_ref_list(schema)
-  schema_struct *schema;
+get_schema_attribute_ref_list(
+  schema_struct *schema)
 {
   return(&(schema->attribute_ref_list));
 }
 
 
 class_struct *
-find_class_by_name(schema, name)
-  schema_struct  *schema;
-  char           *name;
+find_class_by_name(
+  schema_struct  *schema,
+  char           *name)
 {
   dl_list_type  *list;
   class_struct  *class;
@@ -648,9 +644,9 @@ find_class_by_name(schema, name)
 
 
 class_struct *
-find_class_by_id(schema, id)
-  schema_struct *schema;
-  int           id;
+find_class_by_id(
+  schema_struct *schema,
+  int           id)
 {
   dl_list_type  *list;
   class_struct  *class;
@@ -682,8 +678,8 @@ find_class_by_id(schema, id)
 
 
 void
-display_class(class)
-  class_struct  *class;
+display_class(
+  class_struct  *class)
 {
   if (!class) return ;
 
@@ -700,8 +696,8 @@ display_class(class)
 
 
 void
-display_schema(schema)
-  schema_struct *schema;
+display_schema(
+  schema_struct *schema)
 {
   int   not_done;
 
@@ -718,14 +714,14 @@ display_schema(schema)
       printf("   --------------------\n");
     }
   }
-  /* don't have to display attribute_ref_list */ 
+  /* don't have to display attribute_ref_list */
 }
 
 
 /* search class_ref_list */
 class_ref_struct *
-find_global_class_by_name(name)
-  char    *name;
+find_global_class_by_name(
+  char    *name)
 {
   int                   not_done;
   int                   i;
@@ -764,8 +760,8 @@ find_global_class_by_name(name)
 /* ---------------- Destructor Components ------------- */
 
 int
-destroy_class_data(class)
-  class_struct  *class;
+destroy_class_data(
+  class_struct  *class)
 {
   int i;
 
@@ -823,8 +819,8 @@ destroy_class_data(class)
 
 
 int
-destroy_schema_data(schema)
-  schema_struct *schema;
+destroy_schema_data(
+  schema_struct *schema)
 {
   if (!schema) return TRUE;
 
@@ -839,9 +835,9 @@ destroy_schema_data(schema)
 
 /* destroy_class_ref_data:
  */
-int 
-destroy_class_ref_data( class_ref )
-  class_ref_struct      *class_ref;
+int
+destroy_class_ref_data(
+  class_ref_struct      *class_ref)
 {
   int    i;
 
@@ -872,8 +868,7 @@ destroy_class_ref_data( class_ref )
   return TRUE;
 }
 
-int
-destroy_class_ref_list()
+int destroy_class_ref_list (void)
 {
   dl_list_destroy(class_ref_list);
   class_ref_list = NULL;
@@ -883,11 +878,11 @@ destroy_class_ref_list()
 /* write authority area schema file, and class attributes. Add the file
    names to 'paths_list' if created on disk. */
 int 
-write_schema_file(file, suffix, aa, paths_list)
-  char             *file;
-  char             *suffix;
-  auth_area_struct *aa;
-  dl_list_type     *paths_list;
+write_schema_file(
+  char             *file,
+  char             *suffix,
+  auth_area_struct *aa,
+  dl_list_type     *paths_list)
 {
   int           i;
   int           not_done;
@@ -976,9 +971,7 @@ write_schema_file(file, suffix, aa, paths_list)
 
 /* examine the validity of schema version string. Returns non-zero value
    on failure */
-int
-examin_schema_version(version)
-  char *version;
+int examin_schema_version (char *version)
 {
   int ret;
 
@@ -989,9 +982,7 @@ examin_schema_version(version)
 
 /* examine the validity of class name string. 
    Returns non-zero value on failure */
-int
-examin_class_name(name)
-  char *name;
+int examin_class_name (char *name)
 {
   if (NOT_STR_EXISTS(name)) return ERW_EMTYSTR;
   if (!is_id_str(name)) return ERW_IDSTR;
@@ -1001,9 +992,7 @@ examin_class_name(name)
 
 /* examine the validity of class data directory. Returns non-zero value on
    failure */
-int
-examin_class_db_dir(path)
-  char *path;
+int examin_class_db_dir (char *path)
 {
   int ret;
 
@@ -1017,9 +1006,7 @@ examin_class_db_dir(path)
 /* examine the validity of attribute file name. Also checks if the
    file name is under the root directory. Returns non-zero value on
    failure. */
-int
-examin_class_attr_file(path)
-  char *path;
+int examin_class_attr_file (char *path)
 {
   int ret;
 
@@ -1033,9 +1020,7 @@ examin_class_attr_file(path)
 /* examine the validity of class parse program. If not found at the given
    path search in the bin-path of the server. Also checks if the program
    is an executable file on disk. Returns non-zero value on failure. */
-int
-examin_class_parse_prog(path)
-  char *path;
+int examin_class_parse_prog (char *path)
 {
   int  ret = 0;
   char new_path[MAX_FILE];
@@ -1066,9 +1051,9 @@ examin_class_parse_prog(path)
 
 /* verify the authority area schema. Makes sure atleast one class is
    defined in the schema. */
-int 
-verify_schema(aa)
-  auth_area_struct *aa;
+int
+verify_schema(
+  auth_area_struct *aa)
 {
   int           not_done;
   class_struct  *class;
@@ -1103,9 +1088,9 @@ verify_schema(aa)
    then appends the created class to the class list of authority
    area. */
 int 
-create_class(class, aa)
-  class_struct     *class;
-  auth_area_struct *aa;
+create_class(
+  class_struct     *class,
+  auth_area_struct *aa)
 {
   int              not_done;
   int              i;
@@ -1229,8 +1214,8 @@ create_class(class, aa)
 
 /* sets a new class schema version */
 int
-update_schema_version(class)
-  class_struct *class;
+update_schema_version(
+  class_struct *class)
 {
   char *tmp_ver;
 
@@ -1249,10 +1234,10 @@ update_schema_version(class)
 /* add a new class after making sure the name does not clash with any
    other class name or class alias. */
 int
-add_new_class_alias(aa, class, alias)
-  auth_area_struct *aa;
-  class_struct     *class;
-  char             *alias;
+add_new_class_alias(
+  auth_area_struct *aa,
+  class_struct     *class,
+  char             *alias)
 {
   /* bad parameters */
   if (!aa || !class || !alias || !*alias) return FALSE;
@@ -1273,9 +1258,9 @@ add_new_class_alias(aa, class, alias)
    Log error if path already in the list. Returns non-zero value on
    failure. */
 int
-verify_all_class_paths(paths_list, aa)
-  dl_list_type     *paths_list;
-  auth_area_struct *aa;
+verify_all_class_paths(
+  dl_list_type     *paths_list,
+  auth_area_struct *aa)
 {
   int          ret = 0;
   int          not_done;
@@ -1318,9 +1303,9 @@ verify_all_class_paths(paths_list, aa)
    configuration. Don't want to overwrite something not written out
    by admin server. */
 int
-verify_class_parse_progs(paths_list, aa)
-  dl_list_type     *paths_list;
-  auth_area_struct *aa;
+verify_class_parse_progs(
+  dl_list_type     *paths_list,
+  auth_area_struct *aa)
 {
   int          ret = 0;
   int          not_done;
