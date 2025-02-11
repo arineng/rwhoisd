@@ -557,7 +557,7 @@ add_attribute(attr, class, attr_ref_list)
   if( !dl_list_last(attr_list))
   {
     /* this is the first entry, so default the list */
-    dl_list_default(attr_list, FALSE, destroy_attr_data);
+    dl_list_default(attr_list, FALSE, (int(*)(void*))destroy_attr_data);
   }
   else
   {
@@ -608,7 +608,7 @@ add_global_attribute(attr, class, attr_ref_list, global_id)
     if (! dl_list_last(attr_ref_list))
     {
       *global_id = 0;
-      dl_list_default(attr_ref_list, FALSE, destroy_attr_ref_data);
+      dl_list_default(attr_ref_list, FALSE, (int(*)(void *))destroy_attr_ref_data);
     }
     else
     {

@@ -203,7 +203,7 @@ check_uniq_record(record)
   ret_code_type ret_code;
   
   query = xcalloc(1, sizeof(*query));
-  dl_list_default(&record_list, FALSE, destroy_record_data);
+  dl_list_default(&record_list, FALSE, (int(*)(void *))destroy_record_data);
   
   if (!build_primary_key_query(query, record))
   {
@@ -325,7 +325,7 @@ index_new_record(record)
   /* generate the new filename */
   create_filename(store_fname, DB_FILE_TEMPLATE, class->db_dir);
 
-  dl_list_default(&index_file_list, FALSE, destroy_index_fp_data);
+  dl_list_default(&index_file_list, FALSE, (int(*)(void *))destroy_index_fp_data);
   if (!build_index_list(class, aa, &index_file_list, class->db_dir,
                         "addind"))
   {
@@ -349,7 +349,7 @@ index_new_record(record)
 
   /* index the file */
   file_ptr = build_base_file_struct(store_fname, MKDB_DATA_FILE, 1);
-  dl_list_default(&dl_file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&dl_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
   dl_list_append(&dl_file_list, file_ptr);
   
   status = index_files(class, aa, &index_file_list, &dl_file_list,
@@ -757,7 +757,7 @@ process_registration(reg_email, action)
   }
   /* CHECK phase -- check for syntactical and usage problems */
 
-  dl_list_default(&del_record_list, FALSE, destroy_record_data);
+  dl_list_default(&del_record_list, FALSE, (int(*)(void *))destroy_record_data);
   
   switch (action)
   {

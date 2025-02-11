@@ -173,7 +173,7 @@ recv_response(fp, delimiter, response)
   char line[MAX_LINE];
   int  not_done        = TRUE;
 
-  dl_list_default(response, FALSE, destroy_response_data);
+  dl_list_default(response, FALSE, (int(*)(void *))destroy_response_data);
 
   /* Read response line by line till delimiter */
   do

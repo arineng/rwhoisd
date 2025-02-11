@@ -264,7 +264,7 @@ xfer_parse_args(str, aa)
   }
 
   xs = xcalloc(1, sizeof(*xs));
-  dl_list_default(&(xs->xfer_class_list), FALSE, destroy_xfer_class_data);
+  dl_list_default(&(xs->xfer_class_list), FALSE, (int(*)(void *))destroy_xfer_class_data);
 
   for (i = 0; i < argc; i++)
   {
@@ -279,7 +279,7 @@ xfer_parse_args(str, aa)
       if (STR_EQ(attr, "class"))
       {
         cur_xclass = xcalloc(1, sizeof(*cur_xclass));
-        dl_list_default(&(cur_xclass->attr_list), FALSE, null_destroy_data);
+        dl_list_default(&(cur_xclass->attr_list), FALSE, (int(*)(void *))null_destroy_data);
         
         class = find_class_by_name(aa->schema, value);
         if (!class)
@@ -538,11 +538,11 @@ index_data_files_by_suffix(aa, suffix)
     }
     
     /* Get current data and index files list */ 
-    dl_list_default(&full_file_list, FALSE, destroy_file_struct_data);
+    dl_list_default(&full_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
     get_file_list(class, aa, &full_file_list);
 
     /* Build new data files list */
-    dl_list_default(&data_file_list, FALSE, destroy_file_struct_data);
+    dl_list_default(&data_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
     if (!build_file_list_by_suffix(&data_file_list, MKDB_DATA_FILE,
                                    class->db_dir, suffix))
     {
@@ -550,7 +550,7 @@ index_data_files_by_suffix(aa, suffix)
       break;
     }
 
-    dl_list_default(&index_file_list, FALSE, destroy_index_fp_data);
+    dl_list_default(&index_file_list, FALSE, (int(*)(void *))destroy_index_fp_data);
     if (!build_index_list(class, aa, &index_file_list, class->db_dir, NULL))
     {
       rval = FALSE;

@@ -86,7 +86,7 @@ create_dir_security(wrap_list, wrap_type)
 {
   *wrap_list = xcalloc(1, sizeof(**wrap_list));
 
-  if (!dl_list_default(*wrap_list, TRUE, destroy_dir_security_data))
+  if (!dl_list_default(*wrap_list, TRUE, (int(*)(void *))destroy_dir_security_data))
   {
     log(L_LOG_ERR, CONFIG,
         "Error in creating %s directive security list", wrap_type);

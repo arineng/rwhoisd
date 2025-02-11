@@ -1166,7 +1166,7 @@ add_auth_area(aa)
   {
     auth_area_list = xcalloc(1, sizeof(*auth_area_list));
 
-    dl_list_default(auth_area_list, TRUE, destroy_auth_area_data);
+    dl_list_default(auth_area_list, TRUE, (int(*)(void *))destroy_auth_area_data);
   }
 
   /* check the aa for existance, syntax, etc .. first */
@@ -1634,7 +1634,7 @@ add_server(srv_list_ptr, val)
 
   if (dl_list_empty(list))
   {
-    dl_list_default(list, TRUE, destroy_server_data);
+    dl_list_default(list, TRUE, (int(*)(void*))destroy_server_data);
   }
 
   dl_list_append(list, server);
@@ -2260,7 +2260,7 @@ create_auth_area(aa)
   {
     auth_area_list = xcalloc(1, sizeof(*auth_area_list));
 
-    dl_list_default(auth_area_list, TRUE, destroy_auth_area_data);
+    dl_list_default(auth_area_list, TRUE, (int(*)(void *))destroy_auth_area_data);
   }
 
   dl_list_append(auth_area_list, newaa);

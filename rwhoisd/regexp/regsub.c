@@ -42,7 +42,7 @@ char *dest;
 	register char c;
 	register int no;
 	register int len;
-	extern char *strncpy();
+	extern char *strncpy(char *, const char*, size_t);
 
 	if (prog == NULL || source == NULL || dest == NULL) {
 		regerror("NULL parm to regsub");

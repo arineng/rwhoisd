@@ -41,7 +41,7 @@ typedef struct _dl_list_type
    function pointer to the data free()ing routine. */
 int dl_list_default PROTO((dl_list_type *list,
                            int destroy_head_flag,
-                           int (*destroy_data)()));
+                           int (*destroy_data)(void *data)));
 
 /* returns the value (a pointer to the data element) at the current
    position */ 

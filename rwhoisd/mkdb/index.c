@@ -644,9 +644,9 @@ index_files(class, auth_area, index_file_list, data_file_list, validate_flag,
     return TRUE;
   }
 
-  dl_list_default(&delete_list, FALSE, destroy_file_struct_data);
-  dl_list_default(&add_list, FALSE, destroy_file_struct_data);
-  dl_list_default(&unlock_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&delete_list, FALSE, (int(*)(void *))destroy_file_struct_data);
+  dl_list_default(&add_list, FALSE, (int(*)(void *))destroy_file_struct_data);
+  dl_list_default(&unlock_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
   /* add/update all of our data files to the master file list(s) */
   if (! modify_file_list(class, auth_area, data_file_list, NULL, NULL, NULL,
@@ -798,7 +798,7 @@ index_files_by_name(class_name, auth_area_name, base_dir,
     return FALSE;
   }
 
-  dl_list_default(&data_file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&data_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
   if (! build_file_list_by_names(&data_file_list, MKDB_DATA_FILE,
                                  base_dir, num_data_files, file_names))
   {
@@ -809,7 +809,7 @@ index_files_by_name(class_name, auth_area_name, base_dir,
   }
 
 
-  dl_list_default(&index_file_list, FALSE, destroy_index_fp_data);
+  dl_list_default(&index_file_list, FALSE, (int(*)(void *))destroy_index_fp_data);
   if (!build_index_list(class, auth_area, &index_file_list, class->db_dir,
                         NULL))
   {
@@ -865,7 +865,7 @@ index_files_by_suffix(class_name, auth_area_name, suffix, validate_flag)
 
 
   /* create and build the data file list */
-  dl_list_default(&data_file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&data_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
   if (!build_file_list_by_suffix(&data_file_list, MKDB_DATA_FILE,
                                  class->db_dir, suffix))
   {
@@ -878,7 +878,7 @@ index_files_by_suffix(class_name, auth_area_name, suffix, validate_flag)
 
 
   /* create and build the index file list */
-  dl_list_default(&index_file_list, FALSE, destroy_index_fp_data);
+  dl_list_default(&index_file_list, FALSE, (int(*)(void *))destroy_index_fp_data);
 
   if (!build_index_list(class, auth_area, &index_file_list, class->db_dir,
                         NULL))

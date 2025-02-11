@@ -33,7 +33,7 @@ int
 dl_list_default(list, destroy_head_flag, destroy_data)
   dl_list_type  *list;
   int           destroy_head_flag;
-  int           (*destroy_data)();
+  int           (*destroy_data)(void *);
 {
   if (list) {
     list->head              = NULL;

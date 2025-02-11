@@ -110,7 +110,7 @@ query_for_records(query_string, limit, total)
   *total = 0;
 
   record_list = (dl_list_type *) xcalloc(1, sizeof(*record_list));
-  dl_list_default(record_list, TRUE, destroy_record_data);
+  dl_list_default(record_list, TRUE, (int(*)(void *))destroy_record_data);
   
   if (!parse_query(query_string, &query))
   {

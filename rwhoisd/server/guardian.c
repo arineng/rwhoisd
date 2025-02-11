@@ -219,7 +219,7 @@ lookup_guardian_record(guard_id)
     return NULL;
   }
 
-  dl_list_default(&new_rec_list, FALSE, destroy_record_data);
+  dl_list_default(&new_rec_list, FALSE, (int(*)(void *))destroy_record_data);
   num_recs = search(query, &new_rec_list, 2, &ret_code);
 
   destroy_query(query);

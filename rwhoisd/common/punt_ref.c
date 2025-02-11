@@ -34,7 +34,7 @@ create_punt_ref(ref_list)
 
   *ref_list = xcalloc(1, sizeof(**ref_list));
 
-  if (!dl_list_default(*ref_list, TRUE, destroy_punt_ref_data))
+  if (!dl_list_default(*ref_list, TRUE, (int(*)(void *))destroy_punt_ref_data))
   {
     log(L_LOG_ERR, CONFIG, "Error in creating punt/root referral list");
     return FALSE;

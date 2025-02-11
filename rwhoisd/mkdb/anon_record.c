@@ -89,7 +89,7 @@ mkdb_read_anon_record(data_file_no, validate_flag, status, fp)
   rec->offset       = ftell(fp);
   
   av_list = &(rec->anon_av_pair_list);
-  dl_list_default(av_list, FALSE, destroy_anon_av_pair_data);
+  dl_list_default(av_list, FALSE, (int(*)(void *))destroy_anon_av_pair_data);
 
   eof_flag = TRUE;  /* flag is set differently if loop ends for a different
                        reason */

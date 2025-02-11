@@ -43,8 +43,8 @@ mkdb_delete_record_list (record_list)
   {
     record = dl_list_value(record_list);
 
-    dl_list_default(&all_file_list, FALSE, destroy_file_struct_data);
-    dl_list_default(&changed_fi_list, FALSE, destroy_file_struct_data);
+    dl_list_default(&all_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
+    dl_list_default(&changed_fi_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
     if (!get_file_list(record->class, record->auth_area, &all_file_list))
     {

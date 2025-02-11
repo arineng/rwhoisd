@@ -365,10 +365,10 @@ repack_index_files(class_struct *class,
   if (dl_list_empty(index_file_list)) return TRUE;
 
 
-  dl_list_default(&sub_index_file_list, FALSE, destroy_file_struct_data);
-  dl_list_default(&base_index_file_list, FALSE, destroy_index_fp_data);
-  dl_list_default(&new_index_file_list, FALSE, destroy_index_fp_data);
-  dl_list_default(&add_file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&sub_index_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
+  dl_list_default(&base_index_file_list, FALSE, (int(*)(void *))destroy_index_fp_data);
+  dl_list_default(&new_index_file_list, FALSE, (int(*)(void *))destroy_index_fp_data);
+  dl_list_default(&add_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
   /* generate the various possible index files we could create */
   if (! build_index_list(class, auth_area, &base_index_file_list,
@@ -534,8 +534,8 @@ run_repack_class_aa(class_struct          *class,
   }
 
   /* initialize the list */
-  dl_list_default(&index_file_list, FALSE, destroy_file_struct_data);
-  dl_list_default(&all_file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&index_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
+  dl_list_default(&all_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
   /* get the file list from master index file (local.db) */
   if (! get_file_list(class, auth_area, &all_file_list) )

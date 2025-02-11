@@ -1024,7 +1024,7 @@ get_file(class_name, auth_area_name, file_list)
   }
 
   /* initialize the list */
-  dl_list_default(file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
   auth_area = find_auth_area_by_name(auth_area_name);
   if (auth_area == NULL)
@@ -1161,7 +1161,7 @@ add_single_file(class, auth_area, file_name, type, num_recs)
   file_struct  *list_file;
   dl_list_type file_list;
 
-  dl_list_default(&file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
   file = build_base_file_struct(file_name, type, num_recs);
   if (!file)
@@ -1214,7 +1214,7 @@ modify_file_list(class, auth_area, add_list, delete_list,
     return FALSE;
   }
 
-  dl_list_default(&full_file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&full_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
   /* first, we establish the write lock; This prevents staleness
      problems. */
@@ -1392,8 +1392,8 @@ records_in_auth_area(auth_area)
   long         count    = 0;
   int          not_done;
 
-  dl_list_default(&master_file_list, FALSE, destroy_file_struct_data);
-  dl_list_default(&data_file_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&master_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
+  dl_list_default(&data_file_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
   if (!get_file(NULL, auth_area->name, &master_file_list))
   {

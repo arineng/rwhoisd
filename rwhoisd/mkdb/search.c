@@ -349,9 +349,9 @@ search_class(query_tree, auth_area, class, record_list, max_hits)
 
   bzero((char *)index_file, sizeof(index_file));
 
-  dl_list_default(&master_fi_list, FALSE, destroy_file_struct_data);
-  dl_list_default(&index_fi_list, FALSE, destroy_file_struct_data);
-  dl_list_default(&data_fi_list, FALSE, destroy_file_struct_data);
+  dl_list_default(&master_fi_list, FALSE, (int(*)(void *))destroy_file_struct_data);
+  dl_list_default(&index_fi_list, FALSE, (int(*)(void *))destroy_file_struct_data);
+  dl_list_default(&data_fi_list, FALSE, (int(*)(void *))destroy_file_struct_data);
 
   /* Ok, this needs a little bit of explaining because there is an
      implicit filtering function here handled by the indexer. What we

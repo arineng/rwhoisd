@@ -225,7 +225,7 @@ append_class( class, aa )
   if (!dl_list_last(class_list))
   {
     class->id = 0;
-    dl_list_default(class_list, FALSE, destroy_class_data);
+    dl_list_default(class_list, FALSE, (int(*)(void *))destroy_class_data);
   }
   else
   {
@@ -456,7 +456,7 @@ add_class(schema, class, aa)
   if (!dl_list_last(class_list))
   {
     class->id = 0;
-    dl_list_default(class_list, FALSE, destroy_class_data);
+    dl_list_default(class_list, FALSE, (int(*)(void *))destroy_class_data);
   }
   else
   {
@@ -542,7 +542,7 @@ add_global_class(class, aa)
     {
       class_ref_list = xcalloc(1, sizeof(*class_ref_list));
 
-      dl_list_default(class_ref_list, TRUE, destroy_class_ref_data);
+      dl_list_default(class_ref_list, TRUE, (int(*)(void *))destroy_class_ref_data);
     }
 
     /* allocate and set the new node */

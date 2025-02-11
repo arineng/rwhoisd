@@ -29,9 +29,9 @@ char *get_word PROTO((char *cp, char *buf));
 
 void paste PROTO((char *line, char *cut_start, char *cut_end, char *rpl));
 
-char *on_off PROTO((int bool));
+char *on_off PROTO((int b));
 
-int true_false PROTO((char *bool));
+int true_false PROTO((char *b));
 
 int get_tuple PROTO((char *tag1, char *tag2, char *data, char *line));
 
@@ -54,7 +54,7 @@ void *xmemdup PROTO((const void *buf, size_t bytes));
 
 char *regncpy PROTO((char *result, regexp *prog, int item, int len));
 
-char *true_false_str PROTO((int bool));
+char *true_false_str PROTO((int b));
 
 void randomize PROTO((void));
 

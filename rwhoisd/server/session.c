@@ -99,7 +99,7 @@ run_query(str)
   
   query = xcalloc(1, sizeof(*query));
   
-  dl_list_default(&record_list, FALSE, destroy_record_data);
+  dl_list_default(&record_list, FALSE, (int(*)(void *))destroy_record_data);
   
   if (!str || !*str)
   {
